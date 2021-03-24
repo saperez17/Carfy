@@ -14,5 +14,6 @@ jobs:
         pip3 install djangorestframework
         pip3 install django-widget-tweaks
         pip3 install django-countries
+        pip3 install Pillow
 
         python3 manage.py test
