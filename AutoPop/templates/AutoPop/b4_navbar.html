@@ -1,0 +1,45 @@
+{% load static %}
+ <script src="https://kit.fontawesome.com/5daef69c7f.js" crossorigin="anonymous"></script>
+
+<nav class="navbar navbar-expand-lg ">
+    <a class="navbar-brand" href="#"><p class="brand-p">⚡Carfy</p></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="username"><strong>{{ user.username }}</strong></a>
+            </li>
+            {% endif %}
+            <li class="nav-item" >
+                <a class="nav-link" href=""><p>Truck</p></a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link" href=""><p>Car</p></a>
+            </li>
+            <li class="nav-item" >
+                <a class="nav-link" href=""><p>Motorcycle</p></a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a id="following-btn" class="nav-link" href=""><p style="color:black;">Following</p> </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="">Log Out</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href=""><p>Log In</p></a>
+            </li>
+            <li class="nav-item">
+                {% comment %} <a class="nav-link" href="{% url 'register' %}">Register</a> {% endcomment %}
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<link rel="stylesheet" href="{% static 'AutoPop/b4_navbar.css' %}">

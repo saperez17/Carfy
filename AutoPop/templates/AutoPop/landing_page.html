@@ -1,0 +1,103 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta charset="utf-8">
+    <title>Auto Services</title>
+</head>
+
+<body>
+    <div>
+        <div class="top-footer">
+            <div class="media">
+                <div class="inner">
+                    <i class="in-icon fab fa-instagram"></i>
+                    <i class="fb-icon fab fa-facebook-f"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="landing-main container-fluid">
+        <div class="bg-landing"></div>
+        <div class="front-landing">
+            <div class="row">
+                <div class="col-12 navbar-col ">
+                    {% include 'AutoPop/b4_navbar.html' %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 info-col">
+                    <div class="welcome-section">
+                        <h3 class="heading main-heading">erat velit scelerisque in dictum</h3>
+                        <p class="heading"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            <br>
+                            ut labore et dolore magna aliqua. Fermentum dui faucibus in ornare quam.
+                        </p>
+                    </div>
+                   <div class="dropdown">
+                       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                           Choose your city
+                       </button>
+                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                           <li><a class="dropdown-item" href="#">Popayan</a></li>
+                           <li><a class="dropdown-item" href="#">Cali</a></li>
+                           <li><a class="dropdown-item" href="#">Pasto</a></li>
+                       </ul>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-2 container-fluid">
+        <div class="operations-sections row">
+            <div class="col-sm-4">
+                <div class="section ">
+                 <div class=" sec1">SUV's</div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="section">
+                <div class=" sec2">SUV's</div>
+                
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="section ">
+                <div class=" sec3">SUV's</div>
+                
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div>
+  <div class="container-fluid">
+        <div class=" row">
+        <div class="col-sm-12">
+         <h3>Services</h3>
+           
+        </div>
+           
+        </div>
+    </div>
+  </div>
+    
+     <link rel="stylesheet" type="text/css" href="{% static 'AutoPop/landing_page.css' %}">
+     
+
+
+</body>
+<script>
+    {% comment %} $(document).ready(() => {
+        $("h1").hide().fadeIn("1000");
+    }) {% endcomment %}
+</script>
+
+</html>
