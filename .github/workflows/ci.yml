@@ -12,5 +12,7 @@ jobs:
         pip3 install django-cors-headers
         pip3 install dj-database-url
         pip3 install djangorestframework
+        pip3 install django-widget-tweaks
+        pip3 install django-countries
 
         python3 manage.py test
