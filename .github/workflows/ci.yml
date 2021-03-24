@@ -9,4 +9,8 @@ jobs:
     - name: Run Django unit test
       run: |
         pip3 install --user django
+        pip3 install django-cors-headers
+        pip3 install dj-database-url
+        pip3 install djangorestframework
+
         python3 manage.py test
