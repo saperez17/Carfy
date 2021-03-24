@@ -15,5 +15,6 @@ jobs:
         pip3 install django-widget-tweaks
         pip3 install django-countries
         pip3 install Pillow
+        pip3 install whitenoise
 
         python3 manage.py test
