@@ -1,0 +1,8 @@
+django
+django-cors-headers
+dj-database-url
+djangorestframework
+django-widget-tweaks
+django-countries
+Pillow
+whitenoise
