@@ -1,5 +1,4 @@
 {% load widget_tweaks %}
-{%load static %}
 {% for hidden_fields in form.hidden_fields %}
     {{hidden_field}}
 {% endfor %}
@@ -34,4 +33,3 @@
     {% endif %}
     </div>
 {% endfor %}
-<link rel="stylesheet" type="text/css" href="{% static 'AutoPop/index.css' %}">
