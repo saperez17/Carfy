@@ -28,7 +28,18 @@ class UserAccountView(TemplateView):
             return render(request, self.template_name, {"form": self.form_class})
         else:
             return render(request, self.template_name, {})
-        
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect("/landing_page")
+            else:
+                return render(request, self.template_name, {
+                "form": form,
+                "message":"Oops, try again."
+                })
 class ServiceListingView(TemplateView):
     template_name = "AutoPop/landing_page.html"
     def get(self, request):
