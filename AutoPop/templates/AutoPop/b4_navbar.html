@@ -28,14 +28,14 @@
                 <a id="following-btn" class="nav-link" href=""><p style="color:black;">Following</p> </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">Log Out</a>
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href=""><p>Log In</p></a>
+                <a class="nav-link" href="{% url 'login' %}"><p>Log In</p></a>
             </li>
             <li class="nav-item">
-                {% comment %} <a class="nav-link" href="{% url 'register' %}">Register</a> {% endcomment %}
+                <a class="nav-link" href="{% url 'signin' %}">Sign in</a>
             </li>
             {% endif %}
         </ul>

@@ -15,7 +15,9 @@ input[type=text]{
     margin: 2px 0px;
     width: 250px;
 }
-
+.form-signin{
+    text-align: center;
+}
 .form-signin{
     padding: 5vh 5vw;
     border: 1px solid gray;
@@ -34,9 +36,11 @@ input[type=text]{
     padding-top: 15vh;
 }
 
-.footer{
-    padding-top: 30px;
+.carfy-r{
+    padding: 1rem 1rem 1rem 0rem;
+    text-align: right;
 }
+
 
 
 

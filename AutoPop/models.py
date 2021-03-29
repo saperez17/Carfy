@@ -1,6 +1,6 @@
 from django.db import models
 from django_countries.fields import CountryField
-from django.contrib.auth. models import AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
 import os
@@ -9,34 +9,41 @@ import random
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
-class UserAdminApp(AbstractUser):
-    def __str__(self):
-        return f"{self.first_name}"
+class User(AbstractUser):
+    pass
 
-class UserApp(models.Model):
-    username = models.CharField(max_length=24, unique=True)
+#Create profile models 
+class ServiceProvider(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE) #Profile model
+    payment = models.CharField(max_length=100, unique=False)
     city = models.CharField(verbose_name=_("City"), max_length=1023, blank=True, null=True)
     country = CountryField(blank=True, null=True)
     email = models.EmailField(unique=True)
-    
-    class Meta: 
-        ordering = ['username']
+    # class Meta: 
+    #     ordering = ['username']
     def __str__(self):
         return f"{self.username}"
-    def is_valid_user(self):
-        return '$' not in self.username and '@' in self.email
 
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    city = models.CharField(verbose_name=_("City"), max_length=1023, blank=True, null=True)
+    country = CountryField(blank=True, null=True)
+    email = models.EmailField(unique=True)
+    def __str__(self):
+        return f"{self.user.username}"
+    
 
 class Shop(models.Model):
     class MembershipPlan(models.TextChoices):
         PREMIUM = 'P', _('PREMIUM')
         BASIC = 'B', _('Basic')
         FREE = 'F', _('Free')
+    owner = models.ForeignKey(ServiceProvider, on_delete=models.CASCADE, related_name="my_shops")
     shop_name = models.CharField(max_length=50, unique=True)
     membership = models.CharField(max_length=2, choices=MembershipPlan.choices, default=MembershipPlan.FREE)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=-76.585664)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=2.449903)
-
+    
     def get_membership(self):
         return self.membership
     def __str__(self):
@@ -86,7 +93,8 @@ def get_random_name():
         return img_name
 
 class CustomerPublication(models.Model):
-    publisher = models.ForeignKey(UserApp, on_delete=models.CASCADE, related_name="service_inquiry")
+    publisher = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="service_inquiry")
+    description = models.CharField(max_length=100, unique=False)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=-76.606422)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=2.441650)
     photo = models.ImageField(verbose_name=_("Optional Image"), upload_to="images/publication_images", default=get_random_name)

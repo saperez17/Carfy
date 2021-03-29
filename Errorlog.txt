@@ -1,0 +1,2 @@
+-Operation Error. No such table.. -> Cause by a table not being created at the moment of generating the db.sqlite3 file
+				  Solution->Delete database file or create User table (would need to find what columns this table has)
