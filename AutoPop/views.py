@@ -10,7 +10,7 @@ from .models import *
 from .forms import NameForm
 
 # Serializers
-from .serializers import ShopSerializer
+from .serializers import ShopSerializer, ShopServiceSerializer
 
 
 # Django rest framework imports
@@ -75,8 +75,8 @@ def index(request):
     return render(request, 'AutoPop/index.html', context=my_dict)
 
 
-@api_view(['GET', ])
-def shopsList(request, *args, **kwargs):
+@api_view(['GET', 'POST'])
+def shop(request, *args, **kwargs):
     try:
         shops = Shop.objects.all()
     except:
@@ -92,20 +92,30 @@ def shopsList(request, *args, **kwargs):
         else:
             serializer = ShopSerializer(shops, many=True)
         return JsonResponse({"message": "shops fetched successfully", "data":serializer.data}, status=200)
+    elif (request.method=='POST'):
+        user = User.objects.get(username=request.data['username']) 
+        service_provider = ServiceProvider.objects.get(user=user)
+        shop_name = request.data['shop_name']
+        membership = MembershipPlan[request.data['membership']]
+        longitude = request.data['longitude']
+        latitude = request.data['latitude']
+        new_shop = Shop(owner=service_provider,shop_name=shop_name,membership=membership,longitude=longitude,latitude=latitude)
+        print(new_shop)
+        return JsonResponse({"message": "shops created successfully", "data":[]}, status=200)
 
+@api_view(['GET'])
+def shopId(request, id):
+    shop = Shop.objects.filter(pk=id)
+    if shop.count() != 0:
+        serializer = ShopSerializer(shop, many=True)
+        return JsonResponse({"message": "Shop fetched successfully", "data":serializer.data}, status=200)
+    else:
+        return JsonResponse({"message": "Shop not found", "data":[]}, status=200)
 
-# @api_view(['POST'])
-# def shopCreate(request, *args, **kwargs):
-    # """
-    # Input
-    #     owner = shop's owner (ServiceProvicer Instance)
-    #     shop_name = CharField
-    #     membership = ('P','B' or 'F')
-    #     longitude = Decimal
-    #     latitude = Decimal
-    # Output:
-    #     {data: "Shop created successfully"}
-    # """
-    # owner = User.objects.get(request.GET['username'])
+@api_view(['GET'])
+def shopServices(request):
+    shop_services = ShopService.objects.all()
+    serializer = ShopServiceSerializer(shop_services, many=True)
+    return JsonResponse({"message": "All shop services fetched successfully", "data":serializer.data}, status=200)
 
 

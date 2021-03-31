@@ -7,6 +7,8 @@ import os
 import random 
 
 from django.utils.translation import gettext_lazy as _
+#Multiselect model field
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 class User(AbstractUser):
@@ -22,7 +24,7 @@ class ServiceProvider(models.Model):
     # class Meta: 
     #     ordering = ['username']
     def __str__(self):
-        return f"{self.username}"
+        return f"{self.user.username}"
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -31,13 +33,11 @@ class Customer(models.Model):
     email = models.EmailField(unique=True)
     def __str__(self):
         return f"{self.user.username}"
-    
-
+class MembershipPlan(models.TextChoices):
+    PREMIUM = 'P', _('Premium')
+    BASIC = 'B', _('Basic')
+    FREE = 'F', _('Free')
 class Shop(models.Model):
-    class MembershipPlan(models.TextChoices):
-        PREMIUM = 'P', _('PREMIUM')
-        BASIC = 'B', _('Basic')
-        FREE = 'F', _('Free')
     owner = models.ForeignKey(ServiceProvider, on_delete=models.CASCADE, related_name="my_shops")
     shop_name = models.CharField(max_length=50, unique=True)
     membership = models.CharField(max_length=2, choices=MembershipPlan.choices, default=MembershipPlan.FREE)
@@ -59,15 +59,6 @@ class Automobile(models.Model):
     auto_type = models.CharField(max_length=2, choices=CarType.choices, default=CarType.UNKNOWN)
     def __str__(self):
         return f"{self.auto_type}"
-
-class ShopService(models.Model):
-    provider = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name="shop_services")
-    target_automobile = models.ForeignKey(Automobile, on_delete=models.CASCADE, related_name='related_services')
-    price = models.DecimalField(verbose_name=_('Service Price'), max_digits=10, decimal_places=0)
-
-    def __str__(self):
-        return f"{self.provider} CarAudience. {self.target_automobile}, Price: {self.price}"
-
 class ServiceDetail(models.TextChoices):
             OIL_CHANGE = 'OC', _('OIL CHANGE')
             OIL_FILTER = 'OFC', _('FILTER CHANGE')
@@ -82,6 +73,14 @@ class ServiceDetail(models.TextChoices):
             ENGINE_TUNE_UP = 'ETU', _('ENGINE TUNE UP')
             WHEELS_WORK = 'WW', _('WHEELS ALIGNED/BALANCED')
             NONE = 'NN', _('NO SERVICE LISTED')
+class ShopService(models.Model):
+    provider = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name="shop_services")
+    target_automobile = models.ForeignKey(Automobile, on_delete=models.CASCADE, related_name='related_services')
+    price = models.DecimalField(verbose_name=_('Service Price'), max_digits=10, decimal_places=0)
+    services = MultiSelectField(choices=ServiceDetail.choices, default=ServiceDetail.NONE)
+    description = models.CharField(max_length=250, default="")
+    def __str__(self):
+        return f"{self.provider} CarAudience. {self.target_automobile}, Price: {self.price}"
 
 class ServiceCoverage(models.Model):
     coverage = models.CharField(max_length=3, choices=ServiceDetail.choices, default=ServiceDetail.NONE)

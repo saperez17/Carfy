@@ -27,7 +27,7 @@ SECRET_KEY = 'qlxi9(9%@op4niyo3&5-cnyk7jwn0ftw20(282dg!i52lv&ek4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.3', 'localhost', '127.0.0.1' ]
+ALLOWED_HOSTS = ['*' ]
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'django_countries',
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [
