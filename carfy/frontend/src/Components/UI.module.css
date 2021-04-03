@@ -60,15 +60,22 @@ i:hover{
     font-size: 1.3em;
     color: #151515 !important;
 }
-.nav-link > p{
-    font-family: Roboto;
-    color: #ffffff !important;
+.navItem{
+    margin-right: 20px;
 }
-.nav-link > p:hover{
+.navLink{
+    text-decoration: none;
+}
+.navLink > p{
+    font-family: Roboto;
+    color: #ffffff ;
+    
+}
+.navLink:hover{
     /* color: #151515 !important; */
     font-weight: bold;
     /* font-size: 1.2em; */
-    text-decoration-line: underline;
+    text-decoration: underline;
     text-shadow: 1px 1px 3px gray;
 }
 .brand_p{
@@ -110,4 +117,80 @@ i:hover{
 .main_heading{
     font-size: 3em;
     font-family: 'Alfa Slab One', cursive;
+}
+
+
+/* Vehicle Section  */
+/* Sections */
+.services{
+    padding-top: .5rem;
+    margin-right: 1rem;
+    /* padding-left: 0rem; */
+}
+
+.services > ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-rows: auto;
+    grid-gap: 1rem;
+    /* height: calc(25vh); */
+    padding-left: 0rem;
+    /* padding-right: .5rem; */
+}
+
+.services > ul > li {
+    border: 1px solid #E2E2E2;
+    border-radius: .5rem;
+    /* padding-bottom: 15px; */
+}
+
+.services > ul > li > div > figure{
+    min-height: 220px;
+    overflow: hidden;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+    position: relative;
+}
+
+.services > ul > li > div > figure > img {
+    width: 100%;
+    height: 230px;
+    /* height: 230px; */
+}
+
+.services > ul > li > div > figure > figcaption {
+    position: absolute;
+    bottom: 0px;
+    background-color: rgba(0,0,0,.7);
+    width: 100%;
+}
+
+.services > ul > li > div > figure > figcaption > h3 {
+    color: white;
+    padding: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.services > ul > li > div > figure > p {
+    text-align: justify;
+    padding: .5rem 1rem;
+}
+
+.services > ul > li > div > a {
+    display: inline-block;
+    /* position: relative; */
+    background-color: goldenrod;
+    color: white;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: .5rem 1rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    transition: all .3s;
+}
+
+.services > ul > li > a:hover {
+    opacity: 0.6;
 }

@@ -25,7 +25,7 @@ SECRET_KEY = '9hyetjilibi$@+4o*w0a0%gdcpm1&$(5k-yk8z3dp4-6nz3p(7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'frontend',
     'backend',
-    'rest_framework'
+    'rest_framework',
+    'django_countries',
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [
@@ -83,7 +85,7 @@ DATABASES = {
     }
 }
 
-
+AUTH_USER_MODEL = "backend.User"
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
