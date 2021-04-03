@@ -18,11 +18,12 @@ class Lead(models.Model):
 
     # Create your models here.
 class User(AbstractUser):
-    pass
+    def ___str___(self):
+        return f"{self.username}"
 
 #Create profile models 
 class ServiceProvider(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE) #Profile model
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="service_provider") #Profile model
     payment = models.CharField(max_length=100, unique=False)
     city = models.CharField(verbose_name=_("City"), max_length=1023, blank=True, null=True)
     country = CountryField(blank=True, null=True)
@@ -33,7 +34,7 @@ class ServiceProvider(models.Model):
         return f"{self.user.username}"
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
     city = models.CharField(verbose_name=_("City"), max_length=1023, blank=True, null=True)
     country = CountryField(blank=True, null=True)
     email = models.EmailField(unique=True)
