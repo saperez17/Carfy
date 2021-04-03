@@ -1,0 +1,51 @@
+*{
+    padding: 0rem;
+    margin: 0rem;
+}
+
+/* Social Media Top Icons */
+@import
+url('https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:200,400');
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+p, a {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* Top Footer */
+.top-footer{
+    display: table;
+    text-align: right;
+    color: rgb(0, 0, 0);
+    background-color: #eea300;
+    height: 100%;
+    width: 100%;
+}
+.navbar-brand{
+    font-family: 'Righteous', cursive;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left:10vw;    
+    color: #151515;
+}
+
+.media{
+    display: table-cell;
+    vertical-align: middle;
+    height: 10px;
+}
+.inner {
+    margin-right: 11vw;
+    /* color: #fff;  */
+}
+.in-icon{
+    margin-right: 20px;
+}
+i:hover{
+    color: #fff;
+    cursor:pointer;
+}
+/* Top Footer */
