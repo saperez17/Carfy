@@ -56,16 +56,12 @@ class Shop(models.Model):
     def __str__(self):
         return f"{self.shop_name}, Plan: {self.membership}"
 
-class CarType(models.TextChoices):
+class TargetAutomobile(models.TextChoices):
         SEDAN = 'S', _('SEDAN')
         TRUCK = 'T', _('TRUCK')
         MOTORCYCLE = 'M', _('MOTORCYCLE')
         UNKNOWN = 'U', _('UNKNOWN')
 
-class Automobile(models.Model):
-    auto_type = models.CharField(max_length=2, choices=CarType.choices, default=CarType.UNKNOWN)
-    def __str__(self):
-        return f"{self.auto_type}"
 class ServiceDetail(models.TextChoices):
             OIL_CHANGE = 'OC', _('OIL CHANGE')
             OIL_FILTER = 'OFC', _('FILTER CHANGE')
@@ -82,7 +78,7 @@ class ServiceDetail(models.TextChoices):
             NONE = 'NN', _('NO SERVICE LISTED')
 class ShopService(models.Model):
     provider = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name="shop_services")
-    target_automobile = models.ForeignKey(Automobile, on_delete=models.CASCADE, related_name='related_services')
+    target_automobile = models.CharField(max_length=20, choices=TargetAutomobile.choices, default=TargetAutomobile.UNKNOWN)
     price = models.DecimalField(verbose_name=_('Service Price'), max_digits=10, decimal_places=0)
     services = MultiSelectField(choices=ServiceDetail.choices, default=ServiceDetail.NONE)
     description = models.CharField(max_length=250, default="")

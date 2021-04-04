@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # from django.contrib.auth.models import User
 
-from .models import User, ServiceProvider, Customer, Shop, Automobile, ShopService, ServiceCoverage, CustomerPublication
+from .models import User, ServiceProvider, Customer, Shop, ShopService, ServiceCoverage, CustomerPublication
 
 #Define a new User admin
 # class UserAdmin(BaseUserAdmin):
@@ -16,7 +16,6 @@ admin.site.register(User, BaseUserAdmin)
 admin.site.register(ServiceProvider)
 admin.site.register(Customer)
 admin.site.register(Shop)
-admin.site.register(Automobile)
 admin.site.register(ShopService)
 admin.site.register(ServiceCoverage)
 admin.site.register(CustomerPublication)

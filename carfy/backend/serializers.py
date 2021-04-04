@@ -61,7 +61,7 @@ class ServiceProviderSerializer(serializers.ModelSerializer):
             return instance
 
 class ShopSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(read_only=True)
+    owner = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Shop
         fields = ['owner','shop_name', 'membership', 'longitude', 'latitude']
@@ -96,9 +96,24 @@ class ShopServiceSerializer(serializers.ModelSerializer):
         model = ShopService
         fields = ['provider','target_automobile', 'price', 'services', 'description']
         # 'shop_services'
-        
+    def get_serializer_context(self):
+        return self.context['request'].data      
     def create(self, validated_data):
-        return ShopService.objects.create(**validated_data)
+        request_data = dict(self.get_serializer_context())
+        user = User.objects.filter(username=request_data['user'][0])
+        if user.count()!=0:        
+            shop = user[0].service_provider.my_shops.filter(shop_name=request_data['shop_name'][0])
+            if shop.count()!=0:
+                return ShopService.objects.create(provider=shop[0], 
+                                                  target_automobile=request_data['target_automobile'][0],
+                                                  price=request_data['price'][0],
+                                                  services=request_data['services'][:], description=request_data['description'][0] )
+            else:
+                raise serializers.ValidationError("The shop couldn't be found")
+                return validated_data
+        else:
+            raise serializers.ValidationError("The user couldn't be found")
+            return validated_data
     
     def update(self, instance, validated_data):
             provider.owner = validated_data.get('provider', instance.provider)
