@@ -94,7 +94,7 @@ class ShopServiceSerializer(serializers.ModelSerializer):
     services = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = ShopService
-        fields = ['provider','target_automobile', 'price', 'services', 'description']
+        fields = ['provider','target_automobile', 'price', 'services', 'description', 'home_service']
         # 'shop_services'
     def get_serializer_context(self):
         return self.context['request'].data      
@@ -107,7 +107,8 @@ class ShopServiceSerializer(serializers.ModelSerializer):
                 return ShopService.objects.create(provider=shop[0], 
                                                   target_automobile=request_data['target_automobile'][0],
                                                   price=request_data['price'][0],
-                                                  services=request_data['services'][:], description=request_data['description'][0] )
+                                                  services=request_data['services'][:], 
+                                                  description=request_data['description'][0], home_service=request_data['home_service'][0])
             else:
                 raise serializers.ValidationError("The shop couldn't be found")
                 return validated_data

@@ -82,6 +82,7 @@ class ShopService(models.Model):
     price = models.DecimalField(verbose_name=_('Service Price'), max_digits=10, decimal_places=0)
     services = MultiSelectField(choices=ServiceDetail.choices, default=ServiceDetail.NONE)
     description = models.CharField(max_length=250, default="")
+    home_service = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.provider} CarAudience. {self.target_automobile}, Price: {self.price}"
 
