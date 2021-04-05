@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect} from "react";
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 import styles from "./UI.module.css";
 import './UI.module.css'
 
@@ -303,5 +304,27 @@ const ServicesMainSectionLayout = ()=>{
     )
 }
 
+const LandingPage = ()=>{
+    return (
+        <div>
+            <TopBanner />
+            <LandingTopSection />
+            <h3>Vehicle Categories</h3>
+            <VehicleSectionLayout />
+                <div>
+                    <h3>Car Shops Available</h3>
+                </div>
+                <ServicesMainSectionLayout/>
+        </div>
+    )
+}
 
-export {Clock, ServiceCard, TopBanner, LandingTopSection, VehicleSectionLayout, ServicesMainSectionLayout}
+
+
+
+export {Clock, 
+        ServiceCard,
+        LandingPage,
+        TopNavBar,
+        TopBanner
+}

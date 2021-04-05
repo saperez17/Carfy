@@ -1,0 +1,31 @@
+.navbar_col{
+    background-color: black;
+    color: white;
+}
+
+.service_gallery{
+    display: grid;
+    /* height: 40vh; */
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: repeat(auto-fill, minmax(10vh, 9vh));;
+    grid-template-areas: "pic1 pic4"
+                         "pic2 pic4"
+                         "pic3 pic4";
+    align-items: stretch;
+    justify-content: space-around;
+}
+.left_img{
+    height: 10vh;
+}
+.service_gallery > .img1{
+    grid-area:pic1;
+}
+.service_gallery > .img2{
+    grid-area:pic2;
+}
+.service_gallery > .img3{
+    grid-area:pic3;
+}
+.service_gallery > .img_main{
+    grid-area: pic4;
+}

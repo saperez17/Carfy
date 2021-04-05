@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:200,400');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+p,
+a,
+figcaption {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+body{
+    margin: 0;
+}

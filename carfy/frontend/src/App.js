@@ -1,5 +1,7 @@
 import React, { Component, useState, useEffect} from "react";
-import {Card, ServiceCard, TopBanner, LandingTopSection, VehicleSectionLayout, ServicesMainSectionLayout} from './Components/UI'
+import {TopBanner, LandingPage} from './Components/UI'
+import {ServiceDetailPage} from './Components/ServiceDetail'
+import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 
 class App extends Component {
 
@@ -9,20 +11,22 @@ class App extends Component {
 
     render(){
         return(
-            <div>
-                <TopBanner />
-                <LandingTopSection />
-                <h3>Vehicle Categories</h3>
-                <VehicleSectionLayout />
-                <div>
-                    <h3>Car Shops Available</h3>
-                </div>
-                <ServicesMainSectionLayout/>
-            </div>
+            <Router>
+                {/* <Link to="/service-detail">
+                Click here
+                </Link> */}
+            <Switch>
+               
+                <Route  path="/service-detail">
+                    <ServiceDetailPage/>
+                </Route>
+                <Route path="/">
+                    <LandingPage/>  
+                </Route>
+            </Switch>
+            </Router>
         )
     }
 }
-
-
 
 export default App;
