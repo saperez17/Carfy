@@ -66,7 +66,7 @@ const TopNavBar = ()=>{
     return(
         
            <nav className="navbar navbar-expand-lg ">
-    <a className="navbar-brand" href="#"><p class={styles.brand_p}>⚡Carfy</p></a>
+    <a className="navbar-brand" href="#"><p className={styles.brand_p}>⚡Carfy</p></a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"><i className="fas fa-bars"></i></span>
@@ -234,19 +234,23 @@ class ServiceCardComponent extends React.Component{
         }
     }
     componentDidMount(){
-        // async function fetchShopServices(){
-        //     const res = await fetch("http://192.168.0.7:8000/api/v1/shop_service/");
-        //     res.json()
-        //     .then(res => {
-        //         console.log(res)
-        //     })
-        //     .catch(err =>  {console.log(err)});
-        // }
-        // fetchShopServices();
+       
+        async function fetchShopServices(){
+            const res = await fetch("http://127.0.0.1:8000/api/shop-service/");
+            res.json()
+            .then(res => {
+                console.log(res);        
+            })
+            .catch(err =>  {console.log(err)});
+        }
+        fetchShopServices();
+        
     }
     render(){
+      
         return(
-                 <div className="card" style={{width: "18rem;"}}>
+            
+                 <div className="card" style={{width: "18rem"}}>
                             <img src="https://cdn.dribbble.com/users/2145559/screenshots/10415392/media/0fa2ed74268fd3352333d359484252e5.jpg?compress=1&resize=400x300" className="card-img-top" alt="..." />
                             <div className="card-body">
                                 <h5 className="card-title">{this.state.serviceName}</h5>

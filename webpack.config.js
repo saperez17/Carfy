@@ -2,7 +2,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
-    entry: [path.resolve(__dirname, 'carfy/frontend/src/index.js')],
+    entry: ['babel-polyfill',path.resolve(__dirname, 'carfy/frontend/src/index.js')],
     // entry: {main: '/home/toruitas/Documents/GitHub/LollipopAI/django_backend/lollipopAI/frontend/src/index.js'},
     output: {
         // where compiled files go
@@ -63,5 +63,6 @@ module.exports = {
       ],
     devServer: {
         writeToDisk: true,
-    }
+    },
+    mode: 'development',
 };
