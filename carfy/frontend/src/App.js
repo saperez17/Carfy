@@ -17,7 +17,7 @@ class App extends Component {
                 </Link> */}
             <Switch>
                
-                <Route  path="/service-detail">
+                <Route path="/service-detail">
                     <ServiceDetailPage/>
                 </Route>
                 <Route path="/">

@@ -4,7 +4,7 @@ from django.contrib import admin
 from .views import *
 
 urlpatterns = [
-    # path('', index_view),
+    path('', index_view),
     path("admin", admin.site.urls),
     # path("", UserAccountView.as_view()),
     path("login", UserAccountView.as_view(template_name="frontend/UserAccess/login.html"), name="login"),
