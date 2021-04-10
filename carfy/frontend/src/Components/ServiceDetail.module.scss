@@ -134,67 +134,82 @@ p, a, figcaption {
 }
 
 
-/* nav tabs style */
-/* // Color Variables
-$background-light: #F3F4F8
-$border-light: darken($background-light, 2%)
-$default: #BDC4D0
-$active: #0075AD
 
-// Font Variable
-$font-family: "Open Sans", Helvetica, Arial, sans-serif
- */
+ 
+ // Color Variables
+ $background-light: #F3F4F8;
+ $border-light: darken($background-light, 2%);
+ $default: #BDC4D0;
+ $active: #0075AD;
+ 
+ // Font Variable
+ $font-family: "Open Sans", Helvetica, Arial, sans-serif;
+ 
+ .tabs-page{
+    position: relative;    
+ 
+     //Bootstrap .nav-tabs direct descendant styles
+     > .nav-tabs{
+         display: flex;
+         justify-content:space-around;
+         align-items: center;
+         position: relative;
+         
+        //  width: 100%;
+        //  margin: 0 auto;
+         min-height: 50px;
+        //  margin: 0;
+        //  padding-left: 15px;
+         text-align: left;
+         cursor: auto;
+         border: none;
+         z-index: 1;
 
-
-.tabs_page{
-    position: relative;
-}
-	
-.tabs_page > .nav_tabs{
-    /* Bootstrap .nav-tabs direct descendant styles */
-    position: relative;
-    min-height: 50px;
-    margin: 0;
-    padding-left: 15px;
-    text-align: left;
-    cursor: auto;
-    border: none;
-    z-index: 1;
-
-}
-.tabs_page > .nav_tabs > li[role="presentation"]{
-    display: inline-block;
-    height: 50px;
-    border: none;
-}
-.tabs_page > .nav_tabs > li[role="presentation"]:not(:last-child){
-    padding-right: 22px
-}
-.tabs_page > .nav_tabs > li[role="presentation"] > a[role="tab"]{
-    height: 50px;
-    margin: 0;
-    padding: 0px;
-    font-size: 0.875rem;
-    font-weight: 700;
-        
-    text-transform: none;
-    text-align: center;
-    letter-spacing: 0.25px;
-    color: #BDC4D0;
-    background: none;
-    border: none;
-    line-height: 50px;
-    transition: color 0.3s ease, box-shadow 0.2s ease;
-}
-.tabs_page > .nav_tabs > li[role="presentation"] > a[role="tab"]:hover{
-    color:#0075AD;
-}
-.tabs_page > .nav_tabs > li[role="presentation"] > a[role="tab"]:hover .active > a{
-    color: #0075AD;
-    box-shadow: inset 0 -2px 0 #0075AD;
-    background: none;
-}
-.tabs_page > .nav_tabs > li[role="presentation"] > a[role="tab"]:hover .active > a:hover,:focus{
-    background: none;
-    border: none;
-}
+         li[role="presentation"]{
+             display: inline-block;
+             height: 50px;
+             border: none;
+ 
+             &:not(:last-child){
+                 padding-right: 22px;
+             }
+ 
+             //Default styles
+             a[role="tab"]{
+                 height: 50px;
+                 margin: 0;
+                 padding: 0px;
+                 font-size:0.875rem;
+                 font-weight: 700 ;
+                 text-transform:uppercase;
+                 text-align: center;
+                 letter-spacing: 0.25px;
+                 color: $default;
+                 background: none;
+                 border: none;
+                 line-height: 50px;
+                 text-decoration: none;
+                 transition: color 0.3s ease, box-shadow 0.2s ease;
+ 
+                 //Hover state
+                 &:hover{
+                     color: $active
+                 }
+             }
+             //Active class assigned via Bootstrap click method
+             &.active{
+                 //Active styles
+                 a{
+                     color: $active;
+                     box-shadow: inset 0 -2px 0px $active;
+                     background: none;
+ 
+                     &:hover, &:focus{
+                         background: none;
+                         border: none;
+                     }
+                 }
+             }
+         }
+     }
+ }

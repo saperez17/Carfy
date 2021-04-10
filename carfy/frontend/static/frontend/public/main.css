@@ -1,38 +1,388 @@
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:200,400);
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:200,400);
 /* Top Footer */
-.top-footer{
-    display: table;
-    text-align: right;
-    color: rgb(0, 0, 0);
-    background-color: #eea300;
-    height: 100%;
-    width: 100%;
-}
-.navbar-brand{
-    font-family: 'Righteous', cursive;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-left:10vw;    
-    color: #151515;
+._2xqTezl_b7revzXbUrl5mT {
+  display: table;
+  text-align: right;
+  color: black;
+  background-color: #eea300;
+  height: 100%;
+  width: 100%;
 }
 
-.media{
-    display: table-cell;
-    vertical-align: middle;
-    height: 10px;
+._1Y0My8M8IsRwKMj-Jw7EkZ {
+  font-family: "Righteous", cursive;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-left: 10vw;
+  color: #151515;
 }
-.inner {
-    margin-right: 11vw;
-    /* color: #fff;  */
+
+._3BPewuj5Fff1U4rNdieKUZ {
+  display: table-cell;
+  vertical-align: middle;
+  height: 10px;
 }
-.in-icon{
-    margin-right: 20px;
+
+._1Z85HevMK_pXyVFaAgkEAj {
+  margin-right: 11vw;
+  /* color: #fff;  */
 }
-i:hover{
-    color: #fff;
-    cursor:pointer;
+
+._2UCjjFHP8Kvgy-FkQpGoQ3 {
+  margin-right: 20px;
 }
+
+i:hover {
+  color: #fff;
+  cursor: pointer;
+}
+
 /* DSGFDGSDF */
+/*  First big section and NavBar */
+._2OhXzcHy-eUl_DsrV2-G2q {
+  position: relative;
+  height: 95vh;
+  padding: 0px !important;
+}
+
+._2B0ew6d0qYXzoKoenyCrw {
+  height: 95vh;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.719), rgba(0, 0, 0, 0.719)), url("https://previews.123rf.com/images/muchmaniavector/muchmaniavector1709/muchmaniavector170900007/85276590-city-building-with-cars-on-the-road-and-skytrain-side-view-transportation-cityscape-skyline.jpg");
+  background-position: right 0px bottom 10px;
+}
+
+.vDHt7j4HSBEvDFM6gmL2A {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+._1ACTvwrk3acYGrXs_oZ3tc {
+  background-color: rgba(255, 255, 255, 0.247);
+}
+
+/* Top navbar styles */
+._3dxBNMCiSya8oJn5qVvzRP {
+  margin-right: 10vw;
+  font-size: 1.3em;
+  color: #151515 !important;
+}
+
+.mI68Cml76udnld1U4E2qB {
+  margin-right: 20px;
+}
+
+._1DDbKQsLCdbITcLq3yCWuQ {
+  text-decoration: none;
+}
+
+._1DDbKQsLCdbITcLq3yCWuQ > p {
+  font-family: Roboto;
+  color: #ffffff;
+}
+
+._1DDbKQsLCdbITcLq3yCWuQ:hover {
+  /* color: #151515 !important; */
+  font-weight: bold;
+  /* font-size: 1.2em; */
+  text-decoration: underline;
+  text-shadow: 1px 1px 3px gray;
+}
+
+._3o0Id6Z27vz14DWJ-xiBuo {
+  color: #ffffff;
+  font-size: 1.4em;
+}
+
+._3o0Id6Z27vz14DWJ-xiBuo:hover {
+  /* color: #151515; */
+  /* font-size: 1.4em; */
+  text-shadow: 2px 2px 3px gray;
+  text-decoration-line: underline;
+}
+
+._2aAbbJAqTBERl49bU3k-kO > p {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 20px;
+  /* background-color: aqua; */
+}
+
+._2w0YpVYbSRBs0f590rfO8N {
+  color: #fff;
+}
+
+/* Top section internal content */
+.pDLtaEO3peVqTFKxhqust {
+  text-align: center;
+}
+
+._27PKNOyhSAdfvmDGdZ-5V9 {
+  margin-bottom: 30vh;
+}
+
+._2xzjCDg-4nV7OHsouOn49O {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.ZEq9VPVpxIfuWp_NW-Hvl {
+  color: #fff;
+}
+
+.yx8hfgSrF-G6Q_aMuxLp9 {
+  font-size: 3em;
+  font-family: "Alfa Slab One", cursive;
+}
+
+/* Vehicle Section  */
+/* Sections */
+._3u84soERKHTuecq1gZNCFZ {
+  padding-top: 0.5rem;
+  margin-right: 1rem;
+  /* padding-left: 0rem; */
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-rows: auto;
+  grid-gap: 1rem;
+  /* height: calc(25vh); */
+  padding-left: 0rem;
+  /* padding-right: .5rem; */
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li {
+  border: 1px solid #E2E2E2;
+  border-radius: 0.5rem;
+  /* padding-bottom: 15px; */
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li > div > figure {
+  min-height: 220px;
+  overflow: hidden;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  position: relative;
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li > div > figure > img {
+  width: 100%;
+  height: 230px;
+  /* height: 230px; */
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li > div > figure > figcaption {
+  position: absolute;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100%;
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li > div > figure > figcaption > h3 {
+  color: white;
+  padding: 0.75rem;
+  font-size: 1.25rem;
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li > div > figure > p {
+  text-align: justify;
+  padding: 0.5rem 1rem;
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li > div > a {
+  display: inline-block;
+  /* position: relative; */
+  background-color: goldenrod;
+  color: white;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s;
+}
+
+._3u84soERKHTuecq1gZNCFZ > ul > li > a:hover {
+  opacity: 0.6;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Playfair Display", serif;
+}
+
+p, a, figcaption {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+._3gszj2reXayt_skL6Iq8sy {
+  background-color: rgba(5, 5, 5, 0.904);
+}
+
+._1nsCu_CHzplCa_Kk4bDpYh {
+  display: grid;
+  /* height: 40vh; */
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 33% 33% 33%;
+  /* repeat(auto-fill, minmax(10vh, 9vh));;*/
+  grid-template-areas: "pic1 pic4" "pic2 pic4" "pic3 pic4";
+  align-items: stretch;
+  justify-content: space-around;
+  padding: 24px;
+}
+
+.V7M5T3cFqA27RBymfwbAI {
+  height: 80%;
+  width: 80%;
+  display: inline-block;
+  margin: auto auto;
+  background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+}
+
+._1nsCu_CHzplCa_Kk4bDpYh > ._1dNbtyR8zcwUXpzc6e2k2E {
+  grid-area: pic1;
+  margin-top: 0px;
+}
+
+._1nsCu_CHzplCa_Kk4bDpYh > ._3HnDNgvMS41JXfY3Gpqp5P {
+  grid-area: pic2;
+}
+
+._1nsCu_CHzplCa_Kk4bDpYh > ._3I_ujOazJcqalxhXOamFbW {
+  grid-area: pic3;
+}
+
+._1nsCu_CHzplCa_Kk4bDpYh > .Z1Uo9dDnTgAalu4ZtT7_l {
+  grid-area: pic4;
+  height: 95%;
+  width: 90%;
+  display: inline-block;
+  margin: auto auto;
+  background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  margin-top: 0px;
+}
+
+/* Service Info Styles */
+._3xUk4vTqF63mse-FLptBXo {
+  padding-top: 24px;
+  padding-left: 0px;
+}
+
+._2fPTxZJJs4C6Gcvz_muydL {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+._2fPTxZJJs4C6Gcvz_muydL > ._21J6yHSa5TOUD1y3m2_zqW {
+  font-size: 36;
+}
+
+._2fPTxZJJs4C6Gcvz_muydL > ._2D7ReGG2flX350O77tAl5t {
+  font-size: 20;
+  color: #4B4B4B;
+  margin-bottom: 5px;
+}
+
+._2fPTxZJJs4C6Gcvz_muydL > .ABdf8OV7uCryk-uf9mVud {
+  margin-bottom: 5px;
+}
+
+._2fPTxZJJs4C6Gcvz_muydL > ._3tpJunzdvkg6sodd11DMms {
+  font-family: "Source Sans Pro";
+  font-size: 20;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+._2Nhda2qD-woo6FbmDWt5rj {
+  font-family: "Source Sans Pro";
+  font-size: 16;
+  color: #5C5C5C;
+}
+
+._2dUYm6G09Nr28huBAGgquc {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 5px 0px;
+}
+
+._2dUYm6G09Nr28huBAGgquc > div {
+  margin-right: 15px;
+}
+
+.GT8j5QBmDRpVF5dcgnzAt {
+  display: flex;
+  flex-direction: row;
+}
+
+.GT8j5QBmDRpVF5dcgnzAt > .lUbX-mtu3A-ioFVaNsxW9 {
+  border-radius: 16px;
+  width: 112px;
+  height: fit-content;
+  font-family: "Play", sans-serif;
+  /* font-family: 14px; */
+  margin-left: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 0px;
+  margin-right: 5px;
+}
+
+._2S2FH4FPw8yIGwJ7kILNH7 {
+  font-size: 16px;
+  color: #4B4B4B;
+}
+
+._3yojJiCn3b5gmGg4pLGIhq {
+  margin-top: 15px;
+}
+
+._3yojJiCn3b5gmGg4pLGIhq > ._3Ql3VdbOIYXyPQ4k8SpZKG {
+  font-family: "Play", sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 15px;
+}
+
+._3Ql3VdbOIYXyPQ4k8SpZKG .LLxmQu9Zn21bGYb2wr8K8 {
+  background-color: #DCDCDC;
+}
+
+/* nav tabs style */
+/* // Color Variables
+$background-light: #F3F4F8
+$border-light: darken($background-light, 2%)
+$default: #BDC4D0
+$active: #0075AD
+
+// Font Variable
+$font-family: "Open Sans", Helvetica, Arial, sans-serif
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Playfair Display", serif;
+}
+
+p,
+a,
+figcaption {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
 body {
-    color: white;
-    background-color: black;
-  }
+  margin: 0;
+}

@@ -35,7 +35,7 @@ module.exports = {
             //     ]
             // }
             {
-                test: /\.css$/,
+                test: /\.(scss|css)$/,
                 use: [
                   'style-loader',
                   {
@@ -43,16 +43,18 @@ module.exports = {
                     options: {
                       importLoaders: 1,
                       modules: true
-                    }
-                  }
+                    },
+                  },
+                  "sass-loader"
                 ],
-                include: /\.module\.css$/
+                include: /\.module\.(scss|css)$/
               },
               {
                 test: /\.css$/,
                 use: [
                   'style-loader',
-                  'css-loader'
+                  'css-loader',
+                 
                 ],
                 exclude: /\.module\.css$/
               }

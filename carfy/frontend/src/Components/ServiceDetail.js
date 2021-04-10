@@ -1,34 +1,26 @@
-import React, { Component, useState, useEffect} from "react";
+import React, { Component, useState, useEffect, useRef} from "react";
 import {TopNavBar, TopBanner} from './UI'
-import styles from "./ServiceDetail.module.css";
-import './ServiceDetail.module.css'
+import styles from "./ServiceDetail.module.scss";
+import './ServiceDetail.module.scss'
 
-const ServiceDetailPage = ()=>{
+const ServiceMedia = ()=>{
     return(
-        <div className={`${styles.landing_main} container-fluid`}>
-            <div className="row">
-                <div className={`col-12 ${styles.navbar_col} `}>
-                    <TopNavBar/>
-                </div>
+        <div className={`${styles.service_gallery} col-6 `}>
+            <div className={`${styles.img1} ${styles.left_img}`}>
             </div>
+            <div className={`${styles.img2}  ${styles.left_img}`}>
+            </div>
+            <div className={`${styles.img3}  ${styles.left_img}`}>
+            </div>
+            <div className={`${styles.img_main}`}>
+        </div>
+        </div>
+    )
+}
 
-            <div className="row">
-                <div className={`${styles.service_gallery} col-6 `}>
-                   <div className={`${styles.img1} ${styles.left_img}`}>
-                        Pic1                   
-                   </div>
-                   <div className={`${styles.img2}  ${styles.left_img}`}>
-                        Pic2
-                   </div>
-                   <div className={`${styles.img3}  ${styles.left_img}`}>
-                        Pic3
-                   </div>
-                   <div className={`${styles.img_main}`}>
-                    Main Image
-                </div>
-            </div>
-                <div className={`${styles.service_info_container} col-6`}>
-                    <div className={`${styles.service_header}`}>
+const ServiceInfoDetails = ()=>{
+    return(
+        <div className={`${styles.service_header}`}>
                         <h3 className={`${styles.service_name}`}>Shop name</h3> 
                         <div className={`${styles.service_categories}`}>Category</div>
                         <div className={`${styles.service_rating}`}>
@@ -56,74 +48,114 @@ const ServiceDetailPage = ()=>{
                                 <p>13 Avenue #12-11 Street.</p>
                                 <p>Popayan, Colombia.</p>
                             </div>
-
-                           
                         </div>
                         <div className={`${styles.action_btn_wrapper}`}>
-                        <button className={`btn btn-primary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`}>
-                                BUY NOW
-                        </button>
-                        <button className={`btn btn-secondary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`}>
-                               ADD TO CART
-                        </button>
+                            <button className={`btn btn-primary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`}>
+                                    BUY NOW
+                            </button>
+                            <button className={`btn btn-secondary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`}>
+                                ADD TO CART
+                            </button>
                         </div>
-                        
                     </div>
-
-                   
-                   
-                    <hr/>
-                    <div>
-                   
-                    </div>
-                    </div>
-                    
-                    {/* <div className="card border-light mb-3" style={{width: "18rem"}}>
-                        <div className="card-header">
-                        Request Summary
-                        <i class="fas fa-shopping-cart"></i>
-                        </div>
-                            <div className="card-body">
-                                <h5 className="card-title">Items</h5>
-                                 <p className="card-text">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <div>
-                                                Item1 - Price
-                                            </div>
-                                            <div>
-                                                Item2 - Price
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">Total$</li>
-                                        
-                                    </ul>
-                                  </p>
-                            </div>  
-                        </div>*/}
-                 
-            </div>
-
-            <div className="row">
-                <div className="col-12">
+    )
+}
+const ServiceNavTabs = ()=>{
+    const [tabsState, setTabState] = useState({home:'active', info:'', review:''})
+    const homeTab = useRef(null);
+    function tabClick(e){
+        // console.log(e.target)
+        let tabName = e.target.name;
+        // console.log(tabName)
+        setTabState({...tabsState, home:tabName=='home'?'active':'', info:tabName=='information'?'active':'', review:tabName=='reviews'?'active':'' })
+        // 
+    }
+  
+    return(
+        <div>
+            
                 {/* <!-- Tabs - Page --> */}
-	<div class={`${styles.tabs_page}`}>
-		{/* <!-- Nav Tabs --> */}
-		<ul class={`${styles.nav} ${styles.nav_tabs}`} role="tablist">
-			<li role="presentation" class={`${styles.active}`}><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-			<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-			<li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-			<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-		</ul>
+	        <div className={`${styles['tabs-page']}`}>
+		    {/* <!-- Nav Tabs --> */}
+		    <ul className={`${styles.nav} ${styles['nav-tabs']}`} role="tablist">
+                <li role="presentation" className={`${tabsState.home=='active'?styles.active:''}`}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" name="home" onClick={tabClick}>Description</a></li>
+                <li role="presentation" className={`${tabsState.info=='active'?styles.active:''}`}><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" name="information" onClick={tabClick}>Information</a></li>
+                <li role="presentation" className={`${tabsState.review=='active'?styles.active:''}`}>
+                    <a href="#settings" aria-controls="reviews" role="tab" data-toggle="tab" name="reviews" onClick={tabClick}>Reviews </a>
+                </li>
+            </ul>
         {/* <!-- ./ nav tabs -->	 */}
-	</div>
+	    </div>
     {/* <!-- ./ tabs page --> */}
-                    <h3>Description</h3>
-                    <h3>Information</h3>
-                    <h3>Reviews</h3>
+            <div className="tabs-page">
+                {/* <!-- Tab panes --> */}
+                <div className="tab-content">
+                    <div role="tabpanel" className={`tab-pane ${tabsState.home}`} id="home" ref={homeTab}>
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <h6 className="text-start">Description</h6>
+                                    <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique nulla aliquet 
+                                    enim tortor at auctor urna.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" className={`tab-pane ${tabsState.info}`} id="messages">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <h6 className="text-start">Information</h6>
+                                    <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique nulla aliquet 
+                                    enim tortor at auctor urna.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" className={`tab-pane ${tabsState.review}`} id="settings">
+                    <div className="container">
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <h6 className="text-start">Reviews</h6>
+                                    <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pharetra vel turpis nunc eget 
+                                    lorem dolor sed viverra ipsum.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>		
+            </div>
+            </div>
+    )
+}
+
+const ServiceDetailPage = ()=>{
+    return(
+        <div className={`${styles.landing_main} container-fluid`}>
+            <div className="row">
+                <div className={`col-12 ${styles.navbar_col} `}>
+                    <TopNavBar/>
                 </div>
             </div>
+            <div className="row">
+                <ServiceMedia />
+                <div className={`${styles.service_info_container} col-6`}>
+                    <ServiceInfoDetails />
+                <div>
+                   
+            </div>
         </div>
+    </div>
+    <div className="row">
+        <div className="col-12">
+            <ServiceNavTabs />
+        </div>
+    </div>
+</div>
     )
 }
 
