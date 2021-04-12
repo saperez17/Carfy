@@ -18,20 +18,19 @@ const ServiceMedia = ()=>{
     )
 }
 
-const ServiceInfoDetails = ()=>{
+const ServiceInfoDetails = (props)=>{
+    const services = ['Oil Change', 'Wheel alignment']
     return(
         <div className={`${styles.service_header}`}>
-                        <h3 className={`${styles.service_name}`}>Shop name</h3> 
-                        <div className={`${styles.service_categories}`}>Category</div>
+                        <h3 className={`${styles.service_name}`}>{props.shopName}</h3> 
+                        <div className={`${styles.service_categories}`}>{props.category}</div>
                         <div className={`${styles.service_rating}`}>
                             ⭐⭐⭐
                         </div>
-                        <div className={`${styles.service_price}`}>$15.000</div>
+                        <div className={`${styles.service_price}`}>${props.price}</div>
                         
                         <p className={`${styles.service_main_description}`}>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                            Numquam, sapiente illo. Sit error voluptas repellat rerum quidem, 
-                            soluta enim perferendis voluptates laboriosam. 
+                           {props.mainDescription!=''?props.mainDescription: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. '}
                         </p>
                         <hr/>
                         <div className={`${styles.ser_cat_wrapper}`}>
@@ -39,14 +38,18 @@ const ServiceInfoDetails = ()=>{
                                 <h5>Services Included</h5>
 
                                 <div className={`${styles.service_buttons_wrapper}`}>
-                                    <button className={`${styles.service_button} btn btn-outline-info`}>Oil Change</button>
-                                    <button className={`${styles.service_button} btn btn-outline-info`}> Wheel alignment</button>
+                                    {services.map((value, index)=>{
+                                        <button className={`${styles.service_button} btn btn-outline-info`} key={index}>{value}</button>
+                                    })}
+                                    {/* <button className={`${styles.service_button} btn btn-outline-info`}> Wheel alignment</button> */}
                                 </div>
                             </div>
                             <div className={`${styles.location}`}>                            
                                 <h5>Location</h5>
-                                <p>13 Avenue #12-11 Street.</p>
-                                <p>Popayan, Colombia.</p>
+                                <p>{props.address}</p>
+                                {/* 13 Avenue #12-11 Street. */}
+                                <p>{props.country}</p>
+                                {/* Popayan, Colombia. */}
                             </div>
                         </div>
                         <div className={`${styles.action_btn_wrapper}`}>
@@ -133,7 +136,7 @@ const ServiceNavTabs = ()=>{
     )
 }
 
-const ServiceDetailPage = ()=>{
+const ServiceDetailPage = (props)=>{
     return(
         <div className={`${styles.landing_main} container-fluid`}>
             <div className="row">
@@ -144,7 +147,7 @@ const ServiceDetailPage = ()=>{
             <div className="row">
                 <ServiceMedia />
                 <div className={`${styles.service_info_container} col-6`}>
-                    <ServiceInfoDetails />
+                    <ServiceInfoDetails shopName="Shop Name" category="Category" price="15.000" mainDescription='' address='13 Avenue #12-11 Street.' country="Popayan, Colombia." />
                 <div>
                    
             </div>

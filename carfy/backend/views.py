@@ -9,6 +9,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
+import json
 # Create your views here.
 
 class LeadListCreate(generics.ListCreateAPIView):
@@ -49,3 +50,7 @@ class ShopServiceListCreate(generics.ListCreateAPIView):
     serializer_class = ShopServiceSerializer
 
 
+@api_view(['GET'])
+def check_user_auth(request):
+    response = {'is_authenticated':True}
+    return Response(json.dumps(response))

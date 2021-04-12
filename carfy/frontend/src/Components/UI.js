@@ -63,9 +63,59 @@ const NavLink = (props)=>{
     )
 }
 
+const AuthButton = (props)=>{
+   let isLoggedIn = props.isLoggedIn;
+   let AuthBtn;
+   if(isLoggedIn){
+       return(
+        <div className="btn-group">
+            <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i className="fas fa-user"></i>
+            </button>
+            <ul className="dropdown-menu">
+                <li><a className="dropdown-item" href="#">Profile</a></li>
+                {props.user.user_type=='provider'?<li><a className="dropdown-item" href="http://127.0.0.1:9000/shop-registration">My shop</a></li>:<li><a className="dropdown-item" href="#">My requests</a></li>}
+                <li><hr className="dropdown-divider"/></li>
+                <li><a href="http://127.0.0.1:9000/logout" className="dropdown-item"><p>Logout</p></a></li>
+            </ul>
+        </div>
+       )    
+   }else{
+       return(
+       <div className="d-flex flex-row">
+               <li className={styles.navItem}><a href="http://127.0.0.1:9000/login" className={styles.navLink}><p>Login</p></a></li>
+               <li className={styles.navItem}><a href="" className={styles.navLink}><p>Signin</p></a></li>
+        </div>
+       )
+   }
+    
+}
+
 const TopNavBar = ()=>{
+    const [user, setUser] = useState({isLoggedIn:false})
+    useEffect(()=>{
+        fetch('http://127.0.0.1:9000/check_auth')
+        .then((response) => response.json())
+        .then(response => {
+            if(Object.keys(response).length >1){
+                setUser({isLoggedIn:true,...response})              
+            }else{
+                setUser({isLoggedIn:false})              
+            }
+        })
+        .catch(err=>{console.log(err)});
+    },[])
+    let AuthBtn;
+    if(user.isLoggedIn){
+        AuthBtn = <li><a href="http://127.0.0.1:9000/logout" className={styles.navLink}><p>Logout</p></a></li>
+    }else{
+        AuthBtn = <div className="d-flex flex-row">
+            <li className={styles.navItem}><a href="http://127.0.0.1:9000/login" className={styles.navLink}><p>Login</p></a></li>
+            <li className={styles.navItem}><a href="http://127.0.0.1:9000/signin" className={styles.navLink}><p>Signin</p></a></li>
+        </div>
+    }
+    console.log(user)
     return(
-        
            <nav className="navbar navbar-expand-lg ">
     <a className="navbar-brand" href="#"><p className={styles.brand_p}>⚡Carfy</p></a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -73,19 +123,13 @@ const TopNavBar = ()=>{
         <span className="navbar-toggler-icon"><i className="fas fa-bars"></i></span>
     </button>
     <div className={`${styles.collapse} navbar-collapse justify-content-end`} id="navbarNavDropdown">
-        <ul className="navbar-nav mr-auto">
-            {/* {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="username"><strong>{{ user.username }}</strong></a>
-            </li> */}
-          
+        <ul className="navbar-nav mr-auto">          
             <li className={styles.navItem} >
                 <NavLink>
                     <p>Truck</p>
                 </NavLink>
             </li>
             <li className={styles.navItem} >
-                {/* <a className="nav-link" href=""><p>Car</p></a> */}
                 <NavLink >
                     <p>Car</p>
                 </NavLink>
@@ -96,25 +140,8 @@ const TopNavBar = ()=>{
                     <p>Motorcycle</p>
                 </NavLink>
             </li>
-            {/* {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a id="following-btn" class="nav-link" href=""><p style="color:black;">Following</p> </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-            </li> */}
-            {/* {% else %} */}
-            <li className={styles.navItem}>
-                <NavLink>
-                    <p>Log In</p>
-                </NavLink>
-            </li>
-            <li className={styles.navItem}>
-                <NavLink>
-                    <p>Sign in</p>
-                </NavLink>
-            </li>
-            {/* {% endif %} */}
+            <AuthButton isLoggedIn={user.isLoggedIn} user={user} />
+
         </ul>
     </div>
 </nav>
@@ -153,12 +180,12 @@ const LandingTopSection = ()=>{
         <div className={`${styles.landing_main} container-fluid`}>
             <div className={styles.bg_landing}>
                 <div className={styles.front_landing}>
-                    <div className="row">
+                    <div className="row" style={{marginRight:0}}>
                         <div className={`col-12 ${styles.navbar_col} `}>
                             <TopNavBar/>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row" style={{marginRight:0}}>
                             <div className={` col-12 ${styles.welcome_section}`}>
                                 <WelcomeTextCity/>
                             </div>
@@ -225,7 +252,6 @@ const VehicleSectionLayout = ()=>{
 class ServiceCardComponent extends React.Component{
     constructor(props){
         super(props);
-
         this.state = {
             serviceName: 'Oil Change Premium',
             serviceDescription: 'The best and most affordable Oil Change in the city. We have at home service.',
@@ -235,29 +261,20 @@ class ServiceCardComponent extends React.Component{
         }
     }
     componentDidMount(){
-       
-        async function fetchShopServices(){
-            const res = await fetch("http://127.0.0.1:8000/api/shop-service/");
-            res.json()
-            .then(res => {
-                console.log(res);        
-            })
-            .catch(err =>  {console.log(err)});
-        }
-        fetchShopServices();
         
     }
     render(){
       
         return(
             
-                 <div className="card" style={{width: "18rem"}}>
+                 <div className="card" className={styles.service_card}>
                             <img src="https://cdn.dribbble.com/users/2145559/screenshots/10415392/media/0fa2ed74268fd3352333d359484252e5.jpg?compress=1&resize=400x300" className="card-img-top" alt="..." />
                             <div className="card-body">
-                                <h5 className="card-title">{this.state.serviceName}</h5>
-                                <p className="card-text">{this.state.serviceDescription}</p>
-                                <p>Price: <strong>{this.state.servicePrice}</strong></p>
-                                <button onClick={this.bookService}>I want this</button>
+                                <h5 className="card-title">{this.props.serviceName}</h5>
+                                <h6>{this.props.target_automobile}</h6>
+                                <p className="card-text">{this.props.serviceDescription}</p>
+                                <p>$<strong>{this.props.price}</strong></p>
+                                <button onClick={()=>{}} className="btn btn-primary">I want this</button>
                             </div>
                  </div>
         );
@@ -271,35 +288,49 @@ class ServiceCardComponent extends React.Component{
 
 
 const ServicesMainSectionLayout = ()=>{
-    return(
-        <div className="container">
-    <div className="row row-cols-sm-1 row-cols-sm-2 row-cols-md-3 justify-content-sm-center">
-        <div className="col-xxl-3 mb-1">
-            <section>
-            <ServiceCardComponent />
-                {/* <div class="card" style="width: 18rem;">
-                    <img src="https://cdn.dribbble.com/users/2145559/screenshots/10415392/media/0fa2ed74268fd3352333d359484252e5.jpg?compress=1&resize=400x300" class="card-img-top" alt="..."/>
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div> */}
-            </section>
-        </div>
-
+    const [service, setService] = useState({services:[], loading:true})
+    useEffect(()=>{
+        fetch('http://127.0.0.1:9000/api/shop-service/')
+        .then((response) => response.json())
+        .then(response => {
+            setService({services:response, loading:false})  
+        })
+        .catch(err=>{console.log(err)});
        
-
-        <div className="col-xxl-3">
-            <section>
-                {/* <ServiceCard /> */}
-            </section>
+        // async function fetchShopServices(){
+        //     const res = await fetch("http://127.0.0.1:9000/api/shop-service/");
+        //     res.json()
+        //     .then(res => {
+        //         setServices({...services,isFetching:false});
+        //         console.log(services)
+             
+        //     })
+        //     .catch(err =>  {console.log(err)});
+        // }
+        // fetchShopServices();
+        // console.log(services)
+    },[])
+    const checkUserAuth = ()=>{
+        fetch('http://127.0.0.1:9000/check_auth')
+        .then((response) => response.json())
+        .then(response => {
+            console.log(response)
+        })
+        .catch(err=>{console.log(err)});
+    }
+    return(
+    <div className="container-fluid">
+        <div className="row row-cols-sm-1 row-cols-md-12  justify-content-sm-center">
+            <div className="col">
+                <section className={styles.shop_services_wrapper}>
+                    {service.loading?<div>loading...</div> : (service.services.map((value, key)=>
+                    <ServiceCardComponent key={key} serviceName={value.provider} serviceDescription={value.description} price={value.price} target_automobile={value.target_automobile}/>
+                    ))}
+                </section>
+                <button className="btn btn-primary" onClick={checkUserAuth}>User Auth</button>
+            </div>
         </div>
-
-
     </div>
-</div>
    
     )
 }

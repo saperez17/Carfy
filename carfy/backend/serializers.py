@@ -9,7 +9,7 @@ class LeadSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'password')
+        fields = ('id', 'username')
 
 class CustomerSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
@@ -37,6 +37,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class ServiceProviderSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
+    # user_type = serializers.CharField()
     class Meta:
         model = ServiceProvider
         fields = ['user', 'payment', 'city', 'country', 'email']
@@ -90,7 +91,7 @@ class ShopSerializer(serializers.ModelSerializer):
             
 class ShopServiceSerializer(serializers.ModelSerializer):
     # shop_services = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    provider = serializers.PrimaryKeyRelatedField( read_only=True)
+    provider = serializers.SlugRelatedField(read_only=True, slug_field='shop_name')
     services = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = ShopService

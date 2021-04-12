@@ -53,6 +53,9 @@ input[type=text]{
                     </form>
                     <div class="bd-highlight carfy-r">
                         Carfy App®
+                      {% if user.is_authenticated %}
+                      {{user}}
+                      {% endif %}
                     </div>
                 </div>
             </div>

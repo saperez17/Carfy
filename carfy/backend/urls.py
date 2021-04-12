@@ -7,5 +7,5 @@ urlpatterns = [
      path('api/customer/', views.CustomerListCreate.as_view()),
      path('api/service-provider/', views.ServiceProviderListCreate.as_view()),
      path('api/shop/', views.ShopListCreate.as_view()),
-     path('api/shop-service/', views.ShopServiceListCreate.as_view())
+     path('api/shop-service/', views.ShopServiceListCreate.as_view()),
 ]

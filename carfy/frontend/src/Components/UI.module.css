@@ -1,3 +1,4 @@
+
 /* Top Footer */
 .top_footer{
     display: table;
@@ -51,6 +52,7 @@ i:hover{
 }
 .navbar_col{
     background-color: rgba(255, 255, 255, 0.247);
+    padding-right: 0px;
 }
 
 
@@ -65,6 +67,7 @@ i:hover{
 }
 .navLink{
     text-decoration: none;
+    color: #ffffff;
 }
 .navLink > p{
     font-family: Roboto;
@@ -193,4 +196,16 @@ i:hover{
 
 .services > ul > li > a:hover {
     opacity: 0.6;
+}
+
+.shop_services_wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    flex-wrap: wrap;
+}
+.service_card{
+    width: 18rem;
+    margin-right: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
