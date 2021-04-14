@@ -1,0 +1,9 @@
+.navLink {
+    text-decoration: none;
+}
+
+.navLink:hover {
+    font-weight: bold;
+    text-decoration: underline;
+    text-shadow: 1px 1px 3px gray;
+}

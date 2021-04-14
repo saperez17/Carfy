@@ -1,0 +1,17 @@
+.services {
+    padding-top: .5rem;
+    margin-right: 1rem;
+}
+
+ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fot, minmax(320px, 1fr));
+    grid-template-rows: auto;
+    grid-gap: 1rem;
+    padding-left: 0rem;
+}
+
+li {
+    border: 1px solid #E2E2E2;
+    border-radius: .5rem;
+}

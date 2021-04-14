@@ -1,0 +1,32 @@
+.collapse {
+    margin-right: 10vw;
+    font-size: 1.3em;
+    color: #151515 !important;
+}
+
+.navItem {
+    margin-right: 20px;
+}
+
+.li > p {
+    font-family: Roboto;
+    color: #ffffff;
+
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 20px;
+}
+
+.brand_p {
+    color: #ffffff;
+    font-size: 1.4em;
+}
+
+.brand_p:hover {
+    text-shadow: 2px 2px 3px gray;
+    text-decoration-line: underline;
+}
+
+.navbar-toggler-icon {
+    color: #fff;
+}

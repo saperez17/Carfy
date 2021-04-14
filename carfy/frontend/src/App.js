@@ -1,32 +1,23 @@
-import React, { Component, useState, useEffect} from "react";
-import {TopBanner, LandingPage} from './Components/UI'
-import {ServiceDetailPage} from './Components/ServiceDetail'
+import React from 'react'
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 
-class App extends Component {
+import LandingPage from './pages/LandingPage'
 
-    constructor(){
-        super();
-    }
+function App() {
+    return(
+        <Router>
+            {/* <Link to="/service-detail">
+            Click here
+            </Link> */}
+        <Switch>
 
-    render(){
-        return(
-            <Router>
-                {/* <Link to="/service-detail">
-                Click here
-                </Link> */}
-            <Switch>
-               
-                <Route  path="/service-detail">
-                    <ServiceDetailPage/>
-                </Route>
-                <Route path="/">
-                    <LandingPage/>  
-                </Route>
-            </Switch>
-            </Router>
-        )
-    }
+            <Route path="/">
+                <LandingPage/>  
+            </Route>
+
+        </Switch>
+        </Router>
+    )
 }
 
 export default App;
