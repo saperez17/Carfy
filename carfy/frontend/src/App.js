@@ -10,13 +10,11 @@ function App() {
             Click here
             </Link> */}
         <Switch>
-
-            <Route path="/">
+            <Route exact path="/landing-page">
                 <LandingPage/>  
             </Route>
-
         </Switch>
-        </Router>
+       </Router>
     )
 }
 
