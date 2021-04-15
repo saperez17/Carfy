@@ -26,14 +26,6 @@ module.exports = {
                     options: {presets: ["@babel/env", "@babel/preset-react"]}
                 },
             },
-            // {
-            //     test: /\.css$/,
-            //     use: [
-            //       'style-loader',
-            //     // MiniCssExtractPlugin.loader, // instead of style-loader
-            //       'css-loader'
-            //     ]
-            // }
             {
                 test: /\.(scss|css)$/,
                 use: [
@@ -54,9 +46,21 @@ module.exports = {
                 use: [
                   'style-loader',
                   'css-loader',
-                 
                 ],
                 exclude: /\.module\.css$/
+              },
+              {
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                use: [
+                  'file-loader',
+                  {
+                    loader: 'image-webpack-loader',
+                    options: {
+                      disable: true, // webpack@2.x and newer
+                    },
+                  },
+                ],
+               
               }
         ],
     },
