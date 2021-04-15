@@ -1,11 +1,12 @@
+import React from "react";
 import VehicleDetail from '../VehicleDetail'
 
-import './styles.css'
+import styles from'./styles.module.css'
 
 // Layout
 const VehicleSection = () => {
     return (
-        <section id='service' className='services'>
+        <section id='service' className={styles.services}>
             <ul>
                 <li>
                     <VehicleDetail 

@@ -1,4 +1,5 @@
-import './styles.css'
+import React from "react";
+import './styles.module.css'
 import NavLink from "../NavLink";
 
 const TopNavBar = (props) => {

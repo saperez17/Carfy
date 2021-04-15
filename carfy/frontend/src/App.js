@@ -1,6 +1,5 @@
 import React, { Component, useState, useEffect} from "react";
-import {TopBanner, LandingPage} from './Components/UI'
-import {ServiceDetailPage} from './Components/ServiceDetail'
+// import {ServiceDetailPage} from './Components/ServiceDetail'
 import {ShopRegistrationLayout} from './Components/ShopRegistration'
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 
@@ -20,7 +19,7 @@ class App extends Component{
                 <Switch>
                 
                     <Route path="/service-detail">
-                        <ServiceDetailPage/>
+                        {/* <ServiceDetailPage/> */}
                     </Route>
                     <Route exact path="/landing-page">
                         <LandingPage/>  

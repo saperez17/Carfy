@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const ServiceCard = () => {
-    [cards, setCards] = useState({
+   const [cards, setCards] = useState({
         serviceName: 'Oil Change Premium',
         serviceDescription: 'The best and most affordable local Oil Change!',
         serviceTarget: '',
@@ -22,9 +22,9 @@ const ServiceCard = () => {
             alt="..." 
             />
             <div className='card-body'>
-                <h5 className='card-title'>{serviceName}</h5>
-                <p className='card-text'>{serviceDescription}</p>
-                <p>Price: <strong>{servicePrice}</strong></p>
+                <h5 className='card-title'>{cards.serviceName}</h5>
+                <p className='card-text'>{cards.serviceDescription}</p>
+                <p>Price: <strong>{cards.servicePrice}</strong></p>
                 <button onClick={bookService}>I wan this</button>
             </div>
 

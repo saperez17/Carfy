@@ -1,8 +1,9 @@
-import './styles.css'
+import React from "react";
+import styles from './styles.module.css'
 
 const NavLink = props => {
     return (
-        <a className='navLink' href=''>
+        <a className={styles.NavLink} href=''>
             {props.children}
         </a>
     )

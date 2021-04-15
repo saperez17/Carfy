@@ -1,5 +1,6 @@
-import './styles.css'
+import './styles.module.css'
 
+import React from "react";
 import TopNavBar from '../TopNavBar'
 import ShopInfoCard from '../ShopInfoCard'
 
