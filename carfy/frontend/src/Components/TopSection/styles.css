@@ -1,0 +1,28 @@
+.landing_main {
+    position: relative;
+    height: 95vh;
+    padding: 0px !important;
+}
+
+.bg_landing {
+    height: 95vh;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.719),
+                    rgba(0, 0, 0, 0.719)), 
+                      url('https://previews.123rf.com/images/muchmaniavector/muchmaniavector1709/muchmaniavector170900007/85276590-city-building-with-cars-on-the-road-and-skytrain-side-view-transportation-cityscape-skyline.jpg');
+    background-position: right 0px bottom 10px;
+}
+
+.front_landing {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.navbar_col {
+    background-color: rgba(255, 255, 255, 0.247);
+}
+
+.welcome_section {
+    text-align: center;
+    margin-top: 20px;
+}

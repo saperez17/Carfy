@@ -4,8 +4,9 @@ import {ServiceDetailPage} from './Components/ServiceDetail'
 import {ShopRegistrationLayout} from './Components/ShopRegistration'
 import {BrowserRouter as Router, Link, Route, Switch} from 'react-router-dom';
 
-class App extends Component {
+import LandingPage from './pages/LandingPage'
 
+class App extends Component{
     constructor(){
         super();
     }

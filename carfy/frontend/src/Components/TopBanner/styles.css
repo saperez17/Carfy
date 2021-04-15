@@ -1,0 +1,36 @@
+.top_footer {
+    display: table;
+    text-align: right;
+    color: rgb(0, 0, 0);
+    background-color: #eea300;
+
+    height: 100%;
+    width: 100%;
+}
+
+.navbar-brand {
+    font-family: 'Righteous', cursive;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left: 10vw;
+    color: #151515;
+}
+
+.media {
+    display: table-cell;
+    vertical-align: middle;
+    height: 10px;
+}
+
+.inner {
+    margin-right: 11vw;
+}
+
+.in_icon {
+    margin-right: 20px;
+}
+
+i:hover {
+    color: #fff;
+    cursor: pointer;
+}
