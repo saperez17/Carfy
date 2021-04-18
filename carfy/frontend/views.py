@@ -43,6 +43,7 @@ class UserAccountView(TemplateView):
                 })
 def logout_view(request):
     logout(request)
+    print('logout')
     print(request)
     return redirect("/landing-page")
 

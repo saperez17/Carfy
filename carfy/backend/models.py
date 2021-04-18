@@ -7,6 +7,7 @@ import os
 import random 
 
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
 #Multiselect model field
 from multiselectfield import MultiSelectField
 
@@ -24,9 +25,11 @@ class User(AbstractUser):
 #Create profile models 
 class ServiceProvider(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="service_provider") #Profile model
+    fullname = models.CharField(max_length=150, unique=False, default='')
     payment = models.CharField(max_length=100, unique=False)
     city = models.CharField(verbose_name=_("City"), max_length=1023, blank=True, null=True)
     country = CountryField(blank=True, null=True)
+    address = models.CharField(max_length=150, unique=False, default='')
     email = models.EmailField(unique=True)
     # class Meta: 
     #     ordering = ['username']
@@ -35,8 +38,12 @@ class ServiceProvider(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
+    fullname = models.CharField(max_length=150, unique=False, default='')
     city = models.CharField(verbose_name=_("City"), max_length=1023, blank=True, null=True)
     country = CountryField(blank=True, null=True)
+    address = models.CharField(max_length=150, unique=False, default='')
+    # phone_regex = RegexValidator(regex=r"^\+(?:[0-9]●?){6,14}[0-9]$", message=_("Enter a valid international mobile phone number starting with +(country code)"))
+    # mobile_phone = models.CharField(validators=[phone_regex], verbose_name=_("Mobile phone"), max_length=17, blank=True, null=True)
     email = models.EmailField(unique=True)
     def __str__(self):
         return f"{self.user.username}"
@@ -46,11 +53,13 @@ class MembershipPlan(models.TextChoices):
     FREE = 'F', _('Free')
 class Shop(models.Model):
     owner = models.ForeignKey(ServiceProvider, on_delete=models.CASCADE, related_name="my_shops")
-    shop_name = models.CharField(max_length=50, unique=True)
+    slogan = models.CharField(max_length=50, unique=False, default='')
+    shop_name = models.CharField(max_length=100, unique=True)
     membership = models.CharField(max_length=2, choices=MembershipPlan.choices, default=MembershipPlan.FREE)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=-76.585664)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=2.449903)
-    
+    city = models.CharField(verbose_name=_("City"), max_length=1023, blank=True, null=True, default='Popayan')
+
     def get_membership(self):
         return self.membership
     def __str__(self):

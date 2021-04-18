@@ -74,7 +74,8 @@ const AuthButton = (props)=>{
             </button>
             <ul className="dropdown-menu">
                 <li><a className="dropdown-item" href="#">Profile</a></li>
-                {props.user.user_type=='provider'?<li><a className="dropdown-item" href="http://127.0.0.1:9000/shop-registration">My shop</a></li>:<li><a className="dropdown-item" href="#">My requests</a></li>}
+                {props.user.user_type=='provider'?<li><NavLink to="/shop-registration/">My Shop</NavLink> </li>:<li><a className="dropdown-item" href="#">My requests</a></li>}
+                {/* <a className="dropdown-item" href="http://127.0.0.1:9000/shop-registration">My shop</a> */}
                 <li><hr className="dropdown-divider"/></li>
                 <li><a href="http://127.0.0.1:9000/logout" className="dropdown-item"><p>Logout</p></a></li>
             </ul>
@@ -82,7 +83,7 @@ const AuthButton = (props)=>{
        )    
    }else{
        return(
-       <div className="d-flex flex-row">
+        <div className="d-flexflex-row">
                <li className={styles.navItem}><a href="http://127.0.0.1:9000/login" className={styles.navLink}><p>Login</p></a></li>
                <li className={styles.navItem}><a href="" className={styles.navLink}><p>Signin</p></a></li>
         </div>
@@ -114,7 +115,7 @@ const TopNavBar = ()=>{
             <li className={styles.navItem}><a href="http://127.0.0.1:9000/signin" className={styles.navLink}><p>Signin</p></a></li>
         </div>
     }
-    console.log(user)
+    // console.log(user)
     return(
            <nav className="navbar navbar-expand-lg ">
     <a className="navbar-brand" href="#"><p className={styles.brand_p}>⚡Carfy</p></a>
@@ -151,7 +152,7 @@ const TopNavBar = ()=>{
 const WelcomeTextCity = ()=>{
     return(
         <div>
-            <div >
+            <div>
                 <h3 className={`${styles.heading} ${styles.main_heading}`}>erat velit scelerisque in dictum</h3>
                 <p className={styles.heading}> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                     tempor incididunt
@@ -311,12 +312,20 @@ const ServicesMainSectionLayout = ()=>{
         // console.log(services)
     },[])
     const checkUserAuth = ()=>{
-        fetch('http://127.0.0.1:9000/check_auth')
-        .then((response) => response.json())
-        .then(response => {
-            console.log(response)
-        })
-        .catch(err=>{console.log(err)});
+        const requestOptions = {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify()
+            };
+            fetch('http://127.0.0.1:9000/api/service-provider', requestOptions)
+                .then(response => response.json())
+                .then(data => console.log(data));
+        // fetch('127.0.0.1:9000/api/service-provider')
+        // .then((response) => response.json())
+        // .then(response => {
+        //     // console.log(response)
+        // })
+        // .catch(err=>{console.log(err)});
     }
     return(
     <div className="container-fluid">
@@ -338,8 +347,11 @@ const ServicesMainSectionLayout = ()=>{
 const LandingPage = ()=>{
     return (
         <div>
-            <TopBanner />
-            <LandingTopSection />
+            <div className={styles.bg_landing}>
+                <div className={`${styles.welcome_section}`}>
+                    <WelcomeTextCity/>
+                </div>
+            </div>
             <h3>Vehicle Categories</h3>
             <VehicleSectionLayout />
                 <div>
@@ -357,5 +369,8 @@ export {Clock,
         ServiceCard,
         LandingPage,
         TopNavBar,
-        TopBanner
+        TopBanner,
+        LandingTopSection,
+        WelcomeTextCity,
+        AuthButton
 }
