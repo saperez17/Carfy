@@ -5,6 +5,7 @@ import styled, { keyframes } from 'styled-components'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button';
+import {Link, NavLink, Route, useHistory } from 'react-router-dom';
 
 const ActionButton = (props)=>{
     return(
@@ -257,9 +258,15 @@ const NewShopRegistration = (props)=>{
 }
 
 const ShopCard = (props)=>{
+    const history = useHistory();
+
+    const routeChange = () =>{ 
+      let path = `/shop-registration/${props.shop.shop_name}`; 
+      history.push(path);
+    }
     // console.log(props.shop)
     return(
-        <div className={`${styles.shop_card}`}>
+        <div className={`${styles.shop_card}`} onClick={routeChange}>
             <div className={`${styles.section} pl-5`}>
                     <div className="">
                         <p className="text-muted mb-0 ">name</p>
@@ -302,12 +309,24 @@ const ShopCard = (props)=>{
         </div>
     )
 }
+const AddButton = (props)=>{
+    return(
+        <div className={styles.center_content}>
+            <button className={`btn btn-dark ${styles.btn_circle} ${styles.center_content} btn-circle-lg mt-2 `} onClick={()=>props.onClickHandler(false)}>
+                <span style={{fontSize: '1.5rem'}}>
+                    <i className="fas fa-plus"></i>
+                </span>
+            </button>
+        </div>
+    )
+}
 const ShopCardWrapper = ({
     children, 
     ...rest
 })=>{
     const [bodyTrigger, setBodyTrigger] = useState(true)
     const onClickHandler = (val)=>{
+        console.log('hi')
         setBodyTrigger((prev)=>prev=val)
     }
     const renderRegistrationSection = ()=>{
@@ -316,13 +335,7 @@ const ShopCardWrapper = ({
                 <div>
                     <h3>Your shops</h3>
                     {children}
-                    <div className={styles.center_content}>
-                        <button className={`btn btn-dark ${styles.btn_circle} ${styles.center_content} btn-circle-lg mt-2 `} onClick={()=>{onClickHandler(false)}}>
-                            <span style={{fontSize: '1.5rem'}}>
-                                <i className="fas fa-plus"></i>
-                            </span>
-                        </button>
-                    </div>
+                    <AddButton onClickHandler={onClickHandler}/>                    
                 </div>
                 )
         }else{
@@ -372,7 +385,7 @@ const ShopRegistrationLayout = (props)=>{
             return <h3>...Loading</h3>
         }
         if(user.my_shops.length!=0){
-            return <ShopCardWrapper>{user.my_shops.map((shop, idx)=><ShopCard key={idx} shop={shop}/>)}</ShopCardWrapper>
+            return <ShopCardWrapper >{user.my_shops.map((shop, idx)=><ShopCard  key={idx} shop={shop}/>)}</ShopCardWrapper>
             // <div><h3>Your shops</h3> {user.my_shops.map((shop, idx)=><ShopCard key={idx} shop={shop}/>)}</div>
         }else{
             return renderRegistrationSection()
@@ -390,11 +403,13 @@ const ShopRegistrationLayout = (props)=>{
             <div className={`col-8 col-xs-12 col-xl-8 ${styles.right_panel}`}>
             {renderShopRegistration()}
             </div>
+            
         </div>
     </div>
     )
 }
 
 export {
-    ShopRegistrationLayout
+    ShopRegistrationLayout,
+    AddButton
 }

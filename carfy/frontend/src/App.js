@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Link, NavLink, Route, Switch, useLocation} from
 import { divIcon } from "leaflet";
 import stylesApp from './Components/UI.module.css'
 import { ProfileLayout } from "./Components/Profile";
+import {ShopServicesLayoutCaller} from './Components/ShopDetails'
 
 function NavWrapper(
     {className, 
@@ -13,7 +14,7 @@ function NavWrapper(
     ){
         let location = useLocation()
         // console.log(location.pathname)
-        let isLandingPage = location.pathname=='/landing-page/'
+        let isLandingPage = location.pathname=='/carfy/'||location.pathname=='/carfy'
         let allClassNames = isLandingPage?`${stylesApp.navbar_col}`:`${stylesApp.navbar_col_shop}`
         return <div className={`${allClassNames}`}>{children}</div>
 }
@@ -23,7 +24,7 @@ function TopNavLink(
     to}
     ){
         let location = useLocation()
-        let isLandingPage = location.pathname=='/landing-page/'
+        let isLandingPage = location.pathname=='/carfy/'||location.pathname=='/carfy'
         let allClassNames = isLandingPage?`${stylesApp.navLink}`:`${stylesApp.navLinkShop}`
         return <NavLink className={`${allClassNames}`} to={to}>{children}</NavLink>
 }
@@ -32,18 +33,78 @@ class App extends Component {
 
     constructor(){
         super();
-        this.state = {isLoggedIn:false, userData:null}
+        this.state = {isLoggedIn:false, userData:null, shopServices:[]}
+        this.authDropdown = this.authDropdown.bind(this);
     }
-    componentDidMount(){
-        fetch('http://127.0.0.1:9000/api/service-provider')
-        .then((response) => response.json())
-        .then(response => {
-            if(response.length >=1){
-                // console.log(response[0])
-                this.setState({userData:{...response[0]}, isLoggedIn:true })
-            }else{
-                this.setState({isLoggedIn:false })
+    authDropdown(){
+        if(this.state.userData?this.state.userData.user_type=='provider':false){
+            return(
+                <>
+                    <li><Link className="dropdown-item" to="/profile/">Profile</Link></li>
+                    <li><NavLink to="/shop-registration/" className="dropdown-item">My Shop</NavLink></li>
+                    <li><hr className="dropdown-divider"/></li>
+                    <li><a href="http://127.0.0.1:9000/api/logout" className="dropdown-item">Log out</a></li>
+                </>
+            )
+        }else if(this.state.userData?this.state.userData.user_type=='customer':false){
+            return(
+                <>
+                    <li><Link className="dropdown-item" to="/profile/">Profile</Link></li>
+                    <li><Link className="dropdown-item" to="/profile/">My Requests</Link></li>
+                    <li><hr className="dropdown-divider"/></li>
+                    <li><a href="http://127.0.0.1:9000/api/logout" className="dropdown-item">Log out</a></li>
+                </>
+            )
+        }else
+            {
+               return(
+               <>
+                <li><a href="http://127.0.0.1:9000/api/login" className="dropdown-item">Log in</a></li>
+                <li><a href="http://127.0.0.1:9000/api/signup" className="dropdown-item">Sign up</a></li>
+               </>
+               ) 
             }
+    } 
+    componentDidMount(){
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify()
+        };
+        //Fetch all shop services
+        fetch('http://127.0.0.1:9000/api/shop-service', requestOptions)
+        .then(function(response){
+
+            if (!response.ok){
+                throw new Error("HTTP status " + response.status);
+            }else{
+                return response.json()
+            }
+        } )
+        .then(response => {
+            this.setState((prevState)=>({
+               userData:prevState.userData,
+               isLoggedIn:prevState.isLoggedIn,
+               shopServices: prevState.shopServices.concat(response)
+            }))
+        })
+        .catch(err=>{console.log(err)});
+
+        //Fetch user-related info
+        fetch('http://127.0.0.1:9000/api/check_auth', requestOptions)
+        .then(function(response){
+            if (!response.ok){
+                throw new Error("HTTP status " + response.status);
+            }else{
+                return response.json()
+            }
+        } )
+        .then(response => {
+            this.setState((prevState)=>({
+                userData:{...response},
+                isLoggedIn:true,
+                shopServices: prevState.shopServices
+            }))
         })
         .catch(err=>{console.log(err)});
     }
@@ -51,7 +112,7 @@ class App extends Component {
     }
     
     render(){
-        // console.log(this.state.userData)
+        // console.log(this.state)
         return(
             <Router>
             <div>
@@ -61,7 +122,7 @@ class App extends Component {
                                 <NavWrapper className={`col-12 ${stylesApp.navbar_col} `}>
                                     <TopBanner/>
                                     <nav className="navbar navbar-expand-lg ">
-                                        <TopNavLink className={`${stylesApp.navLink} navbar-brand`} to="/landing-page/">
+                                        <TopNavLink className={`${stylesApp.navLink} navbar-brand`} to="/carfy">
                                             <p className={stylesApp.brand_p}>⚡Carfy</p>
                                         </TopNavLink>
                                         {/* <CustomComponent/> */}
@@ -91,16 +152,7 @@ class App extends Component {
                                                     <i className="fas fa-user"></i>
                                                     </button>
                                                     <ul className="dropdown-menu">
-                                                        <li>
-                                                            <Link className="dropdown-item" to="/profile/">
-                                                                Profile
-                                                            </Link>
-                                                        {/* <a className="dropdown-item" href="#">Profile</a> */}
-                                                        </li>
-                                                        {this.state.userData!=null?<li><NavLink to="/shop-registration/" className="dropdown-item">My Shop</NavLink> </li>:<li><a className="dropdown-item" href="#">My requests</a></li>}
-                                                        {/* <a className="dropdown-item" href="http://127.0.0.1:9000/shop-registration">My shop</a> */}
-                                                        <li><hr className="dropdown-divider"/></li>
-                                                        <li><a href="http://127.0.0.1:9000/logout" className="dropdown-item"><p>Logout</p></a></li>
+                                                        {this.authDropdown()}
                                                     </ul>
                                                 </div>
                                             </ul>
@@ -114,13 +166,16 @@ class App extends Component {
                 <Route path="/profile/">
                         <ProfileLayout user={this.state.userData || {}}/>
                     </Route>
-                    <Route path="/service-detail/">
-                        <ServiceDetailPage/>
-                    </Route>
-                    <Route exact path="/landing-page/">                     
-                        <LandingPage/>  
-                    </Route>
-                    <Route  exact path="/shop-registration" render={(props)=>(
+                    <Route path="/service-detail/:shopId"
+                        render = {({match}) =>{
+                            const shopId = match.params.shopId;
+                            let shopObj = this.state.shopServices.filter((val)=>val.id==shopId)
+                            console.log(shopObj[0])
+                            return <ServiceDetailPage shopData={shopObj[0]}/>
+                        }}
+                    />
+                    
+                    <Route exact path="/shop-registration/" render={(props)=>(
                         <ShopRegistrationLayout {...props} user={this.state.userData || {}}/>
                     )}/>
                     <Route path="/categorie/:categorieName" 
@@ -129,6 +184,15 @@ class App extends Component {
                             return <div>{match.params.categorieName}</div>;
                           }}
                     />
+                    <Route path="/shop-registration/:shopName"
+                    render={({ match }) => {
+                        // Do whatever you want with the match...
+                        return <ShopServicesLayoutCaller user={this.state.userData || {}} shopName={match.params.shopName}/>}}
+                    >
+                    </Route>
+                    <Route exact path="">                     
+                        <LandingPage services={this.state.shopServices}/>  
+                    </Route>
                 </Switch>
         </div>
     </Router>

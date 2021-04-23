@@ -114,7 +114,7 @@ class ShopServiceSerializer(serializers.ModelSerializer):
     services = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = ShopService
-        fields = ['provider','target_automobile', 'price', 'services', 'description', 'home_service']
+        fields = ['id','service_name','provider','target_automobile', 'price', 'services', 'description', 'long_description', 'home_service']
         # 'shop_services'
     def get_serializer_context(self):
         return self.context['request'].data      
@@ -124,11 +124,13 @@ class ShopServiceSerializer(serializers.ModelSerializer):
         if user.count()!=0:        
             shop = user[0].service_provider.my_shops.filter(shop_name=request_data['shop_name'][0])
             if shop.count()!=0:
-                return ShopService.objects.create(provider=shop[0], 
-                                                  target_automobile=request_data['target_automobile'][0],
-                                                  price=request_data['price'][0],
+                return ShopService.objects.create(provider=shop, 
+                                                  target_automobile=request_data['target_automobile'],
+                                                  price=request_data['price'],
                                                   services=request_data['services'][:], 
-                                                  description=request_data['description'][0], home_service=request_data['home_service'][0])
+                                                  description=request_data['description'], home_service=request_data['home_service'],
+                                                  service_name=request_data['service_name'],
+                                                  long_description=request_data['long_description'])
             else:
                 raise serializers.ValidationError("The shop couldn't be found")
                 return validated_data
@@ -142,6 +144,8 @@ class ShopServiceSerializer(serializers.ModelSerializer):
             instance.price = validated_data.get("price", instance.price)
             instance.services = validated_data.get("services", instance.services)
             instance.description = validated_data.get("description", instance.description)
+            instance.service_name = validated_data.get("service_name", instance.service_name)
+            instance.long_description = validated_data.get("long_description", instance.long_description)
             instance.save()
             return instance
 

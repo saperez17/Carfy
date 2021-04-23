@@ -8,14 +8,14 @@ const ProfileCard = (props)=>{
             <div className={styles.card}>
                 <div className={styles.card_body}>
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
+                    <img src={props.imgLogo?props.imgLogo:'https://bootdey.com/img/Content/avatar/avatar7.png'} alt="Admin" className="rounded-circle" width={props.width?props.width:"150"}/>
                     <div className="mt-3">
-                      <h4>{props.username}</h4>
-                      <p className="text-secondary mb-1">Full Stack Developer</p>
-                      <p className="text-muted font-size-sm"> {props.city}, {props.country}</p>
-                      <button className="btn btn-primary">Follow</button>
-                      <button className="btn btn-outline-primary">Message</button>
-                    </div>
+                      <h4>{props.dataObject.mainHeader}</h4>
+                      <p className="text-secondary mb-1">{props.dataObject.substring1}</p>
+                      <p className="text-muted font-size-sm"> {props.dataObject.substring2}, {props.dataObject.substring3}</p>
+                      {/* <button className="btn btn-primary">Follow</button>
+                      <button className="btn btn-outline-primary">Message</button> */}
+                    </div> 
                   </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@ const ProfileCard = (props)=>{
     )
 }
 
-const ProfileOverview = ()=>{
+const ProfileSocialMedia= ()=>{
     return(
         <div className="card mt-3">
                 <ul className="list-group list-group-flush">
@@ -45,53 +45,25 @@ const ProfileOverview = ()=>{
 }
 
 const ProfileInfo = (props)=>{
+  const renderData = Object.keys(props.dataObject).map((key,i)=>{
+    return (
+      <div key={i}>
+      <div className="row">
+        <div className="col-sm-3">
+          <h6 className="mb-0">{key.at(0).toUpperCase()+key.slice(1)}</h6>
+        </div>
+        <div className="col-sm-9 text-secondary">
+          {props.dataObject[key]}
+        </div>
+      </div>
+      <hr/>
+      </div>
+    )
+});
     return(
         <div className="card mb-3">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <h6 className="mb-0">Full Name</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">
-                      {props.fullname}
-                    </div>
-                  </div>
-                  <hr/>
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <h6 className="mb-0">Email</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">
-                      {props.email}
-                    </div>
-                  </div>
-                  {/* <hr/> */}
-                  {/* <div className="row">
-                    <div className="col-sm-3">
-                      <h6 className="mb-0">Phone</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">
-                      {props.phone}
-                    </div>
-                  </div> */}
-                  <hr/>
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <h6 className="mb-0">Mobile</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">
-                      {props.phone}
-                    </div>
-                  </div>
-                  <hr/>
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <h6 className="mb-0">Address</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">
-                      {props.address}
-                    </div>
-                  </div>
+                  {renderData}
                 </div>
             </div>          
     )
@@ -136,11 +108,12 @@ const ProfileLayout = (props)=>{
             <div className="main-body">
                 <div className="row gutters-sm">
                     <div className="col-md-4 mb-3">
-                        <ProfileCard username={props.user.user} city={props.user.city} country={props.user.country}/>
-                        <ProfileOverview/>
+                        <ProfileCard dataObject={{mainHeader:props.user.user, substring1:'Full-Stack Developer', substring2: props.user.city, substring3:props.user.country}}/>
+                        {/* username={props.user.user} city={props.user.city} country={props.user.country} */}
+                        <ProfileSocialMedia/>
                     </div>
                     <div className="col-md-8">
-                        <ProfileInfo fullname={props.user.fullname} email={props.user.email} phone='+57 314968547' address={props.user.address}/>
+                        <ProfileInfo dataObject={{fullname:props.user.user,email:props.user.email,address:props.user.address,phone:'+57 314968547'}}/>
                     </div>
                 </div>
                 
@@ -151,7 +124,9 @@ const ProfileLayout = (props)=>{
 }
 
 export {
-    ProfileLayout
+    ProfileLayout,
+    ProfileInfo,
+    ProfileCard
 }
 
 

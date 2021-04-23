@@ -15,6 +15,7 @@ import json
 
 # Create your views here.
 def index_view(request):
+    print('hi')
     return render(request,'frontend/index.html', context=None)
 
 class UserAccountView(TemplateView):

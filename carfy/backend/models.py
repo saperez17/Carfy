@@ -85,12 +85,15 @@ class ServiceDetail(models.TextChoices):
             ENGINE_TUNE_UP = 'ETU', _('ENGINE TUNE UP')
             WHEELS_WORK = 'WW', _('WHEELS ALIGNED/BALANCED')
             NONE = 'NN', _('NO SERVICE LISTED')
+            
 class ShopService(models.Model):
+    service_name = models.CharField(max_length=100, default="NEW SERVICE") 
     provider = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name="shop_services")
     target_automobile = models.CharField(max_length=20, choices=TargetAutomobile.choices, default=TargetAutomobile.UNKNOWN)
     price = models.DecimalField(verbose_name=_('Service Price'), max_digits=10, decimal_places=0)
     services = MultiSelectField(choices=ServiceDetail.choices, default=ServiceDetail.NONE)
     description = models.CharField(max_length=250, default="")
+    long_description =  models.CharField(max_length=1500, default="")
     home_service = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.provider} CarAudience. {self.target_automobile}, Price: {self.price}"

@@ -95,7 +95,7 @@ const AuthButton = (props)=>{
 const TopNavBar = ()=>{
     const [user, setUser] = useState({isLoggedIn:false})
     useEffect(()=>{
-        fetch('http://127.0.0.1:9000/check_auth')
+        fetch('http://127.0.0.1:9000/carfy/check_auth')
         .then((response) => response.json())
         .then(response => {
             if(Object.keys(response).length >1){
@@ -275,7 +275,7 @@ class ServiceCardComponent extends React.Component{
                                 <h6>{this.props.target_automobile}</h6>
                                 <p className="card-text">{this.props.serviceDescription}</p>
                                 <p>$<strong>{this.props.price}</strong></p>
-                                <button onClick={()=>{}} className="btn btn-primary">I want this</button>
+                                <Link to={`/service-detail/${this.props.id}`} className="btn btn-primary">I want this</Link>
                             </div>
                  </div>
         );
@@ -288,15 +288,15 @@ class ServiceCardComponent extends React.Component{
 }
 
 
-const ServicesMainSectionLayout = ()=>{
+const ServicesMainSectionLayout = (props)=>{
     const [service, setService] = useState({services:[], loading:true})
     useEffect(()=>{
-        fetch('http://127.0.0.1:9000/api/shop-service/')
-        .then((response) => response.json())
-        .then(response => {
-            setService({services:response, loading:false})  
-        })
-        .catch(err=>{console.log(err)});
+        // fetch('http://127.0.0.1:9000/api/shop-service/')
+        // .then((response) => response.json())
+        // .then(response => {
+        //     setService({services:response, loading:false})  
+        // })
+        // .catch(err=>{console.log(err)});
        
         // async function fetchShopServices(){
         //     const res = await fetch("http://127.0.0.1:9000/api/shop-service/");
@@ -309,7 +309,7 @@ const ServicesMainSectionLayout = ()=>{
         //     .catch(err =>  {console.log(err)});
         // }
         // fetchShopServices();
-        // console.log(services)
+        
     },[])
     const checkUserAuth = ()=>{
         const requestOptions = {
@@ -317,9 +317,9 @@ const ServicesMainSectionLayout = ()=>{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify()
             };
-            fetch('http://127.0.0.1:9000/api/service-provider', requestOptions)
-                .then(response => response.json())
-                .then(data => console.log(data));
+            // fetch('http://127.0.0.1:9000/api/check_auth', requestOptions)
+            //     .then(response => response.json())
+            //     .then(data => console.log(data));
         // fetch('127.0.0.1:9000/api/service-provider')
         // .then((response) => response.json())
         // .then(response => {
@@ -327,13 +327,14 @@ const ServicesMainSectionLayout = ()=>{
         // })
         // .catch(err=>{console.log(err)});
     }
+    // console.log(service)
     return(
     <div className="container-fluid">
         <div className="row row-cols-sm-1 row-cols-md-12  justify-content-sm-center">
             <div className="col">
                 <section className={styles.shop_services_wrapper}>
-                    {service.loading?<div>loading...</div> : (service.services.map((value, key)=>
-                    <ServiceCardComponent key={key} serviceName={value.provider} serviceDescription={value.description} price={value.price} target_automobile={value.target_automobile}/>
+                    {props.services.length==0?<div>loading...</div> : (props.services.map((value, key)=>
+                    <ServiceCardComponent key={key} id={value.id} serviceName={value.provider} serviceDescription={value.description} price={value.price} target_automobile={value.target_automobile}/>
                     ))}
                 </section>
                 <button className="btn btn-primary" onClick={checkUserAuth}>User Auth</button>
@@ -344,7 +345,7 @@ const ServicesMainSectionLayout = ()=>{
     )
 }
 
-const LandingPage = ()=>{
+const LandingPage = (props)=>{
     return (
         <div>
             <div className={styles.bg_landing}>
@@ -357,7 +358,7 @@ const LandingPage = ()=>{
                 <div>
                     <h3>Car Shops Available</h3>
                 </div>
-                <ServicesMainSectionLayout/>
+                <ServicesMainSectionLayout services={props.services}/>
         </div>
     )
 }
@@ -372,5 +373,6 @@ export {Clock,
         TopBanner,
         LandingTopSection,
         WelcomeTextCity,
-        AuthButton
+        AuthButton,
+        ServiceCardComponent,
 }

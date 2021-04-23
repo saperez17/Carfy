@@ -1,0 +1,71 @@
+{% extends 'frontend/UserAccess/user_access.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block login %}
+<style>
+button{
+    margin-top: 5px;
+}
+input[type=text]{
+    margin: 2px 0px;
+    width: 250px;
+}
+.form-signin{
+    text-align: center;
+}
+.form-signin{
+    padding: 5vh 5vw;
+    border: 1px solid gray;
+    box-shadow: 0px 0px 2px 1px gray;
+    border-radius:10% ;
+}
+
+.form-login{
+    margin-top: -20px;
+}
+.label-tag{
+    visibility: hidden;
+}
+
+.main-container{
+    padding-top: 15vh;
+}
+
+.carfy-r{
+    padding: 1rem 1rem 1rem 0rem;
+    text-align: right;
+}
+</style>
+<div class="container-fluid main-container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex flex-column align-items-center justify-content-center ">
+                <div class="bd-highlight form-wrapper">
+                    <form class="form-signin" action="" method="POST" novalidate>
+                        <img class="mb-4 img-logo" src="{% static 'AutoPop/images/logo.png' %}" alt="" width="180"
+                            height="180">
+                        {% csrf_token %}
+                        <div class="form-login">
+                            {% include 'frontend/UserAccess/b4_form.html' with form=form %}
+                        </div>
+
+                        <button class="btn btn-primary" type="submit">Log in</button>
+                    </form>
+                    <div class="bd-highlight carfy-r">
+                        Carfy App®
+                      {% if user.is_authenticated %}
+                      {{user}}
+                      {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'frontend/UserAccess/index.css' %}">
+{% endblock %}
+<!--         
+    </body>
+</html> -->

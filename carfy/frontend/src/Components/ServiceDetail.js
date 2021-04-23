@@ -19,10 +19,22 @@ const ServiceMedia = ()=>{
 }
 
 const ServiceInfoDetails = (props)=>{
+    
     const services = ['Oil Change', 'Wheel alignment']
+    useEffect(()=>{
+        
+    },[])
+    const servicesIncluded = ()=>{
+        let includedOnService = props.includes.split(',');
+        return(            
+            // className={`${styles.service_button}
+            includedOnService.map((value, index)=><li key={index}>{value}</li>
+            )
+        )
+    }
     return(
         <div className={`${styles.service_header}`}>
-                        <h3 className={`${styles.service_name}`}>{props.shopName}</h3> 
+                        <h3 className={`${styles.service_name}`}>{props.serviceName}</h3> 
                         <div className={`${styles.service_categories}`}>{props.category}</div>
                         <div className={`${styles.service_rating}`}>
                             ⭐⭐⭐
@@ -38,9 +50,10 @@ const ServiceInfoDetails = (props)=>{
                                 <h5>Services Included</h5>
 
                                 <div className={`${styles.service_buttons_wrapper}`}>
-                                    {services.map((value, index)=>{
-                                        <button className={`${styles.service_button} btn btn-outline-info`} key={index}>{value}</button>
-                                    })}
+                                    <ul>
+                                        {servicesIncluded()}
+                                    </ul>
+                                    
                                     {/* <button className={`${styles.service_button} btn btn-outline-info`}> Wheel alignment</button> */}
                                 </div>
                             </div>
@@ -63,7 +76,7 @@ const ServiceInfoDetails = (props)=>{
                     </div>
     )
 }
-const ServiceNavTabs = ()=>{
+const ServiceNavTabs = (props)=>{
     const [tabsState, setTabState] = useState({home:'active', info:'', review:''})
     const homeTab = useRef(null);
     function tabClick(e){
@@ -81,10 +94,10 @@ const ServiceNavTabs = ()=>{
 	        <div className={`${styles['tabs-page']}`}>
 		    {/* <!-- Nav Tabs --> */}
 		    <ul className={`${styles.nav} ${styles['nav-tabs']}`} role="tablist">
-                <li role="presentation" className={`${tabsState.home=='active'?styles.active:''}`}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" name="home" onClick={tabClick}>Description</a></li>
-                <li role="presentation" className={`${tabsState.info=='active'?styles.active:''}`}><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" name="information" onClick={tabClick}>Information</a></li>
+                <li role="presentation" className={`${tabsState.home=='active'?styles.active:''}`}><a href="#home" aria-controls="home" role="tab" data-toggle="tab" name="home" onClick={tabClick}>{props.tabNames?props.tabNames[0]:'Description'}</a></li>
+                <li role="presentation" className={`${tabsState.info=='active'?styles.active:''}`}><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" name="information" onClick={tabClick}>{props.tabNames?props.tabNames[1]: 'Information'}</a></li>
                 <li role="presentation" className={`${tabsState.review=='active'?styles.active:''}`}>
-                    <a href="#settings" aria-controls="reviews" role="tab" data-toggle="tab" name="reviews" onClick={tabClick}>Reviews </a>
+                    <a href="#settings" aria-controls="reviews" role="tab" data-toggle="tab" name="reviews" onClick={tabClick}>{props.tabNames?props.tabNames[2]:'Information'}</a>
                 </li>
             </ul>
         {/* <!-- ./ nav tabs -->	 */}
@@ -97,10 +110,10 @@ const ServiceNavTabs = ()=>{
                         <div className="container">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <h6 className="text-start">Description</h6>
-                                    <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    <h6 className="text-start">{props.tabNames?props.tabNames[0]: 'Description'}</h6>
+                                    {props.tabComponents?props.tabComponents[0]: <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique nulla aliquet 
-                                    enim tortor at auctor urna.</p>
+                                    enim tortor at auctor urna.</p>}
                                 </div>
                             </div>
                         </div>
@@ -109,11 +122,11 @@ const ServiceNavTabs = ()=>{
                     <div className="container">
                         <div className="row">
                             <div className="col-sm-12">
-                                <h6 className="text-start">Information</h6>
-                                    <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                <h6 className="text-start">{props.tabNames?props.tabNames[1]: 'Information'}</h6>
+                               {props.tabComponents?props.tabComponents[1]: <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique nulla aliquet 
                                     enim tortor at auctor urna.
-                                    </p>
+                                    </p>}
                                 </div>
                             </div>
                         </div>
@@ -122,10 +135,10 @@ const ServiceNavTabs = ()=>{
                     <div className="container">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <h6 className="text-start">Reviews</h6>
-                                    <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                                    <h6 className="text-start">{props.tabNames?props.tabNames[2]: 'Information'}</h6>
+                                    {props.tabComponents?props.tabComponents[2]: <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pharetra vel turpis nunc eget 
-                                    lorem dolor sed viverra ipsum.</p>
+                                    lorem dolor sed viverra ipsum.</p>}
                                 </div>
                             </div>
                         </div>
@@ -137,29 +150,33 @@ const ServiceNavTabs = ()=>{
 }
 
 const ServiceDetailPage = (props)=>{
+    let tabNames = ['DESCRIPTION','INFORMATION','SERVICE DELIVERY']
+    let tabComponents = [props.shopData.long_description,"",""]
     return(
         <div className={`${styles.landing_main} container-fluid`}>
             <div className="row">
-                <div className={`col-12 ${styles.navbar_col} `}>
-                    <TopNavBar/>
-                </div>
-            </div>
-            <div className="row">
                 <ServiceMedia />
                 <div className={`${styles.service_info_container} col-6`}>
-                    <ServiceInfoDetails shopName="Shop Name" category="Category" price="15.000" mainDescription='' address='13 Avenue #12-11 Street.' country="Popayan, Colombia." />
-                <div>
-                   
+                    <ServiceInfoDetails serviceName={props.shopData.service_name}
+                                        category={props.shopData.target_automobile}
+                                        price={props.shopData.price}
+                                        mainDescription={props.shopData.description}
+                                        address='13 Avenue #12-11 Street.' 
+                                        country="Popayan, Colombia." 
+                                        includes={props.shopData.services}
+                                        // =!""?props.shopData.services.split(","):""
+                                        />
+                <div> 
             </div>
         </div>
     </div>
     <div className="row">
         <div className="col-12">
-            <ServiceNavTabs />
+            <ServiceNavTabs  tabNames={tabNames} tabComponents={tabComponents}/>
         </div>
     </div>
 </div>
     )
 }
 
-export {ServiceDetailPage}
+export {ServiceDetailPage, ServiceNavTabs}
