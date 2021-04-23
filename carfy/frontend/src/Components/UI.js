@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect} from "react";
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import styles from "./UI.module.css";
 import './UI.module.css'
+import Filter from "./Filter";
 
 const Clock = ()=>{
     const[date, setDate] = useState({date_now: new Date().toLocaleTimeString()})
@@ -260,10 +261,16 @@ class ServiceCardComponent extends React.Component{
             servicePrice: 15000,
             serviceList: [],
         }
+       
     }
     componentDidMount(){
-        
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          });
+         
     }
+    
     render(){
       
         return(
@@ -274,7 +281,7 @@ class ServiceCardComponent extends React.Component{
                                 <h5 className="card-title">{this.props.serviceName}</h5>
                                 <h6>{this.props.target_automobile}</h6>
                                 <p className="card-text">{this.props.serviceDescription}</p>
-                                <p>$<strong>{this.props.price}</strong></p>
+                                <p><strong>{(parseInt(this.props.price)).toLocaleString('en-US', {style:'currency',currency: 'COP'}) }</strong></p>
                                 <Link to={`/service-detail/${this.props.id}`} className="btn btn-primary">I want this</Link>
                             </div>
                  </div>
@@ -289,28 +296,17 @@ class ServiceCardComponent extends React.Component{
 
 
 const ServicesMainSectionLayout = (props)=>{
-    const [service, setService] = useState({services:[], loading:true})
-    useEffect(()=>{
-        // fetch('http://127.0.0.1:9000/api/shop-service/')
-        // .then((response) => response.json())
-        // .then(response => {
-        //     setService({services:response, loading:false})  
-        // })
-        // .catch(err=>{console.log(err)});
-       
-        // async function fetchShopServices(){
-        //     const res = await fetch("http://127.0.0.1:9000/api/shop-service/");
-        //     res.json()
-        //     .then(res => {
-        //         setServices({...services,isFetching:false});
-        //         console.log(services)
-             
-        //     })
-        //     .catch(err =>  {console.log(err)});
-        // }
-        // fetchShopServices();
-        
-    },[])
+    const {services} = props;
+    const [data, setData] = useState({services:[], loading:true, price:"", sort:"", count:0})
+    // const [filterOptions, setFilterOptions] = useState({count:0, price:"", sort:""})
+    useEffect(()=>{     
+        setData((prevState)=>(
+            {...prevState, 
+                services:services,
+                count:props.services.length
+            }
+        ))
+    },[services])
     const checkUserAuth = ()=>{
         const requestOptions = {
                 method: 'GET',
@@ -328,12 +324,67 @@ const ServicesMainSectionLayout = (props)=>{
         // .catch(err=>{console.log(err)});
     }
     // console.log(service)
+
+    const sortServices = (event)=>{
+        //todo
+        const filteredServices = data.services.slice()
+        filteredServices.sort((a,b)=>{
+            if(event.target.value=='lowest'){
+                return new Date(a.created_at)-new Date(b.created_at)
+            }else if(event.target.value=='highest'){
+                return new Date(b.created_at)-new Date(a.created_at)
+            }else{
+                return a.id-b.id
+            }
+        })
+        setData((prevState)=>(
+            {...prevState, 
+                services:filteredServices,
+                count:filteredServices.length,
+                sort:event.target.value
+            }
+        ))
+    }
+    const filterServices = (event)=>{
+        let priceFilteredServices = props.services.slice()
+        if(event.target.value==""){
+            setData((prevState)=>(
+                {...prevState,
+                services:props.services,
+                count:props.services.length,
+                price:""
+            }
+            ))
+        }else{
+            priceFilteredServices = priceFilteredServices.filter((value)=>{
+                if(event.target.value.toString()=="15-"){
+                    return parseFloat(value.price)<=15000
+                }else if(event.target.value=='15-40'){
+                    return parseFloat(value.price)>15000 && parseFloat(value.price)<40000
+                }else if(event.target.value=='40+'){
+                    return parseFloat(value.price)>=40000
+                }else{
+                    return value
+                }
+            })
+
+            setData((prevState)=>(
+                {...prevState,
+                services:priceFilteredServices,
+                count:priceFilteredServices.length,
+                price:event.target.value
+            }
+            ))
+        } 
+    }
+    // console.log(data)
     return(
     <div className="container-fluid">
         <div className="row row-cols-sm-1 row-cols-md-12  justify-content-sm-center">
             <div className="col">
+            <Filter count={0} sort={data.sort} price={data.price} filterServices={filterServices} sortServices={sortServices} />
                 <section className={styles.shop_services_wrapper}>
-                    {props.services.length==0?<div>loading...</div> : (props.services.map((value, key)=>
+                    {data.services.length==0?<div>loading...</div> : (data.services.map((value, key)=>
                     <ServiceCardComponent key={key} id={value.id} serviceName={value.provider} serviceDescription={value.description} price={value.price} target_automobile={value.target_automobile}/>
                     ))}
                 </section>

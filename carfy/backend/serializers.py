@@ -114,7 +114,7 @@ class ShopServiceSerializer(serializers.ModelSerializer):
     services = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = ShopService
-        fields = ['id','service_name','provider','target_automobile', 'price', 'services', 'description', 'long_description', 'home_service']
+        fields = ['id','service_name','provider','target_automobile', 'price', 'services', 'description', 'long_description', 'home_service','created_at']
         # 'shop_services'
     def get_serializer_context(self):
         return self.context['request'].data      
