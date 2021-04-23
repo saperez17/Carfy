@@ -11,6 +11,9 @@ from django.core.validators import RegexValidator
 #Multiselect model field
 from multiselectfield import MultiSelectField
 
+from datetime import datetime
+from django.utils import timezone
+
 # Create your models here.
 class Lead(models.Model):
     author = models.CharField(max_length=100)
@@ -95,8 +98,14 @@ class ShopService(models.Model):
     description = models.CharField(max_length=250, default="")
     long_description =  models.CharField(max_length=1500, default="")
     home_service = models.BooleanField(default=False)
+    created_at = models.DateTimeField(editable=True, default=timezone.now)
     def __str__(self):
         return f"{self.provider} CarAudience. {self.target_automobile}, Price: {self.price}"
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        return super(ShopService, self).save(*args, **kwargs)
 
 class ServiceCoverage(models.Model):
     coverage = models.CharField(max_length=3, choices=ServiceDetail.choices, default=ServiceDetail.NONE)
