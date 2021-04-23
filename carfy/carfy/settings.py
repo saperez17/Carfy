@@ -25,6 +25,7 @@ SECRET_KEY = '9hyetjilibi$@+4o*w0a0%gdcpm1&$(5k-yk8z3dp4-6nz3p(7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#This is not suitable for production. We'll prob. need jwt token-based auth 
 ALLOWED_HOSTS = ['*']
 
 

@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:200,400');
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+p, a, figcaption {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.navbar_col{
+    background-color: #d65400;
+
+}
+
+.service_gallery{
+    display: grid;
+    /* height: 40vh; */
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 33% 33% 33%;/* repeat(auto-fill, minmax(10vh, 9vh));;*/
+    grid-template-areas: "pic1 pic4"
+                         "pic2 pic4"
+                         "pic3 pic4";
+    align-items: stretch;
+    justify-content: space-around;
+    padding: 24px;
+}
+.left_img{
+    height: 80%;
+    width: 80%;
+    display:inline-block;
+    margin: auto auto;
+    background-image: linear-gradient(to right top, #eea300, #ea9000, #e47c00, #de6900, #d65400);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+}
+.service_gallery > .img1{
+    grid-area:pic1;
+    margin-top: 0px;
+}
+.service_gallery > .img2{
+    grid-area:pic2;
+}
+.service_gallery > .img3{
+    grid-area:pic3;
+}
+.service_gallery > .img_main{
+    grid-area: pic4;
+    height: 95%;
+    width: 90%;
+    display:inline-block;
+    margin: auto auto;
+    background-image: linear-gradient(to right top, #eea300, #ea9000, #e47c00, #de6900, #d65400);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    margin-top: 0px;
+}
+
+/* Service Info Styles */
+.service_info_container {
+    padding-top: 24px;
+    padding-left: 0px;
+}
+
+.service_header{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+.service_header > .service_name{
+    font-size: 36;
+}
+.service_header > .service_categories{
+    font-size: 20;
+    color: #4B4B4B;
+    margin-bottom: 5px;
+}
+.service_header > .service_rating{
+    margin-bottom: 5px;
+}
+.service_header > .service_price{
+    font-family: 'Source Sans Pro';
+    font-size: 20;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.service_main_description{
+    font-family: 'Source Sans Pro';
+    font-size: 16;
+    color: #5C5C5C;
+}
+.ser_cat_wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 5px 0px;
+}
+.ser_cat_wrapper > div{
+ margin-right: 15px;
+}
+.service_buttons_wrapper{
+    display: flex;
+    flex-direction: row ;
+   
+}
+.service_buttons_wrapper > .service_button{
+    border-radius: 16px;
+    width: 112px;
+    height: fit-content;
+    font-family: 'Play',sans-serif;
+    /* font-family: 14px; */
+    margin-left: 6px;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    margin-left: 0px;
+    margin-right: 5px;
+}
+.location{
+    font-size: 16px;
+    color: #4B4B4B;
+}
+.action_btn_wrapper {
+    margin-top: 15px;
+}
+.action_btn_wrapper>.action_btn{
+    font-family: 'Play',sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    margin-right: 15px;
+}
+.action_btn .btn-secondary{
+    background-color: #DCDCDC;
+}
+
+ // Color Variables
+ $background-light: #F3F4F8;
+ $border-light: darken($background-light, 2%);
+ $default: #BDC4D0;
+ $active: #0075AD;
+ 
+ // Font Variable
+ $font-family: "Open Sans", Helvetica, Arial, sans-serif;
+ 
+ .tabs-page{
+    position: relative;    
+ 
+     //Bootstrap .nav-tabs direct descendant styles
+     > .nav-tabs{
+         display: flex;
+         justify-content:space-around;
+         align-items: center;
+         position: relative;
+         
+        //  width: 100%;
+        //  margin: 0 auto;
+         min-height: 50px;
+        //  margin: 0;
+        //  padding-left: 15px;
+         text-align: left;
+         cursor: auto;
+         border: none;
+         z-index: 1;
+
+         li[role="presentation"]{
+             display: inline-block;
+             height: 50px;
+             border: none;
+ 
+             &:not(:last-child){
+                 padding-right: 22px;
+             }
+ 
+             //Default styles
+             a[role="tab"]{
+                 height: 50px;
+                 margin: 0;
+                 padding: 0px;
+                 font-size:0.875rem;
+                 font-weight: 700 ;
+                 text-transform:uppercase;
+                 text-align: center;
+                 letter-spacing: 0.25px;
+                 color: $default;
+                 background: none;
+                 border: none;
+                 line-height: 50px;
+                 text-decoration: none;
+                 transition: color 0.3s ease, box-shadow 0.2s ease;
+ 
+                 //Hover state
+                 &:hover{
+                     color: $active
+                 }
+             }
+             //Active class assigned via Bootstrap click method
+             &.active{
+                 //Active styles
+                 a{
+                     color: $active;
+                     box-shadow: inset 0 -2px 0px $active;
+                     background: none;
+ 
+                     &:hover, &:focus{
+                         background: none;
+                         border: none;
+                     }
+                 }
+             }
+         }
+     }
+ }

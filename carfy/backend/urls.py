@@ -2,10 +2,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-     path('api/lead/', views.LeadListCreate.as_view()),
-     path('api/user/', views.UserListCreate.as_view()),
-     path('api/customer/', views.CustomerListCreate.as_view()),
-     path('api/service-provider/', views.ServiceProviderListCreate.as_view()),
-     path('api/shop/', views.ShopListCreate.as_view()),
-     path('api/shop-service/', views.ShopServiceListCreate.as_view())
+     path("login", views.UserAccountView.as_view(template_name="backend/UserAccess/login.html"), name="login"),
+     path("signin", views.UserAccountView.as_view(template_name="backend/UserAccess/signin.html"), name="signin"),
+     path('logout', views.logout_view, name='logout'),
+     path('check_auth', views.check_user_auth),
+     path('lead/', views.LeadListCreate.as_view()),
+     path('user/', views.UserListCreate.as_view()),
+     path('customer/', views.CustomerListCreate.as_view()),
+     path('service-provider/', views.ServiceProviderListCreate.as_view()),
+     path('shop/', views.ShopListCreate.as_view()),
+     path('shop-service', views.ShopServiceListCreate.as_view()),
 ]

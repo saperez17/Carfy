@@ -1,3 +1,4 @@
+
 /* Top Footer */
 .top_footer{
     display: table;
@@ -36,11 +37,15 @@ i:hover{
 /*  First big section and NavBar */
 .landing_main{
     position: relative;
-    height: 95vh;
+    height: 40px;
     padding: 0px !important;
+    z-index: 1;
 }
 .bg_landing{
-    height: 95vh;
+    position: relative;
+    bottom: 84px;
+    /* z-index: -1; */
+    height: 75vh;
     background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.719), rgba(0, 0, 0, 0.719)), url('https://previews.123rf.com/images/muchmaniavector/muchmaniavector1709/muchmaniavector170900007/85276590-city-building-with-cars-on-the-road-and-skytrain-side-view-transportation-cityscape-skyline.jpg');
     background-position: right 0px bottom 10px;
 }
@@ -48,9 +53,6 @@ i:hover{
     position: absolute;
     top: 0;
     width: 100%;
-}
-.navbar_col{
-    background-color: rgba(255, 255, 255, 0.247);
 }
 
 
@@ -65,11 +67,23 @@ i:hover{
 }
 .navLink{
     text-decoration: none;
+    color: #ffffff;
 }
 .navLink > p{
     font-family: Roboto;
-    color: #ffffff ;
-    
+    color: #ffffff ;    
+}
+.navbar_col{
+    background-color: rgba(146, 146, 146, 0.575);
+    padding-right: 0px;
+}
+.navbar_col_shop{
+    background-color: rgba(255, 255, 255, 0.575);
+    padding-right: 0px;
+}
+.navLinkShop > p{
+    font-family: Roboto;
+    color: #0e0d0d ;    
 }
 .navLink:hover{
     /* color: #151515 !important; */
@@ -79,8 +93,8 @@ i:hover{
     text-shadow: 1px 1px 3px gray;
 }
 .brand_p{
-    color: #ffffff;
     font-size: 1.4em;
+    margin-left: 1.5rem;
 }
 .brand_p:hover{
     /* color: #151515; */
@@ -110,6 +124,8 @@ i:hover{
 .welcome_section{
     text-align: center;
     margin-top: 20px;
+    padding-top: 15vh;
+    
 }
 .heading{
     color: #fff;
@@ -193,4 +209,16 @@ i:hover{
 
 .services > ul > li > a:hover {
     opacity: 0.6;
+}
+
+.shop_services_wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    flex-wrap: wrap;
+}
+.service_card{
+    width: 18rem;
+    margin-right: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }

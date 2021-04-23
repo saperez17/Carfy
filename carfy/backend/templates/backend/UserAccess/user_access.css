@@ -1,0 +1,75 @@
+@import
+url('https://fonts.googleapis.com/css?family=Playfair+Display|Source+Sans+Pro:200,400');
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+p, a {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+body{    
+    padding: 0px;
+    background-color: black;
+}
+.left-container {
+    height: 100vh;
+}
+.row{
+    height: 100%;
+}
+.col-4{
+    padding: 0px;
+}
+
+.brand{
+    display: flex;
+}
+.left-col{
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-end; */
+    background: linear-gradient(
+        35deg,
+        #ccffff,
+        #ffcccc
+      );
+}
+.left-col > .brand{
+    margin: 1.5rem;
+    align-items: center;
+}
+.left-col > .brand > h3{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: .25rem;
+    font-weight: 500;
+}
+.testimony{
+    position: absolute;
+    bottom: 12vh;
+    text-align: center;
+}
+
+.testimony > ul > li {
+    list-style-type: none;
+}
+.testimony > ul > li > p{
+    font-size: .9rem;
+}
+.testimony > h5 {
+    font-family: 1rem ;
+}
+/* .testimony > p {
+    font-style: italic;
+    font-size: .9rem;
+} */
+.testimony > .pagination-bullet {
+    /* padding-left: 5rem; */
+    text-align: right;
+    margin-right: 5rem;
+
+}
