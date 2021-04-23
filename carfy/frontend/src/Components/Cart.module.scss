@@ -1,0 +1,20 @@
+.centerContent{
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding-top: 0px;
+  }
+.btnSizing{
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    padding: 0 !important;
+    >span{
+        color:white;
+        >i:hover{
+            color:orange
+        }
+    }
+
+}

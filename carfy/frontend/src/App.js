@@ -8,6 +8,8 @@ import stylesApp from './Components/UI.module.css'
 import { ProfileLayout } from "./Components/Profile";
 import {ShopServicesLayoutCaller} from './Components/ShopDetails'
 
+import {ShoppingCart, Cart} from './Components/Cart'
+
 function NavWrapper(
     {className, 
     children}
@@ -147,6 +149,9 @@ class App extends Component {
                                                         <p>Motorcycle</p>
                                                     </TopNavLink>
                                                 </li>
+                                                <li className={stylesApp.navItem}>
+                                                    <Cart/>
+                                                </li>
                                                 <div className="btn-group">
                                                     <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i className="fas fa-user"></i>
@@ -165,7 +170,10 @@ class App extends Component {
                 <Switch>
                 <Route path="/profile/">
                         <ProfileLayout user={this.state.userData || {}}/>
-                    </Route>
+                </Route>
+                <Route path="/carfy/cart">
+                    <ShoppingCart/>
+                </Route>
                     <Route path="/service-detail/:shopId"
                         render = {({match}) =>{
                             const shopId = match.params.shopId;
