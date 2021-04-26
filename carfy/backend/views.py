@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView
 from rest_framework import generics
 from rest_framework.decorators import api_view
+from django.http import HttpResponse
 
 from .forms import NameForm
 
@@ -15,10 +16,11 @@ from .forms import NameForm
 
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.renderers import JSONRenderer
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from rest_framework import status
 
+from datetime import datetime as dt
 import json
 # Create your views here.
 #User Authentication 
@@ -98,6 +100,22 @@ class CustomerListCreate(generics.ListCreateAPIView):
     queryset =  Customer.objects.all()
     serializer_class = CustomerSerializer
 
+@api_view(['GET'])
+@renderer_classes((JSONRenderer, TemplateHTMLRenderer))
+def get_user_requests(request, *args, **kwargs):
+    if (request.user.id!=None):
+        customer = Customer.objects.get(user=request.user)
+        service_requests = ServiceRequest.objects.filter(requester=customer)
+        if (service_requests.count()!=0):
+            serializer = ServiceRequestSerializer(service_requests, many=True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        else:
+            message = {'message':'No service request found'}
+            return Response(message,status=status.HTTP_200_OK)
+    else:
+         message = {'message':'You are not logged in'}
+         return Response(message,status=status.HTTP_200_OK)
+         
 class ServiceProviderListCreate(generics.ListCreateAPIView):
     queryset =  ServiceProvider.objects.all()
     serializer_class = ServiceProviderSerializer
@@ -134,5 +152,54 @@ class ShopListCreate(generics.ListCreateAPIView):
 class ShopServiceListCreate(generics.ListCreateAPIView):
     queryset =  ShopService.objects.all()
     serializer_class = ShopServiceSerializer
+    attribute = 0
+    #   def get_context_data(self, **kwargs):
+    #     context = super(Yearly, self).get_context_data(**kwargs)
+    #     context['current_year'] = self.current_year
+    #     context['current_month'] = self.current_month
+    #     return context
+    def get(self, request, *args, **kwargs):
+        # check = self.kwargs.has_key('shop_id')
+        if('shop_id' in self.kwargs):
+            service = self.queryset.filter(id=self.kwargs['shop_id'])
+            if (service.count()!=0):
+                return Response(self.serializer_class(service[0]).data) 
+        return self.list(request, *args, **kwargs)  
 
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
+class ServiceRequestListCreate(generics.ListCreateAPIView):
+    queryset =  ServiceRequest.objects.all()
+    serializer_class = ServiceRequestSerializer
+    
+    def post(self, request, *args, **kwargs):
+        # service_req = ServiceRequest.objects.create(requester=requester, service=service)
+        return self.create(request, *args, **kwargs)        
+    
+    def create(self, request, *args, **kwargs):
+        data = {}
+        request.data['requester'] = Customer.objects.filter(user=request.user)[0].id
+        # data['service'] = ShopService.objects.filter(id=request.data['service'])[0]
+        # data['status'] = RequestStatusCodes.PENDING
+        # data['review'] = ''
+        # data['rating'] = 0
+        # data['created_at'] = dt.now()
+        # data['accepted_at'] = dt.now()
+        # service_req = ServiceRequest.objects.create(requester=requester, service=service)
+        serializer = self.get_serializer(data=request.data)
+        
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        print(serializer.errors)
+        return JSONResponse(serializer.errors, status=400)
+        # serializer.is_valid(raise_exception=True)
+        

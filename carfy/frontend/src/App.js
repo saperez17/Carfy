@@ -8,6 +8,12 @@ import stylesApp from './Components/UI.module.css'
 import { ProfileLayout } from "./Components/Profile";
 import {ShopServicesLayoutCaller} from './Components/ShopDetails'
 
+import {ShoppingCart, Cart} from './Components/Cart'
+
+// Utility functions
+import {fetchShopServiceById} from './Components/utilities/network'
+import { RequestsLayout } from "./Components/ServiceRequests";
+
 function NavWrapper(
     {className, 
     children}
@@ -33,8 +39,32 @@ class App extends Component {
 
     constructor(){
         super();
-        this.state = {isLoggedIn:false, userData:null, shopServices:[]}
+        this.state = {isLoggedIn:false, userData:null, shopServices:[], cartItems:[]}
         this.authDropdown = this.authDropdown.bind(this);
+        this.addToCart = this.addToCart.bind(this);
+    }
+
+    addToCart (service){
+        console.log(service);
+        let cartItemsCopy =
+        this.state.cartItems.slice()
+        let alreadyInCart = false
+        
+        cartItemsCopy.forEach((item)=>{
+            if(item.id==service.id){
+                item.count++;
+                alreadyInCart = true;
+            }
+        })
+        if(!alreadyInCart){
+            cartItemsCopy.push({...service, count:1})
+        }
+        this.setState((prevState)=>(
+            {
+                ...prevState,
+                cartItems:cartItemsCopy
+            }))
+        
     }
     authDropdown(){
         if(this.state.userData?this.state.userData.user_type=='provider':false){
@@ -50,7 +80,7 @@ class App extends Component {
             return(
                 <>
                     <li><Link className="dropdown-item" to="/profile/">Profile</Link></li>
-                    <li><Link className="dropdown-item" to="/profile/">My Requests</Link></li>
+                    <li><Link className="dropdown-item" to="/carfy/my-orders">My Requests</Link></li>
                     <li><hr className="dropdown-divider"/></li>
                     <li><a href="http://127.0.0.1:9000/api/logout" className="dropdown-item">Log out</a></li>
                 </>
@@ -109,6 +139,7 @@ class App extends Component {
         .catch(err=>{console.log(err)});
     }
     componentDidUpdate(){
+        console.log(this.state.cartItems);
     }
     
     render(){
@@ -147,6 +178,9 @@ class App extends Component {
                                                         <p>Motorcycle</p>
                                                     </TopNavLink>
                                                 </li>
+                                                <li className={stylesApp.navItem}>
+                                                    <Cart/>
+                                                </li>
                                                 <div className="btn-group">
                                                     <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i className="fas fa-user"></i>
@@ -165,15 +199,28 @@ class App extends Component {
                 <Switch>
                 <Route path="/profile/">
                         <ProfileLayout user={this.state.userData || {}}/>
-                    </Route>
-                    <Route path="/service-detail/:shopId"
+                </Route>
+                <Route path="/carfy/cart">
+                    <ShoppingCart/>
+                </Route>
+                    <Route path="/carfy/service-detail/:serviceId"
                         render = {({match}) =>{
-                            const shopId = match.params.shopId;
-                            let shopObj = this.state.shopServices.filter((val)=>val.id==shopId)
-                            console.log(shopObj[0])
-                            return <ServiceDetailPage shopData={shopObj[0]}/>
+                            const serviceId = match.params.serviceId;
+                            let serviceObj = this.state.shopServices.filter((val)=>val.id==serviceId)
+                            if (serviceObj.length==0){
+                                const shop = fetchShopServiceById(serviceId)
+                                .then(res => {
+                                    return <ServiceDetailPage service={res} addServiceHandler={this.addToCart}/>
+                                })
+                                .catch(error =>console.log('error:', error.message));
+                            }else{
+                                return <ServiceDetailPage service={serviceObj[0]} addServiceHandler={this.addToCart}/>
+                            }
                         }}
                     />
+                    <Router path="/carfy/my-orders">
+                        <RequestsLayout/>
+                    </Router>
                     
                     <Route exact path="/shop-registration/" render={(props)=>(
                         <ShopRegistrationLayout {...props} user={this.state.userData || {}}/>

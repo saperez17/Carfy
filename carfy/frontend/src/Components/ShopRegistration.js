@@ -311,10 +311,10 @@ const ShopCard = (props)=>{
 }
 const AddButton = (props)=>{
     return(
-        <div className={styles.center_content}>
+        <div className={`${styles.center_content} ${props.wrapperStyle?props.wrapperStyle:""}`}>
             <button className={`btn btn-dark ${styles.btn_circle} ${styles.center_content} btn-circle-lg mt-2 `} onClick={()=>props.onClickHandler(false)}>
                 <span style={{fontSize: '1.5rem'}}>
-                    <i className="fas fa-plus"></i>
+                    <i className={props.iconClass?`${props.iconClass}`:"fas fa-plus"}></i>
                 </span>
             </button>
         </div>

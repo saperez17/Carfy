@@ -115,7 +115,6 @@ class ShopServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShopService
         fields = ['id','service_name','provider','target_automobile', 'price', 'services', 'description', 'long_description', 'home_service','created_at']
-        # 'shop_services'
     def get_serializer_context(self):
         return self.context['request'].data      
     def create(self, validated_data):
@@ -146,6 +145,37 @@ class ShopServiceSerializer(serializers.ModelSerializer):
             instance.description = validated_data.get("description", instance.description)
             instance.service_name = validated_data.get("service_name", instance.service_name)
             instance.long_description = validated_data.get("long_description", instance.long_description)
+            instance.save()
+            return instance
+
+class ServiceRequestSerializer(serializers.ModelSerializer):
+    service = ShopServiceSerializer(read_only=True)
+    class Meta:
+        model = ServiceRequest
+        fields = ['requester','service', 'status', 'review', 'rating', 'created_at', 'accepted_at' ]
+    def get_serializer_context(self):
+        return self.context['request']
+    def create(self, validated_data):
+        request = self.get_serializer_context()
+        request_data = dict(request.data)
+        customer = Customer.objects.filter(user=request.user)
+        if customer.count()!=0:        
+            customer = customer[0]
+            shop_service = ShopService.objects.filter(id=request_data['service'])[0]            
+            return ServiceRequest.objects.create(requester=customer, service=shop_service,
+                                         status=RequestStatusCodes.PENDING)
+        else:
+            raise serializers.ValidationError("The service provider couldn't be found")
+            return validated_data
+    
+    def update(self, instance, validated_data):
+            instance.requester = validated_data.get('requester', instance.requester)
+            instance.service = validated_data.get("service", instance.service)
+            instance.status = validated_data.get("status", instance.status)
+            instance.review = validated_data.get("review", instance.review)
+            instance.rating = validated_data.get("rating", instance.rating)
+            instance.created_at = validated_data.get("created_at", instance.created_at)
+            instance.accepted_at = validated_data.get("accepted_at", instance.accepted_at)
             instance.save()
             return instance
 

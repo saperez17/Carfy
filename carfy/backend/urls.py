@@ -9,7 +9,10 @@ urlpatterns = [
      path('lead/', views.LeadListCreate.as_view()),
      path('user/', views.UserListCreate.as_view()),
      path('customer/', views.CustomerListCreate.as_view()),
+     path('customer/requests/', views.get_user_requests),
      path('service-provider/', views.ServiceProviderListCreate.as_view()),
      path('shop/', views.ShopListCreate.as_view()),
-     path('shop-service', views.ShopServiceListCreate.as_view()),
+     path('shop-service/', views.ShopServiceListCreate.as_view()),
+     path('shop-service/<int:shop_id>', views.ShopServiceListCreate.as_view()),
+     path('service-request/', views.ServiceRequestListCreate.as_view())
 ]
