@@ -104,8 +104,31 @@ class ShopService(models.Model):
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
-            self.created = timezone.now()
+            self.created_at = timezone.now()
         return super(ShopService, self).save(*args, **kwargs)
+
+class RequestStatusCodes(models.TextChoices):
+        PENDING = 'PEN', _('PENDING')
+        ACCEPTED = 'ACC', _('ACCEPTED')
+        CANCELED = 'CAN', _('CANCELED')
+        REJECTED = 'REJ', _('REJECTED')
+        COMPLETED = 'COM', _('COMPLETED')
+
+class ServiceRequest(models.Model):
+    requester = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    service = models.ForeignKey(ShopService, on_delete=models.CASCADE)
+    status = models.CharField(max_length=30, choices=RequestStatusCodes.choices, default=RequestStatusCodes.PENDING)
+    review = models.CharField(max_length=300, default="", blank=True)
+    rating = models.IntegerField(verbose_name=_('Rating'), default=0)
+    created_at = models.DateTimeField(editable=True, default=timezone.now)
+    accepted_at = models.DateTimeField(editable=True, default=timezone.now, )
+    def __str__(self):
+        return f"{self.requester} - {self.service} - {self.status}"
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created_at= timezone.now()
+        return super(ServiceRequest, self).save(*args, **kwargs)
 
 class ServiceCoverage(models.Model):
     coverage = models.CharField(max_length=3, choices=ServiceDetail.choices, default=ServiceDetail.NONE)

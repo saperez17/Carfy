@@ -278,11 +278,12 @@ class ServiceCardComponent extends React.Component{
                  <div className="card" className={styles.service_card}>
                             <img src="https://cdn.dribbble.com/users/2145559/screenshots/10415392/media/0fa2ed74268fd3352333d359484252e5.jpg?compress=1&resize=400x300" className="card-img-top" alt="..." />
                             <div className="card-body">
-                                <h5 className="card-title">{this.props.serviceName}</h5>
-                                <h6>{this.props.target_automobile}</h6>
-                                <p className="card-text">{this.props.serviceDescription}</p>
-                                <p><strong>{(parseInt(this.props.price)).toLocaleString('en-US', {style:'currency',currency: 'COP'}) }</strong></p>
-                                <Link to={`/service-detail/${this.props.id}`} className="btn btn-primary">I want this</Link>
+                                <h5 className="card-title">{this.props.service.provider}</h5>
+                                <h6>{this.props.service.target_automobile}</h6>
+                                <p className="card-text">{this.props.service.description}</p>
+                                <p><strong>{(parseInt(this.props.service.price)).toLocaleString('en-US', {style:'currency',currency: 'COP'}) }</strong></p>
+                                <Link to={`/carfy/service-detail/${this.props.service.id}`} className="btn btn-primary">I want this</Link>
+                                {/* <button className="btn btn-primary" onClick={()=>{this.props.clickHandler(this.props.service)}}>Add to cart</button> */}
                             </div>
                  </div>
         );
@@ -297,7 +298,7 @@ class ServiceCardComponent extends React.Component{
 
 const ServicesMainSectionLayout = (props)=>{
     const {services} = props;
-    const [data, setData] = useState({services:[], loading:true, price:"", sort:"", count:0})
+    const [data, setData] = useState({services:[], loading:true, price:"", sort:"", count:0, cartItems:[]})
     // const [filterOptions, setFilterOptions] = useState({count:0, price:"", sort:""})
     useEffect(()=>{     
         setData((prevState)=>(
@@ -307,6 +308,26 @@ const ServicesMainSectionLayout = (props)=>{
             }
         ))
     },[services])
+    const addToCart = (service)=>{
+        console.log(service);
+        let cartItemsCopy = data.cartItems.slice()
+        let alreadyInCart = false
+        cartItemsCopy.forEach((item)=>{
+            if(item.id==service.id){
+                item.count++;
+                alreadyInCart = true;
+            }
+        })
+
+        if(!alreadyInCart){
+            cartItemsCopy.push({...service, count:1})
+        }
+        setData((prevState)=>(
+            {
+                ...prevState,
+                cartItems:cartItemsCopy
+            }))
+    }
     const checkUserAuth = ()=>{
         const requestOptions = {
                 method: 'GET',
@@ -378,6 +399,7 @@ const ServicesMainSectionLayout = (props)=>{
         } 
     }
     // console.log(data)
+    //  console.log(data.cartItems);
     return(
     <div className="container-fluid">
         <div className="row row-cols-sm-1 row-cols-md-12  justify-content-sm-center">
@@ -385,7 +407,8 @@ const ServicesMainSectionLayout = (props)=>{
             <Filter count={0} sort={data.sort} price={data.price} filterServices={filterServices} sortServices={sortServices} />
                 <section className={styles.shop_services_wrapper}>
                     {data.services.length==0?<div>loading...</div> : (data.services.map((value, key)=>
-                    <ServiceCardComponent key={key} id={value.id} serviceName={value.provider} serviceDescription={value.description} price={value.price} target_automobile={value.target_automobile}/>
+                    <ServiceCardComponent key={key} service={value} clickHandler={addToCart}/>
+                    // id={value.id} serviceName={value.provider} serviceDescription={value.description} price={value.price} target_automobile={value.target_automobile}
                     ))}
                 </section>
                 <button className="btn btn-primary" onClick={checkUserAuth}>User Auth</button>

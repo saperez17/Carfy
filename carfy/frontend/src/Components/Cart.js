@@ -1,7 +1,130 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Cart.module.scss';
 import {Link} from 'react-router-dom';
+import {getUserServiceRequests} from './utilities/network'
+
+var formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'COP',
+});
+function formatCurrency(value){
+  return formatter.format(value)
+}
+
+const CartItem = ()=>{
+  
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'COP',
+      });
+    return(
+        <>
+            <th scope="row" className="border-0">
+            <div className="p-2">
+            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70" className="img-fluid rounded shadow-sm" />
+            <div className="ml-3 d-inline-block align-middle">
+                <h5 className="mb-0"> <a href="#" className="text-dark d-inline-block align-middle">{props.service_name}</a></h5><span className="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
+            </div>
+            </div>
+        </th>
+        <td className="border-0 align-middle"><strong>${formatter.format(props.price)}</strong></td>
+        <td className="border-0 align-middle"><strong>{props.quantity}</strong></td>
+        <td className="border-0 align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a></td>
+      </>
+    )
+}
+
+const ShoppingCartItem = (props)=>{
+
+  var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'COP',
+  });
+ 
+  const loading = ()=>{
+    return <div>Loading..</div>
+  }
+  return(   
+    <tr>
+      {Object.keys(props.item).length==0 ? loading():(
+        <>
+      <th scope="row" className="border-0">
+        <div className="p-2">
+          <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70"
+            className="img-fluid rounded shadow-sm" />
+          <div className="ml-3 d-inline-block align-middle">
+            <h5 className="mb-0"> <a href="#" className="text-dark d-inline-block align-middle">{props.item.service.service_name}
+                </a></h5><span className="text-muted font-weight-normal font-italic d-block">{`Category: ${props.item.service.target_automobile} `}</span>
+          </div>
+        </div>
+      </th>
+      <td className="border-0 align-middle"><strong>{formatter.format(props.item.service.price)}</strong></td>
+      <td className="border-0 align-middle"><strong>1</strong></td>
+      <td className="border-0 align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a></td>
+      </>
+      )}
+    </tr>
+    
+  )
+}
+
+const OrderSummary = ({items},...props)=>{
+  const [summary, setSummary] = useState({subtotal:0, additionalCosts:0, tax:0, total:0})
+  useEffect(()=>{
+    let subTotal = summary.subtotal;
+    let total = summary.total;
+    items.forEach((item)=>{
+      subTotal += parseFloat(item.service.price)
+    })
+    setSummary((prevState)=>(
+      {
+        ...prevState,
+        total:total + subTotal,
+        subtotal: subTotal
+      }
+    ))
+  },[items])
+  return(
+    <>
+      <div className="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+      <div className="p-4">
+        <p className="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
+        <ul className="list-unstyled mb-4">
+          <li className="d-flex justify-content-between py-3 border-bottom"><strong className="text-muted">Order
+              Subtotal </strong><strong>{formatCurrency(summary.subtotal)}</strong></li>
+          <li className="d-flex justify-content-between py-3 border-bottom"><strong className="text-muted">Shipping and
+              handling</strong><strong>{formatCurrency(summary.additionalCosts)}</strong></li>
+          <li className="d-flex justify-content-between py-3 border-bottom"><strong
+              className="text-muted">Tax</strong><strong>{formatCurrency(summary.tax)}</strong></li>
+          <li className="d-flex justify-content-between py-3 border-bottom"><strong
+              className="text-muted">Total</strong>
+            <h5 className="font-weight-bold">{formatCurrency(summary.total)}</h5>
+          </li>
+        </ul><a href="#" className="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+      </div>
+    </>
+  )
+}
 const ShoppingCart = () =>{
+  const [cartItems, setCartItems] = useState({items:[]})
+  useEffect(()=>{
+    fetchRequests()
+  },[])
+
+  const fetchRequests = ()=>{
+    const penServices = getUserServiceRequests();
+    penServices.then(res=>{
+      let itemsCopy = cartItems.items.slice()
+      itemsCopy = itemsCopy.concat(res)
+      setCartItems((prevStat)=>({
+        items:itemsCopy
+      }))
+      
+    })
+    .catch(error=>console.log(error.message))
+  }
+  
+  // console.log(cartItems)
     return(
         <div className="px-4 px-lg-0 text-dark">
         <div className="container text-white py-5 text-center">
@@ -35,48 +158,9 @@ const ShoppingCart = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row" className="border-0">
-                          <div className="p-2">
-                            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70" className="img-fluid rounded shadow-sm" />
-                            <div className="ml-3 d-inline-block align-middle">
-                              <h5 className="mb-0"> <a href="#" className="text-dark d-inline-block align-middle">Timex Unisex Originals</a></h5><span className="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
-                            </div>
-                          </div>
-                        </th>
-                        <td className="border-0 align-middle"><strong>$79.00</strong></td>
-                        <td className="border-0 align-middle"><strong>3</strong></td>
-                        <td className="border-0 align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          <div className="p-2">
-                            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-3_cexmhn.jpg" alt="" width="70" className="img-fluid rounded shadow-sm"/>
-                            <div className="ml-3 d-inline-block align-middle">
-                              <h5 className="mb-0"><a href="#" className="text-dark d-inline-block">Lumix camera lense</a></h5><span className="text-muted font-weight-normal font-italic">Category: Electronics</span>
-                            </div>
-                          </div>
-                        </th>
-                        <td className="align-middle"><strong>$79.00</strong></td>
-                        <td className="align-middle"><strong>3</strong></td>
-                        <td className="align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          <div className="p-2">
-                            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-2_qxjis2.jpg" alt="" width="70" className="img-fluid rounded shadow-sm" />
-                            <div className="ml-3 d-inline-block align-middle">
-                              <h5 className="mb-0"> <a href="#" className="text-dark d-inline-block">Gray Nike running shoe</a></h5><span className="text-muted font-weight-normal font-italic">Category: Fashion</span>
-                            </div>
-                          </div>
-                          </th>
-                          <td className="align-middle"><strong>$79.00</strong></td>
-                          <td className="align-middle"><strong>3</strong></td>
-                          <td className="align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a>
-                          </td>
-                          
-                      </tr>
+                      {cartItems.items.map((item, idx)=>
+                      <ShoppingCartItem item={item} key={idx}/>
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -102,18 +186,7 @@ const ShoppingCart = () =>{
                 </div>
               </div>
               <div className="col-lg-6">
-                <div className="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
-                <div className="p-4">
-                  <p className="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
-                  <ul className="list-unstyled mb-4">
-                    <li className="d-flex justify-content-between py-3 border-bottom"><strong className="text-muted">Order Subtotal </strong><strong>$390.00</strong></li>
-                    <li className="d-flex justify-content-between py-3 border-bottom"><strong className="text-muted">Shipping and handling</strong><strong>$10.00</strong></li>
-                    <li className="d-flex justify-content-between py-3 border-bottom"><strong className="text-muted">Tax</strong><strong>$0.00</strong></li>
-                    <li className="d-flex justify-content-between py-3 border-bottom"><strong className="text-muted">Total</strong>
-                      <h5 className="font-weight-bold">$400.00</h5>
-                    </li>
-                  </ul><a href="#" className="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
-                </div>
+                <OrderSummary items={cartItems.items}/>
               </div>
             </div>
       
@@ -125,6 +198,7 @@ const ShoppingCart = () =>{
 }
 
 const Cart = ()=> {
+  
     return (
         <div>
             <div className={`dropdown ${styles.centerContent}`}>

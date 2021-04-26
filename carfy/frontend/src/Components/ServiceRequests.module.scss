@@ -1,0 +1,49 @@
+.sectionButton{
+    background-color:rgb(0, 121, 191)
+}
+
+// Order Item
+.imgContainer{
+    display: block;
+    width: 120px;
+    height: 120px;
+    content: "";
+    background: linear-gradient(to right top, #ff6400, #fe5918, #fb4e26, #f84430, #f43939);
+}
+.itemWrapper{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 10vw repeat(auto-fill, minmax(320px, 2fr)) 2vw;
+    grid-template-rows: 1fr;
+
+    
+    .dataFieldLayout{
+        display: grid;
+        position: relative;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-areas: "field1 field3"
+                             "field2 .";
+                
+        
+        >.field1{
+            grid-area: field1;
+        }
+        >.field2{
+            grid-area: field2;
+            position: absolute;
+            bottom: 5px;
+
+        }
+        >.field3{
+            grid-area: field3;
+        }
+    }
+
+    >.providerDataWrapper{
+
+    }
+
+
+    
+}

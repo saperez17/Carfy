@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect, useRef} from "react";
 import {TopNavBar, TopBanner} from './UI'
 import styles from "./ServiceDetail.module.scss";
 import './ServiceDetail.module.scss'
+import {saveServiceRequestToDb,getCookie, getUserServiceRequests} from '../Components/utilities/network'
 
 const ServiceMedia = ()=>{
     return(
@@ -19,10 +20,8 @@ const ServiceMedia = ()=>{
 }
 
 const ServiceInfoDetails = (props)=>{
-    
     const services = ['Oil Change', 'Wheel alignment']
     useEffect(()=>{
-        
     },[])
     const servicesIncluded = ()=>{
         let includedOnService = props.includes.split(',');
@@ -32,6 +31,44 @@ const ServiceInfoDetails = (props)=>{
             )
         )
     }
+    const saveServiceToDb = (service)=>{
+        const data = {
+            requester: 0,
+            service: props.service.id,
+            status: "PEN",
+            review: "",
+            rating: 0,
+            created_at: new Date(),
+            accepted_at: new Date()
+        }
+            const shop = getUserServiceRequests()
+                .then(res => {
+                        if (Array.isArray(res)) {
+                            let filtered_service = res.filter((val) => val.service == service.id)
+                            console.log(filtered_service)
+                            if (filtered_service.length == 0) {
+                                const service = saveServiceRequestToDb(data)
+                                    .then(res => {
+                                        console.log(res);
+                                    })
+                                    .catch(error => console.log('error:', error.message));
+                                    return
+                            }
+                            if (filtered_service[0].status == 'PEN') {
+                                console.log('You have an opening request for this service');
+                            } else if (filtered_service[0].status == 'ACC') {
+                                console.log('Your service is under way');
+                            }
+                        } else {
+                            const service = saveServiceRequestToDb(data)
+                                .then(res => {
+                                    console.log(res);
+                                })
+                                .catch(error => console.log('error:', error.message));
+                        }
+                    })
+                    .catch(error => console.log('error:', error.message));
+                 }
     return(
         <div className={`${styles.service_header}`}>
                         <h3 className={`${styles.service_name}`}>{props.serviceName}</h3> 
@@ -66,7 +103,8 @@ const ServiceInfoDetails = (props)=>{
                             </div>
                         </div>
                         <div className={`${styles.action_btn_wrapper}`}>
-                            <button className={`btn btn-primary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`}>
+                            <button className={`btn btn-primary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`} onClick={()=>saveServiceToDb(props.service)}>
+                            {/* onClick={()=>props.addServiceHandler(props.service)} */}
                                     BUY NOW
                             </button>
                             <button className={`btn btn-secondary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`}>
@@ -151,20 +189,23 @@ const ServiceNavTabs = (props)=>{
 
 const ServiceDetailPage = (props)=>{
     let tabNames = ['DESCRIPTION','INFORMATION','SERVICE DELIVERY']
-    let tabComponents = [props.shopData.long_description,"",""]
+    let tabComponents = [props.service.long_description,"",""]
+    
     return(
         <div className={`${styles.landing_main} container-fluid`}>
             <div className="row">
                 <ServiceMedia />
                 <div className={`${styles.service_info_container} col-6`}>
-                    <ServiceInfoDetails serviceName={props.shopData.service_name}
-                                        category={props.shopData.target_automobile}
-                                        price={props.shopData.price}
-                                        mainDescription={props.shopData.description}
+                    <ServiceInfoDetails serviceName={props.service.service_name}
+                                        category={props.service.target_automobile}
+                                        price={props.service.price}
+                                        mainDescription={props.service.description}
                                         address='13 Avenue #12-11 Street.' 
                                         country="Popayan, Colombia." 
-                                        includes={props.shopData.services}
+                                        includes={props.service.services}
+                                        addServiceHandler = {props.addServiceHandler}
                                         // =!""?props.shopData.services.split(","):""
+                                        service={props.service}
                                         />
                 <div> 
             </div>
