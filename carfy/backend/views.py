@@ -47,6 +47,8 @@ class UserAccountView(TemplateView):
                 "form": form,
                 "message":"Oops, try again."
                 })
+                
+
 @api_view(['GET'])
 def check_user_auth(request):
     profile_model = None
@@ -113,8 +115,11 @@ def get_user_requests(request, *args, **kwargs):
             message = {'message':'No service request found'}
             return Response(message,status=status.HTTP_200_OK)
     else:
-         message = {'message':'You are not logged in'}
-         return Response(message,status=status.HTTP_200_OK)
+        service_requests = ServiceRequest.objects.all()
+        serializer = ServiceRequestSerializer(service_requests, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+        #  message = {'message':'You are not logged in'}
+        #  return Response(message,status=status.HTTP_200_OK)
          
 class ServiceProviderListCreate(generics.ListCreateAPIView):
     queryset =  ServiceProvider.objects.all()

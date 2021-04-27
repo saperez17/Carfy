@@ -64,4 +64,24 @@ async function getUserServiceRequests(){
     return res;
 }
 
-export {fetchShopServiceById, saveServiceRequestToDb, getCookie, getUserServiceRequests}
+//generic data fetching function
+async function fetchData(endpoint){
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json'},
+        // body: JSON.stringify(request)
+    };
+    const response = await fetch(`http://127.0.0.1:9000/api${endpoint}`, requestOptions);
+    if (!response.ok){
+        throw new Error("HTTP status " + response.status);
+    }
+
+    const res = await response.json();
+    return res;
+}
+
+
+
+export {fetchShopServiceById, saveServiceRequestToDb,
+     getCookie,getUserServiceRequests,
+     fetchData}

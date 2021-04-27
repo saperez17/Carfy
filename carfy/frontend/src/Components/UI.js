@@ -278,7 +278,7 @@ class ServiceCardComponent extends React.Component{
                  <div className="card" className={styles.service_card}>
                             <img src="https://cdn.dribbble.com/users/2145559/screenshots/10415392/media/0fa2ed74268fd3352333d359484252e5.jpg?compress=1&resize=400x300" className="card-img-top" alt="..." />
                             <div className="card-body">
-                                <h5 className="card-title">{this.props.service.provider}</h5>
+                                <h5 className="card-title">{this.props.service.provider.shop_name}</h5>
                                 <h6>{this.props.service.target_automobile}</h6>
                                 <p className="card-text">{this.props.service.description}</p>
                                 <p><strong>{(parseInt(this.props.service.price)).toLocaleString('en-US', {style:'currency',currency: 'COP'}) }</strong></p>

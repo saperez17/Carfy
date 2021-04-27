@@ -1,3 +1,10 @@
+p, h1,h2,h3,h5,h6{
+    font-family: 'Playfair Display', serif;
+}
+$acceptedBg: linear-gradient(to right top, #ffffff, #f8f4fe, #f4e9fc, #f2ddf8, #f2d1f2);
+$requestedBg: linear-gradient(to right top, #ffffff, #e9e6fe, #cfcffd, #b2b8fc, #90a3fb);
+$completedBg: linear-gradient(to right top, #ffffff, #ffeffd, #ffdde6, #ffcfbd, #fbcc90);;
+    
 .sectionButton{
     background-color:rgb(0, 121, 191)
 }
@@ -8,14 +15,17 @@
     width: 120px;
     height: 120px;
     content: "";
-    background: linear-gradient(to right top, #ff6400, #fe5918, #fb4e26, #f84430, #f43939);
+    background-image: linear-gradient(to right top, #ffffff, #f3e8ff, #efceff, #f2b1ff, #fb90fb);
 }
+
 .itemWrapper{
+
     width: 100%;
     display: grid;
-    grid-template-columns: 10vw repeat(auto-fill, minmax(320px, 2fr)) 2vw;
+    grid-template-columns: 12vw repeat(auto-fill, minmax(320px, 2fr)) 4vw;
     grid-template-rows: 1fr;
-
+    background-image: linear-gradient(to right top, #ffffff, #f8f4fe, #f4e9fc, #f2ddf8, #f2d1f2);
+    border-radius: 10px 0px 0px 10px;
     
     .dataFieldLayout{
         display: grid;
@@ -25,7 +35,6 @@
         grid-template-areas: "field1 field3"
                              "field2 .";
                 
-        
         >.field1{
             grid-area: field1;
         }
@@ -40,10 +49,44 @@
         }
     }
 
-    >.providerDataWrapper{
-
+    .sideOptionsWrapper{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px 0px 0px 10px;
+        // border-left-style: solid;
+        // border-left-color: rgba(148, 20, 120, 0.753);
+        background-image: linear-gradient(to top, #e03ea0, #e443ad, #e848ba, #eb4ec7, #ed55d5, #f455cb, #fa57c1, #ff5ab8, #ff6399, #ff747f, #ff896b, #fb9d61);
+        >p{
+            font-size: 1.5rem;
+            color: rgb(255, 255, 255);
+            transform: rotate(90deg);
+        }
     }
+}
+.itemRequested{
+    @extend .itemWrapper;
+    background: $requestedBg;
+    .imgContainer{
+        background: $requestedBg;
+    }
+}
 
 
-    
+
+// Custom Button
+.customBtn{
+    border-radius: 10px;
+    >p{
+        margin: 0px;
+    }
+}
+.btnActive{
+    background-color: #0d6efd !important;
+    border: #0d6efd !important;
+}
+.btnIdle{
+    background-color: #a6c9ff !important;
+    border: #a6c9ff !important;
 }

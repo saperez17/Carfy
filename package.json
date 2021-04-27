@@ -39,5 +39,8 @@
     "webpack": "^5.31.2",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "react-reveal": "^1.2.2"
   }
 }

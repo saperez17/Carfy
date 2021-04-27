@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ServiceRequests.module.scss';
+import {fetchData} from '../Components/utilities/network';
+import Fade from 'react-reveal/Fade';
 
 var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -27,92 +29,124 @@ const Header = ()=>{
 const ItemField = (props)=>{
     return(
         <>
-        <label className="text-black-50 mb-0">{props.label}</label>
+        <p className="fs-6 text-black-50 mb-0">{props.label}</p>
         <p>{props.value}</p>
         </>
     )
 }
 
-const OrderItem = ()=>{
+const OrderItem = (props)=>{
+    console.log(props);
     return(
-        <div className={`p-4 mb-2 border-0 ${styles.itemWrapper}`}>
-            <div className="d-flex align-items-center justify-content-center"><div className={`${styles.imgContainer}`}></div></div>
-            <div>
-                <h3 className="d-flex justify-content-center">Service</h3>
+        <Fade left cascade>
+        <div className={`p-0 mb-2 border-0 ${styles.itemWrapper}`}>
+            <div className="d-flex align-items-center justify-content-center pl-2"><div className={`${styles.imgContainer}`}></div></div>
+            <div className="pt-2 pb-2">
+                <h4 className="d-flex justify-content-center">Service</h4>
                 <div className={`pl-2 ${styles.dataFieldLayout}`}>
                     <div className={`${styles.field1}`}>
-                        <ItemField label="name" value="Car Wash"/>
+                        <ItemField label="name" value={props.order.service.service_name}/>
                     </div>
                     <div className={`${styles.field2}`}>
-                        <ItemField label="includes" value="Dry cleaning"/>
+                        <ItemField label="includes" value={props.order.service.services}/>
                     </div>
                     <div className={`${styles.field4}`}>
-                        <ItemField label="price" value="COP 15,000"/>
+                        <ItemField label="price" value={formatCurrency(props.order.service.price)}/>
                     </div>
                 </div>
             </div>
-            <div className="providerInfo">
-                <h3 className="d-flex justify-content-center">Provider</h3>
+            <div className="providerInfo pt-2 pb-2">
+                <h4 className="d-flex justify-content-center">Provider</h4>
                 <div className={`pl-2 ${styles.dataFieldLayout}`}>
                     <div className={`${styles.field1}`}>
-                        <ItemField label="name" value="Super Cars"/>
+                        <ItemField label="name" value={props.order.service.provider.shop_name}/>
                     </div>
                     <div className={`${styles.field2}`}>
-                        <ItemField label="location" value="Street 25#56-1"/>
+                        <ItemField label="location" value={props.order.service.provider.city}/>
                     </div>
                     <div className={`${styles.field3}`}>
-                        <ItemField label="contact" value="+57 3148853032"/>
+                        <ItemField label="owner" value={props.order.service.provider.owner}/>
                     </div>
                 </div>
             </div>
-            <div className="sideOptionsWrapper">
-                <h3>Opt</h3>
+            <div className={`${styles.sideOptionsWrapper}`}>
+                <p>Open</p>
             </div>
+        </div>
+        </Fade>
+    )
+}
+
+const CustomButtom = (props) =>{
+    useEffect(()=>{
+        
+    },[])
+    return(
+        <div className={`py-2 text-uppercase d-flex justify-content-center`}>
+            <button className={`btn btn-primary rounded-3 ${styles.customBtn} ${props.active?styles.btnActive:styles.btnIdle}`} onClick={()=>props.clickHandler(props.filterStatus)}>
+                <p>{props.label}</p>
+            </button>
         </div>
     )
 }
 
 const RequestsLayout = ()=>{
+    const [items, setItems] = useState([])
+    const [navStatus, setNavStatus] = useState({filterType:"ACC", activeFilter:[true,false,false]})
+
+    useEffect(()=>{
+        const URL = "/customer/requests/"
+        const service = fetchData(URL)
+        .then(res => {
+            setItems(res)
+        })
+        .catch(error => console.log('error:', error.message));
+    },[])
+
+    const loading = ()=>{
+        return(<div>loading...</div>)
+    }
+    const clickHandler = (filterValue)=>{
+        let activeFilterCopy = navStatus.activeFilter.slice();
+        filterValue=="ACC"?activeFilterCopy=[true,false,false]:filterValue=="PEN"?activeFilterCopy=[false,true,false]:activeFilterCopy=[false,false,true]
+        setNavStatus((prevValue)=>(
+            {
+                ...prevValue,
+                filterType:filterValue,
+                activeFilter:activeFilterCopy,
+            }
+        ))
+    }
     return(
         <>
         <Header/>
             <div className="pb-5">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-12 p-5 rounded shadow-sm mb-5">
+                        <div className="col-lg-12 p-1 rounded shadow-sm mb-5">
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead>
-                                        <tr>
-                                            <th scope="col" className="border-0 bg-light">
-                                                <div className={`py-2 text-uppercase `}><button className="btn btn-primary">Accepted</button></div>
+                                        <tr className="d-flex justify-content-center">
+                                            <th scope="col" className="border-0">
+                                                <CustomButtom label="Accepted" active={navStatus.activeFilter[0]} clickHandler={clickHandler} filterStatus={"ACC"}/>
                                             </th>
-                                            <th scope="col" className="border-0 bg-light">
-                                                <div className="py-2 text-uppercase"><button className="btn btn-primary">Requested</button></div>
+                                            <th scope="col" className="border-0 ">
+                                                <CustomButtom label="Requested" active={navStatus.activeFilter[1]} clickHandler={clickHandler} filterStatus={"PEN"}/>
                                             </th>
-                                            <th scope="col" className="border-0 bg-light">
-                                                <div className="py-2 text-uppercase"><button className="btn btn-primary">Completed</button></div>
+                                            <th scope="col" className="border-0 ">
+                                            <CustomButtom label="Completed" active={navStatus.activeFilter[2]} clickHandler={clickHandler} filterStatus={"COM"}/>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
+                                        
                                     <th scope="row" className="border-0" colSpan="3">
-                                       <OrderItem/>
-                                       
-                                       {/* <div className="p-2">
-                                            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg"
-                                                alt="" width="70" className="img-fluid rounded shadow-sm" />
-                                            <div className="ml-3 d-inline-block align-middle">
-                                                <h5 className="mb-0"> <a href="#"
-                                                        className="text-dark d-inline-block align-middle">Car Wash</a>
-                                                </h5><span
-                                                    className="text-muted font-weight-normal font-italic d-block">Category:
-                                                    Watches</span>
-                                            </div>
-                                        </div> */}
-
+                                        {items.length==0?loading():(items.filter((item)=>item.status==navStatus.filterType).map((item, key)=>(<OrderItem key={key} order={item}/>)))}
                                     </th>
+                                    
+                                    
                                   </tr>
                                     </tbody>
                                 </table>

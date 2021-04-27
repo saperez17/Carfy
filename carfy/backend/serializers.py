@@ -110,7 +110,8 @@ class ServiceProviderSerializer(serializers.ModelSerializer):
             
 class ShopServiceSerializer(serializers.ModelSerializer):
     # shop_services = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    provider = serializers.SlugRelatedField(read_only=True, slug_field='shop_name')
+    # provider = serializers.SlugRelatedField(read_only=True, slug_field='shop_name')
+    provider = ShopSerializer(read_only=True)
     services = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = ShopService
