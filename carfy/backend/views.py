@@ -171,6 +171,20 @@ class ShopServiceListCreate(generics.ListCreateAPIView):
                 return Response(self.serializer_class(service[0]).data) 
         return self.list(request, *args, **kwargs)  
 
+@api_view(['GET'])
+@renderer_classes((JSONRenderer, TemplateHTMLRenderer))
+def getShopServiceRequests(request, shop_id):
+    shop = Shop.objects.filter(id=shop_id)
+    if (shop.count()!=0):
+        shop_services = shop[0].shop_services.all()
+        service_requests = ServiceRequest.objects.filter(service__in=shop_services)
+        print('found requests', service_requests)
+        serializer = ServiceRequestSerializer(service_requests, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    service_requests = ServiceRequest.objects.all()
+    serializer = ServiceRequestSerializer(service_requests, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -183,7 +197,18 @@ class JSONResponse(HttpResponse):
 class ServiceRequestListCreate(generics.ListCreateAPIView):
     queryset =  ServiceRequest.objects.all()
     serializer_class = ServiceRequestSerializer
-    
+
+    def get(self, request, *args, **kwargs):
+        # check = self.kwargs.has_key('shop_id')
+        if('provider_id' in self.kwargs):
+            provider = ServiceProvider.objects.filter(id=self.kwargs['provider_id'])[0]
+            shops = Shop.objects.filter(owner=provider)            
+            services = ShopService.objects.filter(provider__in=shops)
+            requests = ServiceRequest.objects.filter(service__in=services)
+            print('requests', requests)
+            if (requests.count()!=0):
+                return Response(self.serializer_class(requests, many=True).data) 
+        return self.list(request, *args, **kwargs)  
     def post(self, request, *args, **kwargs):
         # service_req = ServiceRequest.objects.create(requester=requester, service=service)
         return self.create(request, *args, **kwargs)        

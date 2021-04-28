@@ -15,7 +15,7 @@ class CustomerSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     class Meta:
         model=Customer
-        fields = ['user', 'city', 'country', 'email' , 'fullname', 'address']
+        fields = ['user', 'city', 'country', 'email' , 'fullname', 'address', 'mobile_phone']
     def get_serializer_context(self):
         return self.context['request'].data
     def create(self, validated_data):
@@ -44,7 +44,7 @@ class ShopSerializer(serializers.ModelSerializer):
     owner = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = Shop
-        fields = ['owner','shop_name', 'membership', 'longitude', 'latitude', 'slogan', 'city']
+        fields = ['id', 'owner','shop_name', 'membership', 'longitude', 'latitude', 'slogan', 'city']
         # 'shop_services'
     def get_serializer_context(self):
         return self.context['request'].data  
@@ -81,7 +81,7 @@ class ServiceProviderSerializer(serializers.ModelSerializer):
     # user_type = serializers.CharField()
     class Meta:
         model = ServiceProvider
-        fields = ['user','fullname', 'payment', 'city', 'country','address', 'email', 'my_shops']
+        fields = ['id', 'user','fullname', 'payment', 'city', 'country','address', 'email', 'my_shops']
     def get_serializer_context(self):
         return self.context['request'].data   
     def create(self, validated_data):
@@ -151,9 +151,10 @@ class ShopServiceSerializer(serializers.ModelSerializer):
 
 class ServiceRequestSerializer(serializers.ModelSerializer):
     service = ShopServiceSerializer(read_only=True)
+    requester = CustomerSerializer(read_only=True)
     class Meta:
         model = ServiceRequest
-        fields = ['requester','service', 'status', 'review', 'rating', 'created_at', 'accepted_at' ]
+        fields = ['requester','service', 'status', 'review', 'rating', 'created_at', 'accepted_at', 'location']
     def get_serializer_context(self):
         return self.context['request']
     def create(self, validated_data):

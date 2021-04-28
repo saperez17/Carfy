@@ -148,7 +148,7 @@ const ServiceNavTabs = (props)=>{
                         <div className="container">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <h6 className="text-start">{props.tabNames?props.tabNames[0]: 'Description'}</h6>
+                                    {/* <h6 className="text-start">{props.tabNames?props.tabNames[0]: 'Description'}</h6> */}
                                     {props.tabComponents?props.tabComponents[0]: <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique nulla aliquet 
                                     enim tortor at auctor urna.</p>}
@@ -160,7 +160,7 @@ const ServiceNavTabs = (props)=>{
                     <div className="container">
                         <div className="row">
                             <div className="col-sm-12">
-                                <h6 className="text-start">{props.tabNames?props.tabNames[1]: 'Information'}</h6>
+                                
                                {props.tabComponents?props.tabComponents[1]: <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tristique nulla aliquet 
                                     enim tortor at auctor urna.
@@ -173,7 +173,7 @@ const ServiceNavTabs = (props)=>{
                     <div className="container">
                             <div className="row">
                                 <div className="col-sm-12">
-                                    <h6 className="text-start">{props.tabNames?props.tabNames[2]: 'Information'}</h6>
+                                    {/* <h6 className="text-start">{props.tabNames?props.tabNames[2]: 'Information'}</h6> */}
                                     {props.tabComponents?props.tabComponents[2]: <p className="text-muted text-start">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
                                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Pharetra vel turpis nunc eget 
                                     lorem dolor sed viverra ipsum.</p>}
@@ -192,7 +192,7 @@ const ServiceDetailPage = (props)=>{
     let tabComponents = [props.service.long_description,"",""]
     
     return(
-        <div className={`${styles.landing_main} container-fluid`}>
+        <div className={`mt-4 ${styles.landing_main} container-fluid`}>
             <div className="row">
                 <ServiceMedia />
                 <div className={`${styles.service_info_container} col-6`}>

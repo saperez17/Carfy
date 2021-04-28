@@ -261,12 +261,11 @@ const ShopCard = (props)=>{
     const history = useHistory();
 
     const routeChange = () =>{ 
-      let path = `/shop-registration/${props.shop.shop_name}`; 
+      let path = `/carfy/shop-registration/${props.shop.id}`; 
       history.push(path);
     }
-    // console.log(props.shop)
     return(
-        <div className={`${styles.shop_card}`} onClick={routeChange}>
+        <div className={`mb-2 ${styles.shop_card}`} onClick={routeChange}>
             <div className={`${styles.section} pl-5`}>
                     <div className="">
                         <p className="text-muted mb-0 ">name</p>
@@ -333,7 +332,7 @@ const ShopCardWrapper = ({
         if(bodyTrigger){
             return (
                 <div>
-                    <h3>Your shops</h3>
+                    <div className="d-flex justify-content-center mb-3"><h3>Your shops</h3></div>
                     {children}
                     <AddButton onClickHandler={onClickHandler}/>                    
                 </div>
@@ -343,7 +342,7 @@ const ShopCardWrapper = ({
         }
     }
     return(
-        <div>
+        <div >
             {renderRegistrationSection()}
         </div>
     )
@@ -361,7 +360,7 @@ const ShopRegistrationLayout = (props)=>{
 
         // localStorage.setItem('user', props.user );
         // console.log(JSON.parse(window.localStorage.getItem('user')))
-        return ()=>{localStorage.removeItem('user')}
+        return ()=>{}
     },[])
 
     const saveUserLocalStorage = ()=>{

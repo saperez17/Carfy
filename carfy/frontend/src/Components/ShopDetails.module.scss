@@ -1,6 +1,46 @@
+p, h1,h2,h3 {
+    font-family: 'Source Sans Pro' serif;
+    margin: 0px !important;
+    padding: 0px;
+}
 .shopServicesWrapper{
     display: flex;
     flex-direction: row;
     justify-content:flex-start;
     flex-wrap: wrap;
+}
+
+thead > tr > th {
+    font-size: 1rem;
+    
+}
+thead > tr > th {
+    font-size: 1rem;   
+    color: #4B4B4B;
+    font-weight:300;
+}
+tbody > tr > td > p{
+    font-size: 1.1rem;
+    color: #4B4B4B !important;
+}
+
+.itemCell{
+
+    >p:nth-child(2){
+        font-size: 0.9rem;
+        color: #7C7777;
+    }
+
+}
+.btnOk{
+    background-color: #ff781e  !important;
+    border: #0dc56c !important;
+    &:hover{
+        background-color: #ff9046  !important;
+    }
+}
+.btnX{
+    background-color: #eeeeee  !important;
+    border: rgb(37, 37, 37)  !important;
+    color: rgb(37, 37, 37) !important;
 }

@@ -4,9 +4,11 @@ import {ServiceDetailPage} from './Components/ServiceDetail'
 import {ShopRegistrationLayout} from './Components/ShopRegistration'
 import {BrowserRouter as Router, Link, NavLink, Route, Switch, useLocation} from 'react-router-dom';
 import { divIcon } from "leaflet";
-import stylesApp from './Components/UI.module.css'
+import stylesApp from './Components/UI.module.scss'
 import { ProfileLayout } from "./Components/Profile";
 import {ShopServicesLayoutCaller} from './Components/ShopDetails'
+
+
 
 import {ShoppingCart, Cart} from './Components/Cart'
 
@@ -71,7 +73,7 @@ class App extends Component {
             return(
                 <>
                     <li><Link className="dropdown-item" to="/profile/">Profile</Link></li>
-                    <li><NavLink to="/shop-registration/" className="dropdown-item">My Shop</NavLink></li>
+                    <li><NavLink to="/carfy/shop-registration/" className="dropdown-item">My Shop</NavLink></li>
                     <li><hr className="dropdown-divider"/></li>
                     <li><a href="http://127.0.0.1:9000/api/logout" className="dropdown-item">Log out</a></li>
                 </>
@@ -130,6 +132,9 @@ class App extends Component {
             }
         } )
         .then(response => {
+                //TODO: maybe improve this.
+                localStorage.setItem('user',JSON.stringify(response))
+            
             this.setState((prevState)=>({
                 userData:{...response},
                 isLoggedIn:true,
@@ -222,7 +227,7 @@ class App extends Component {
                         <RequestsLayout/>
                     </Router>
                     
-                    <Route exact path="/shop-registration/" render={(props)=>(
+                    <Route exact path="/carfy/shop-registration/" render={(props)=>(
                         <ShopRegistrationLayout {...props} user={this.state.userData || {}}/>
                     )}/>
                     <Route path="/categorie/:categorieName" 
@@ -231,10 +236,10 @@ class App extends Component {
                             return <div>{match.params.categorieName}</div>;
                           }}
                     />
-                    <Route path="/shop-registration/:shopName"
+                    <Route path="/carfy/shop-registration/:shopId"
                     render={({ match }) => {
                         // Do whatever you want with the match...
-                        return <ShopServicesLayoutCaller user={this.state.userData || {}} shopName={match.params.shopName}/>}}
+                        return <ShopServicesLayoutCaller user={this.state.userData || {}} shopId={match.params.shopId}/>}}
                     >
                     </Route>
                     <Route exact path="">                     

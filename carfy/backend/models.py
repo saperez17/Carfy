@@ -47,6 +47,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=150, unique=False, default='')
     # phone_regex = RegexValidator(regex=r"^\+(?:[0-9]●?){6,14}[0-9]$", message=_("Enter a valid international mobile phone number starting with +(country code)"))
     # mobile_phone = models.CharField(validators=[phone_regex], verbose_name=_("Mobile phone"), max_length=17, blank=True, null=True)
+    mobile_phone = models.CharField(verbose_name=_("Mobile phone"), max_length=17, blank=True, null=True)
     email = models.EmailField(unique=True)
     def __str__(self):
         return f"{self.user.username}"
@@ -120,8 +121,9 @@ class ServiceRequest(models.Model):
     status = models.CharField(max_length=30, choices=RequestStatusCodes.choices, default=RequestStatusCodes.PENDING)
     review = models.CharField(max_length=300, default="", blank=True)
     rating = models.IntegerField(verbose_name=_('Rating'), default=0)
+    location = models.CharField(max_length=250, default="", blank=True)
     created_at = models.DateTimeField(editable=True, default=timezone.now)
-    accepted_at = models.DateTimeField(editable=True, default=timezone.now, )
+    accepted_at = models.DateTimeField(editable=True, default=timezone.now)
     def __str__(self):
         return f"{self.requester} - {self.service} - {self.status}"
     def save(self, *args, **kwargs):
