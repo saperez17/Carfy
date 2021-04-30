@@ -110,6 +110,8 @@ class ShopService(models.Model):
 
 class RequestStatusCodes(models.TextChoices):
         PENDING = 'PEN', _('PENDING')
+        UNPAID = 'UN',_('UNPAID')
+        PAID = 'PA',_('PAID')
         ACCEPTED = 'ACC', _('ACCEPTED')
         CANCELED = 'CAN', _('CANCELED')
         REJECTED = 'REJ', _('REJECTED')

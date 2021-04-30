@@ -1,3 +1,21 @@
+const getCookie=(name)=> {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
 async function fetchShopServiceById(id){
     const requestOptions = {
         method: 'GET',
@@ -14,21 +32,7 @@ async function fetchShopServiceById(id){
     return service;
 }
 
-const getCookie=(name)=> {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+
 
 async function saveServiceRequestToDb(request){
     const csrftoken = getCookie('csrftoken')
@@ -63,6 +67,22 @@ async function getUserServiceRequests(){
     const res = await response.json();
     return res;
 }
+async function postUserServiceRequests(services){
+    
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+        body: JSON.stringify({ids:services})
+    };
+    const response = await fetch(`http://127.0.0.1:9000/api/service-request/update/`, requestOptions);
+
+    if (!response.ok){
+        throw new Error("HTTP status " + response.status);
+    }
+
+    const res = await response.json();
+    return res;
+}
 
 //generic data fetching function
 async function fetchData(endpoint){
@@ -84,4 +104,4 @@ async function fetchData(endpoint){
 
 export {fetchShopServiceById, saveServiceRequestToDb,
      getCookie,getUserServiceRequests,
-     fetchData}
+     fetchData, postUserServiceRequests}

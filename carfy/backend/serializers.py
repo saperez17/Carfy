@@ -51,7 +51,7 @@ class ShopSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request_data = dict(self.get_serializer_context())
         user = User.objects.filter(username=self.context['request'].user.username)
-        print(user)
+        # print(user)
         if user.count()!=0:        
             service_provider = user[0].service_provider
             return validated_data
@@ -154,7 +154,7 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
     requester = CustomerSerializer(read_only=True)
     class Meta:
         model = ServiceRequest
-        fields = ['requester','service', 'status', 'review', 'rating', 'created_at', 'accepted_at', 'location']
+        fields = ['id','requester','service', 'status', 'review', 'rating', 'created_at', 'accepted_at', 'location']
     def get_serializer_context(self):
         return self.context['request']
     def create(self, validated_data):

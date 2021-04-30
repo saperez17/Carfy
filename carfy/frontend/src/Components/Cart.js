@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Cart.module.scss';
 import {Link} from 'react-router-dom';
-import {getUserServiceRequests} from './utilities/network'
+import {getUserServiceRequests, postUserServiceRequests} from './utilities/network'
 
 var formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -35,7 +35,7 @@ const CartItem = ()=>{
 }
 
 const ShoppingCartItem = (props)=>{
-
+  console.log(props);
   var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'COP',
@@ -47,20 +47,22 @@ const ShoppingCartItem = (props)=>{
   return(   
     <tr>
       {Object.keys(props.item).length==0 ? loading():(
-        <>
-      <th scope="row" className="border-0">
-        <div className="p-2">
-          <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70"
-            className="img-fluid rounded shadow-sm" />
-          <div className="ml-3 d-inline-block align-middle">
-            <h5 className="mb-0"> <a href="#" className="text-dark d-inline-block align-middle">{props.item.service.service_name}
-                </a></h5><span className="text-muted font-weight-normal font-italic d-block">{`Category: ${props.item.service.target_automobile} `}</span>
+      <>
+        <th scope="row" className="border-0">
+          <div className="p-2">
+            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556670479/product-1_zrifhn.jpg" alt="" width="70"
+              className="img-fluid rounded shadow-sm" />
+            <div className="ml-3 d-inline-block align-middle">
+              <h5 className="mb-0"> <a href="#"
+                  className="text-dark d-inline-block align-middle">{props.item.service.service_name}
+                </a></h5><span className="text-muted font-weight-normal font-italic d-block">{`Category:
+                ${props.item.service.target_automobile} `}</span>
+            </div>
           </div>
-        </div>
-      </th>
-      <td className="border-0 align-middle"><strong>{formatter.format(props.item.service.price)}</strong></td>
-      <td className="border-0 align-middle"><strong>1</strong></td>
-      <td className="border-0 align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a></td>
+        </th>
+        <td className="border-0 align-middle"><strong>{formatter.format(props.item.service.price)}</strong></td>
+        <td className="border-0 align-middle"><strong>1</strong></td>
+        <td className="border-0 align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a></td>
       </>
       )}
     </tr>
@@ -68,7 +70,7 @@ const ShoppingCartItem = (props)=>{
   )
 }
 
-const OrderSummary = ({items},...props)=>{
+const OrderSummary = ({items, postHandler},props)=>{
   const [summary, setSummary] = useState({subtotal:0, additionalCosts:0, tax:0, total:0})
   useEffect(()=>{
     let subTotal = summary.subtotal;
@@ -100,11 +102,30 @@ const OrderSummary = ({items},...props)=>{
               className="text-muted">Total</strong>
             <h5 className="font-weight-bold">{formatCurrency(summary.total)}</h5>
           </li>
-        </ul><a href="#" className="btn btn-dark rounded-pill py-2 btn-block">Procceed to checkout</a>
+        </ul><button href="#" className="btn btn-dark rounded-pill py-2 btn-block" onClick={()=>postHandler()}>Procceed to checkout</button>
       </div>
     </>
   )
 }
+
+const Modal = (props)=>{
+  return(
+    <>
+    <div className="modal" id="modal">
+    <h2>Modal Window</h2>
+    <div className="content">"empty"</div>
+    <div className="actions">
+      <button className="toggle-button" onClick={props.onClose}>
+        close
+      </button>
+    </div>
+  </div>
+  </>
+  )
+}
+
+
+
 const ShoppingCart = () =>{
   const [cartItems, setCartItems] = useState({items:[]})
   useEffect(()=>{
@@ -115,15 +136,36 @@ const ShoppingCart = () =>{
     const penServices = getUserServiceRequests();
     penServices.then(res=>{
       let itemsCopy = cartItems.items.slice()
-      itemsCopy = itemsCopy.concat(res)
+      itemsCopy = res.filter((item)=>item.status=="UN")
+      // itemsCopy = itemsCopy.concat(res)
       setCartItems((prevStat)=>({
+        ...prevStat,
         items:itemsCopy
       }))
       
     })
     .catch(error=>console.log(error.message))
   }
-  
+
+  const postServices = ()=>{
+    let items = cartItems.items.slice();
+    let ids = [];
+    items.map(x => ids.push(x.id));
+    console.log(cartItems.items)
+    const postService = postUserServiceRequests(ids);
+    postService.then(res=>{
+      let itemsCopy = cartItems.items.slice();
+      itemsCopy.forEach((x)=>x.status="PA")
+      // itemsCopy = itemsCopy.concat(res)
+      setCartItems((prevStat)=>({
+        ...prevStat,
+        items:itemsCopy
+      }))
+    })
+    .catch(error=>console.log(error.message))
+  }
+
+ 
   // console.log(cartItems)
     return(
         <div className="px-4 px-lg-0 text-dark">
@@ -158,9 +200,10 @@ const ShoppingCart = () =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {cartItems.items.map((item, idx)=>
-                      <ShoppingCartItem item={item} key={idx}/>
-                      )}
+                      {cartItems.items.length!=0?
+                        cartItems.items.map((item, idx)=><ShoppingCartItem item={item} key={idx}/>):<tr><td colSpan="4"><p>Your shopping cart is empty</p></td></tr> 
+                        
+                      }
                     </tbody>
                   </table>
                 </div>
@@ -186,7 +229,7 @@ const ShoppingCart = () =>{
                 </div>
               </div>
               <div className="col-lg-6">
-                <OrderSummary items={cartItems.items}/>
+                <OrderSummary items={cartItems.items} postHandler={postServices}/>
               </div>
             </div>
       

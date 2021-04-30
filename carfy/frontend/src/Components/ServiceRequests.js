@@ -30,13 +30,13 @@ const ItemField = (props)=>{
     return(
         <>
         <p className="fs-6 text-black-50 mb-0">{props.label}</p>
-        <p>{props.value}</p>
+        <p className={styles.clipText}>{props.value}</p>
         </>
     )
 }
 
 const OrderItem = (props)=>{
-    console.log(props);
+    // console.log(props);
     return(
         <Fade left cascade>
         <div className={`p-0 mb-2 border-0 ${styles.itemWrapper}`}>
@@ -108,7 +108,7 @@ const RequestsLayout = ()=>{
     }
     const clickHandler = (filterValue)=>{
         let activeFilterCopy = navStatus.activeFilter.slice();
-        filterValue=="ACC"?activeFilterCopy=[true,false,false]:filterValue=="PEN"?activeFilterCopy=[false,true,false]:activeFilterCopy=[false,false,true]
+        filterValue=="ACC"?activeFilterCopy=[true,false,false]:filterValue=="PA"?activeFilterCopy=[false,true,false]:activeFilterCopy=[false,false,true]
         setNavStatus((prevValue)=>(
             {
                 ...prevValue,
@@ -132,7 +132,7 @@ const RequestsLayout = ()=>{
                                                 <CustomButtom label="Accepted" active={navStatus.activeFilter[0]} clickHandler={clickHandler} filterStatus={"ACC"}/>
                                             </th>
                                             <th scope="col" className="border-0 ">
-                                                <CustomButtom label="Requested" active={navStatus.activeFilter[1]} clickHandler={clickHandler} filterStatus={"PEN"}/>
+                                                <CustomButtom label="Requested" active={navStatus.activeFilter[1]} clickHandler={clickHandler} filterStatus={"PA"}/>
                                             </th>
                                             <th scope="col" className="border-0 ">
                                             <CustomButtom label="Completed" active={navStatus.activeFilter[2]} clickHandler={clickHandler} filterStatus={"COM"}/>
@@ -140,13 +140,10 @@ const RequestsLayout = ()=>{
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                        
-                                    <th scope="row" className="border-0" colSpan="3">
-                                        {items.length==0?loading():(items.filter((item)=>item.status==navStatus.filterType).map((item, key)=>(<OrderItem key={key} order={item}/>)))}
-                                    </th>
-                                    
-                                    
+                                        <tr>       
+                                        <th scope="row" className="border-0" colSpan="3">
+                                            {items.length==0?loading():(items.filter((item)=>item.status==navStatus.filterType).map((item, key)=>(<OrderItem key={key} order={item}/>)))}
+                                        </th>
                                   </tr>
                                     </tbody>
                                 </table>

@@ -15,7 +15,8 @@ $completedBg: linear-gradient(to right top, #ffffff, #ffeffd, #ffdde6, #ffcfbd, 
     width: 120px;
     height: 120px;
     content: "";
-    background-image: linear-gradient(to right top, #ffffff, #f3e8ff, #efceff, #f2b1ff, #fb90fb);
+    // background-image: linear-gradient(to right top, #ffffff, #f3e8ff, #efceff, #f2b1ff, #fb90fb);
+    background-image: $requestedBg;
 }
 
 .itemWrapper{
@@ -24,7 +25,8 @@ $completedBg: linear-gradient(to right top, #ffffff, #ffeffd, #ffdde6, #ffcfbd, 
     display: grid;
     grid-template-columns: 12vw repeat(auto-fill, minmax(320px, 2fr)) 4vw;
     grid-template-rows: 1fr;
-    background-image: linear-gradient(to right top, #ffffff, #f8f4fe, #f4e9fc, #f2ddf8, #f2d1f2);
+    // background-image: linear-gradient(to right top, #ffffff, #f8f4fe, #f4e9fc, #f2ddf8, #f2d1f2);
+    background-image: $requestedBg;
     border-radius: 10px 0px 0px 10px;
     
     .dataFieldLayout{
@@ -42,11 +44,19 @@ $completedBg: linear-gradient(to right top, #ffffff, #ffeffd, #ffdde6, #ffcfbd, 
             grid-area: field2;
             position: absolute;
             bottom: 5px;
+            max-width: 15ch;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
         }
         >.field3{
             grid-area: field3;
         }
+    }
+    .clipText{
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
     }
 
     .sideOptionsWrapper{
@@ -55,9 +65,10 @@ $completedBg: linear-gradient(to right top, #ffffff, #ffeffd, #ffdde6, #ffcfbd, 
         justify-content: center;
         align-items: center;
         border-radius: 10px 0px 0px 10px;
-        // border-left-style: solid;
-        // border-left-color: rgba(148, 20, 120, 0.753);
-        background-image: linear-gradient(to top, #e03ea0, #e443ad, #e848ba, #eb4ec7, #ed55d5, #f455cb, #fa57c1, #ff5ab8, #ff6399, #ff747f, #ff896b, #fb9d61);
+        // background-image: linear-gradient(to top, #e03ea0, #e443ad, #e848ba, #eb4ec7, #ed55d5, #f455cb, #fa57c1, #ff5ab8, #ff6399, #ff747f, #ff896b, #fb9d61);
+        background-color: #FBAB7E;
+        background-image: linear-gradient(45deg, #FBAB7E 0%, #F7CE68 100%);
+        
         >p{
             font-size: 1.5rem;
             color: rgb(255, 255, 255);

@@ -15,6 +15,8 @@ urlpatterns = [
      path('shop-service/', views.ShopServiceListCreate.as_view()),
      path('shop-service/<int:shop_id>', views.ShopServiceListCreate.as_view()),
      path('shop-service/<int:shop_id>/requests', views.getShopServiceRequests),
+     path('service-request/update/', views.updateServiceRequest),
      path('service-request/', views.ServiceRequestListCreate.as_view()),
+     
      path('service-request/<int:provider_id>', views.ServiceRequestListCreate.as_view())
 ]

@@ -226,7 +226,6 @@ class App extends Component {
                     <Router path="/carfy/my-orders">
                         <RequestsLayout/>
                     </Router>
-                    
                     <Route exact path="/carfy/shop-registration/" render={(props)=>(
                         <ShopRegistrationLayout {...props} user={this.state.userData || {}}/>
                     )}/>

@@ -139,14 +139,13 @@ const ShopServicesLayoutCaller = (props)=>{
     useEffect(() => {
                 const shop = fetchData("/shop-service/")
                     .then(res => {
-                        console.log(res);
+                        // console.log(res);
                             let servicesCopy = []
                             res.forEach((item)=>{
                                 if(item.provider.id==props.shopId){
                                     servicesCopy.push(item)
                                 }
                             })
-                            // let servicesFilter = res.filter((item) => item.shop_name == props.shopName);
                             setServices((prevState) =>
                                 ({
                                     ...prevState,
@@ -157,7 +156,7 @@ const ShopServicesLayoutCaller = (props)=>{
 
                         const servicesRequests = fetchData(`/shop-service/${props.shopId}/requests`)
                         .then(res => {
-                        console.log('requests', res);
+                        // console.log('requests', res);
                             let requestsArr = services.requests.slice();
                             requestsArr = res;
                             setServices((prevState) =>

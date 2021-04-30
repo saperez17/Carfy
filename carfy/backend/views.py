@@ -57,7 +57,7 @@ def check_user_auth(request):
         if (user.is_superuser):
             return Response(UserSerializer(user).data)
         try:
-            print(user)
+            # print(user)
             profile_model =ServiceProvider.objects.filter(user=user)
             if profile_model.count()!=0:
                 data = ServiceProviderSerializer(profile_model[0]).data
@@ -68,7 +68,7 @@ def check_user_auth(request):
         
         try:
             profile_model = Customer.objects.filter(user=user)
-            print(profile_model)
+            # print(profile_model)
             if profile_model.count()!=0:
                 customer_serializer = CustomerSerializer(profile_model[0])
                 data = customer_serializer.data
@@ -86,7 +86,7 @@ def check_user_auth(request):
 def logout_view(request):
     logout(request)
     print('logout')
-    print(request)
+    # print(request)
     return redirect("/carfy")
 
 
@@ -126,7 +126,7 @@ class ServiceProviderListCreate(generics.ListCreateAPIView):
     serializer_class = ServiceProviderSerializer
     def get_queryset(self):
         user = self.request.user
-        print(f"get service provider info  {self.request.user}")
+        # print(f"get service provider info  {self.request.user}")
         if (user.id!=None):
             filtered_queryset = self.queryset.filter(user=user.pk)
             return filtered_queryset.all()
@@ -143,7 +143,7 @@ class ShopListCreate(generics.ListCreateAPIView):
     queryset =  Shop.objects.all()
     serializer_class = ShopSerializer
     def get(self, request, *args, **kwargs):
-        print(request.user)
+        # print(request.user)
         shop_name = request.data.get('shop_name')
         if(shop_name!=None):
             shop = self.queryset.filter(shop_name=shop_name)
@@ -178,7 +178,7 @@ def getShopServiceRequests(request, shop_id):
     if (shop.count()!=0):
         shop_services = shop[0].shop_services.all()
         service_requests = ServiceRequest.objects.filter(service__in=shop_services)
-        print('found requests', service_requests)
+        # print('found requests', service_requests)
         serializer = ServiceRequestSerializer(service_requests, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     service_requests = ServiceRequest.objects.all()
@@ -205,31 +205,36 @@ class ServiceRequestListCreate(generics.ListCreateAPIView):
             shops = Shop.objects.filter(owner=provider)            
             services = ShopService.objects.filter(provider__in=shops)
             requests = ServiceRequest.objects.filter(service__in=services)
-            print('requests', requests)
+            # print('requests', requests)
             if (requests.count()!=0):
                 return Response(self.serializer_class(requests, many=True).data) 
         return self.list(request, *args, **kwargs)  
     def post(self, request, *args, **kwargs):
-        # service_req = ServiceRequest.objects.create(requester=requester, service=service)
+        #Save incoming request to db
         return self.create(request, *args, **kwargs)        
     
     def create(self, request, *args, **kwargs):
         data = {}
         request.data['requester'] = Customer.objects.filter(user=request.user)[0].id
-        # data['service'] = ShopService.objects.filter(id=request.data['service'])[0]
-        # data['status'] = RequestStatusCodes.PENDING
-        # data['review'] = ''
-        # data['rating'] = 0
-        # data['created_at'] = dt.now()
-        # data['accepted_at'] = dt.now()
-        # service_req = ServiceRequest.objects.create(requester=requester, service=service)
         serializer = self.get_serializer(data=request.data)
         
         if serializer.is_valid():
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        print(serializer.errors)
+        # print(serializer.errors)
         return JSONResponse(serializer.errors, status=400)
         # serializer.is_valid(raise_exception=True)
         
+@api_view(['POST'])
+@renderer_classes((JSONRenderer, TemplateHTMLRenderer))
+def updateServiceRequest(request):
+    print(request.data['ids'])
+    s_request = ServiceRequest.objects.filter(id=90)
+    if (len(request.data['ids'])!=0):
+        for request_id in request.data['ids']:
+            s_request = ServiceRequest.objects.get(id=request_id)
+            s_request.status = RequestStatusCodes.PAID
+            s_request.save()
+        return Response({"message":"services updated successfully"}, status=status.HTTP_200_OK)
+    return Response({"message":"Ops, something happened"}, status=status.HTTP_200_OK)
