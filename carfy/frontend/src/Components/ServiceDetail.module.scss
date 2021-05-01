@@ -13,7 +13,12 @@ p, a, figcaption {
 
 }
 
+
+
 .service_gallery{
+    
+        height: 40vh;
+    
     display: grid;
     /* height: 40vh; */
     grid-template-columns: 1fr 3fr;
@@ -208,5 +213,12 @@ p, a, figcaption {
                  }
              }
          }
+     }
+ }
+
+
+ @media (max-width: 600px) {
+     .mediaHeight{
+         height: 40vh !important;
      }
  }

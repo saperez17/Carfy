@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button';
 import {Link, NavLink, Route, useHistory } from 'react-router-dom';
-
+import {retrieveUserData} from './utilities/network';
 const ActionButton = (props)=>{
     return(
         <button className={`${styles.action_button}`} onClick={()=>props.onClickHandler(false)}>
@@ -200,7 +200,7 @@ const NewShopRegistration = (props)=>{
             </Alert>
             <GeneralInfoWrapper>
                 <div>
-                    <button className="btn btn-outline-primary" onClick={()=>{props.onClickHandler(true)}}>{`<-`}</button>
+                    <button className="btn btn-outline-primary" onClick={()=>{props.onClickHandler(true); props.updateUserData()}}>{`<-`}</button>
                     <h3>General shop info</h3>
                     <div className="mb-3">
                         <label htmlFor="shop_name" className="form-label">Name</label>
@@ -261,6 +261,7 @@ const ShopCard = (props)=>{
     const history = useHistory();
 
     const routeChange = () =>{ 
+        console.log(props);
       let path = `/carfy/shop-registration/${props.shop.id}`; 
       history.push(path);
     }
@@ -319,13 +320,17 @@ const AddButton = (props)=>{
         </div>
     )
 }
+
+
 const ShopCardWrapper = ({
-    children, 
+    children,
+    updateUserData,
     ...rest
 })=>{
     const [bodyTrigger, setBodyTrigger] = useState(true)
     const onClickHandler = (val)=>{
         console.log('hi')
+        // retrieveUserData();
         setBodyTrigger((prev)=>prev=val)
     }
     const renderRegistrationSection = ()=>{
@@ -338,7 +343,7 @@ const ShopCardWrapper = ({
                 </div>
                 )
         }else{
-            return <FadeIn duration={800} delay={250}><NewShopRegistration onClickHandler={onClickHandler} /></FadeIn> 
+            return <FadeIn duration={800} delay={250}><NewShopRegistration onClickHandler={onClickHandler} updateUserData={updateUserData}/></FadeIn> 
         }
     }
     return(
@@ -347,21 +352,36 @@ const ShopCardWrapper = ({
         </div>
     )
 }
+
+
+
 const ShopRegistrationLayout = (props)=>{
     const [bodyTrigger, setBodyTrigger] = useState(true)
     const [user, setUser] = useState({})
     useEffect(()=>{
         // console.log('user before saved: ', props.user)
         setBodyTrigger(true)
-        saveUserLocalStorage();
-        // console.log(props)
-        setUser(Object.keys(props.user).length!=0?props.user:JSON.parse(localStorage.getItem('user')))
-        
+        const userData = retrieveUserData();
+        userData.then(res => {
+            setUser(res);
+        })
+        .catch(error =>console.log('error:', error.message));
+        // saveUserLocalStorage();
+        // console.log(localStorage.getItem('user'))
+        // setUser(JSON.parse(localStorage.getItem('user')))
 
         // localStorage.setItem('user', props.user );
         // console.log(JSON.parse(window.localStorage.getItem('user')))
         return ()=>{}
-    },[])
+    },[])   
+
+    const updateUserData = ()=>{
+        const userData = retrieveUserData();
+        userData.then(res => {
+            setUser(res);
+        })
+        .catch(error =>console.log('error:', error.message));
+    }
 
     const saveUserLocalStorage = ()=>{
         if(localStorage.getItem('user')==null){
@@ -370,9 +390,11 @@ const ShopRegistrationLayout = (props)=>{
     }
 
     const onClickHandler = (val)=>{
+        
         setBodyTrigger((prev)=>prev=val)
     }
     const renderRegistrationSection = ()=>{
+        
         if(bodyTrigger){
             return <NoShopRegistered onClickHandler={onClickHandler}/>
         }else{
@@ -384,7 +406,7 @@ const ShopRegistrationLayout = (props)=>{
             return <h3>...Loading</h3>
         }
         if(user.my_shops.length!=0){
-            return <ShopCardWrapper >{user.my_shops.map((shop, idx)=><ShopCard  key={idx} shop={shop}/>)}</ShopCardWrapper>
+            return <ShopCardWrapper updateUserData={updateUserData}>{user.my_shops.map((shop, idx)=><ShopCard  key={idx} shop={shop}/>)} </ShopCardWrapper>
             // <div><h3>Your shops</h3> {user.my_shops.map((shop, idx)=><ShopCard key={idx} shop={shop}/>)}</div>
         }else{
             return renderRegistrationSection()
@@ -407,6 +429,9 @@ const ShopRegistrationLayout = (props)=>{
     </div>
     )
 }
+
+
+
 
 export {
     ShopRegistrationLayout,

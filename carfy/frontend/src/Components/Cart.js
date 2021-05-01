@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Cart.module.scss';
-import {Link} from 'react-router-dom';
-import {getUserServiceRequests, postUserServiceRequests} from './utilities/network'
+import {Link, useLocation} from 'react-router-dom';
+import {getUserServiceRequests, updateServiceRequests, updateDeleteData} from './utilities/network'
 
 var formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -62,7 +62,7 @@ const ShoppingCartItem = (props)=>{
         </th>
         <td className="border-0 align-middle"><strong>{formatter.format(props.item.service.price)}</strong></td>
         <td className="border-0 align-middle"><strong>1</strong></td>
-        <td className="border-0 align-middle"><a href="#" className="text-dark"><i className="fa fa-trash"></i></a></td>
+        <td className="border-0 align-middle"><button className={styles.emptyStyle} onClick={()=>props.removeClickHandler(props.item)}><i className="fa fa-trash"></i></button></td>
       </>
       )}
     </tr>
@@ -73,11 +73,16 @@ const ShoppingCartItem = (props)=>{
 const OrderSummary = ({items, postHandler},props)=>{
   const [summary, setSummary] = useState({subtotal:0, additionalCosts:0, tax:0, total:0})
   useEffect(()=>{
-    let subTotal = summary.subtotal;
-    let total = summary.total;
+    let subTotal = 0;
+    let total = 0;
     items.forEach((item)=>{
-      subTotal += parseFloat(item.service.price)
+      console.log('item xx', item);
+      if (item.status=="UN"){
+        subTotal += parseFloat(item.service.price)
+      }
+      
     })
+    
     setSummary((prevState)=>(
       {
         ...prevState,
@@ -150,13 +155,32 @@ const ShoppingCart = () =>{
   const postServices = ()=>{
     let items = cartItems.items.slice();
     let ids = [];
-    items.map(x => ids.push(x.id));
-    console.log(cartItems.items)
-    const postService = postUserServiceRequests(ids);
+    items.forEach(x => ids.push(x.id));
+    let status = "PAID"; //Update service requests status to PA
+    const postService = updateServiceRequests(ids, status);
     postService.then(res=>{
       let itemsCopy = cartItems.items.slice();
       itemsCopy.forEach((x)=>x.status="PA")
       // itemsCopy = itemsCopy.concat(res)
+      setCartItems((prevStat)=>({
+        ...prevStat,
+        items:[]
+      }))
+    })
+    .catch(error=>console.log(error.message))
+  }
+
+  const removeCartItem = (item)=>{
+    console.log(item);
+    let endpoint = `/service-request/${item.id}`
+    let method = 'DELETE'
+
+    const deleteRequest = updateDeleteData(endpoint, method);
+    deleteRequest.then(res=>{
+      console.log(res)
+      let itemsCopy = cartItems.items.slice();
+      let index = cartItems.items.findIndex((x)=>x.id==item.id)
+      itemsCopy.splice(index,1);
       setCartItems((prevStat)=>({
         ...prevStat,
         items:itemsCopy
@@ -201,8 +225,7 @@ const ShoppingCart = () =>{
                     </thead>
                     <tbody>
                       {cartItems.items.length!=0?
-                        cartItems.items.map((item, idx)=><ShoppingCartItem item={item} key={idx}/>):<tr><td colSpan="4"><p>Your shopping cart is empty</p></td></tr> 
-                        
+                        cartItems.items.map((item, idx)=><ShoppingCartItem item={item} key={idx} removeClickHandler={removeCartItem}/>):<tr><td colSpan="4"><p>Your shopping cart is empty</p></td></tr> 
                       }
                     </tbody>
                   </table>
@@ -241,19 +264,22 @@ const ShoppingCart = () =>{
 }
 
 const Cart = ()=> {
-  
+  const locatedStyle = ()=>{
+    let location = useLocation()
+    let isLandingPage = location.pathname=='/carfy/'||location.pathname=='/carfy'
+    let allClassNames = isLandingPage?`${styles.cartStyle}`:`${styles.cartStyle2}`
+    return <span className={`${allClassNames}`}><i className="fas fa-shopping-cart"></i></span>
+  }
     return (
         <div>
             <div className={`dropdown ${styles.centerContent}`}>
                 <button className={`btn btn-circle-lg dropdown-toggle ${styles.btnSizing}`} type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" onClick={()=>props.onClickHandler(false)}>
-                    <span style={{fontSize: '1.5rem'}}>
-                        <i className="fas fa-shopping-cart"></i>
-                    </span>
+                   {locatedStyle()}
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><Link to="/carfy/cart" className="dropdown-item" >Action</Link></li>
-                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                    <li><a className="dropdown-item" href="#">Something else here</a></li>
+                    <li><Link to="/carfy/cart" className="dropdown-item" >Shopping cart</Link></li>
+                    {/* <li><a className="dropdown-item" href="#">Another action</a></li> */}
+                    {/* <li><a className="dropdown-item" href="#">Something else here</a></li> */}
                 </ul>
             </div>
         </div>

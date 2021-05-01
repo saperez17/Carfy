@@ -70,7 +70,9 @@ const OrderItem = (props)=>{
                 </div>
             </div>
             <div className={`${styles.sideOptionsWrapper}`}>
-                <p>Open</p>
+                <div>
+                    <p>Open</p>
+                </div>
             </div>
         </div>
         </Fade>

@@ -238,6 +238,7 @@ class App extends Component {
                     <Route path="/carfy/shop-registration/:shopId"
                     render={({ match }) => {
                         // Do whatever you want with the match...
+                        console.log(this.state.userData);
                         return <ShopServicesLayoutCaller user={this.state.userData || {}} shopId={match.params.shopId}/>}}
                     >
                     </Route>

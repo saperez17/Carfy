@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
-from .forms import NameForm
+
 
 from backend.models import ServiceProvider, Customer, User
 from backend.serializers import ServiceProviderSerializer, CustomerSerializer, UserSerializer
@@ -15,33 +15,32 @@ import json
 
 # Create your views here.
 def index_view(request):
-    print('hi')
     return render(request,'frontend/index.html', context=None)
 
-class UserAccountView(TemplateView):
-    template_name = "frontend/UserAccess/user_access.html"
-    form_class = NameForm
-    def get(self, request):
-        html_filename = self.template_name.split('/')[-1]
-        if 'login' in html_filename:
-            return render(request, self.template_name, {"form": self.form_class})
-        elif ('signin' in html_filename):
-            print(html_filename)
-            return render(request, 'frontend/UserAccess/signin.html', {})
-        else:
-            return render(request, self.template_name, {})
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            if user is not None:
-                login(request, user)
-                return redirect("/landing-page")
-            else:
-                return render(request, self.template_name, {
-                "form": form,
-                "message":"Oops, try again."
-                })
+# class UserAccountView(TemplateView):
+#     template_name = "frontend/UserAccess/user_access.html"
+#     form_class = NameForm
+#     def get(self, request):
+#         html_filename = self.template_name.split('/')[-1]
+#         if 'login' in html_filename:
+#             return render(request, self.template_name, {"form": self.form_class})
+#         elif ('signin' in html_filename):
+#             print(html_filename)
+#             return render(request, 'frontend/UserAccess/signin.html', {})
+#         else:
+#             return render(request, self.template_name, {})
+#     def post(self, request):
+#         form = self.form_class(request.POST)
+#         if form.is_valid():
+#             user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+#             if user is not None:
+#                 login(request, user)
+#                 return redirect("/landing-page")
+#             else:
+#                 return render(request, self.template_name, {
+#                 "form": form,
+#                 "message":"Oops, try again."
+#                 })
 def logout_view(request):
     logout(request)
     print('logout')

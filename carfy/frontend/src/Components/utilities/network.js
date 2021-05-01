@@ -67,19 +67,17 @@ async function getUserServiceRequests(){
     const res = await response.json();
     return res;
 }
-async function postUserServiceRequests(services){
-    
+async function updateServiceRequests(services, status){    
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
-        body: JSON.stringify({ids:services})
+        body: JSON.stringify({ids:services, status:status})
     };
     const response = await fetch(`http://127.0.0.1:9000/api/service-request/update/`, requestOptions);
 
     if (!response.ok){
         throw new Error("HTTP status " + response.status);
     }
-
     const res = await response.json();
     return res;
 }
@@ -100,8 +98,39 @@ async function fetchData(endpoint){
     return res;
 }
 
+//generic data updating/deleting function
+async function updateDeleteData(endpoint, method="DELETE"){
+    const requestOptions = {
+        method: method,
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrftoken },
+        // body: JSON.stringify(request)
+    };
+    const response = await fetch(`http://127.0.0.1:9000/api${endpoint}`, requestOptions);
+    if (!response.ok){
+        throw new Error("HTTP status " + response.status);
+    }
+
+    const res = await response.json();
+    return res;
+}
+
+async function retrieveUserData(){
+    console.log('retrieving data');
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify()
+    };
+    const response = await fetch('http://127.0.0.1:9000/api/check_auth', requestOptions)
+    if (!response.ok){
+        throw new Error("HTTP status " + response.status);
+    }
+
+    const res = await response.json();
+    return res;
+}
 
 
 export {fetchShopServiceById, saveServiceRequestToDb,
      getCookie,getUserServiceRequests,
-     fetchData, postUserServiceRequests}
+     fetchData, updateServiceRequests, updateDeleteData, retrieveUserData}

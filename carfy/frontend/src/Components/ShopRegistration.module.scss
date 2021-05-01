@@ -254,3 +254,10 @@ $stepContainerSize: 180px;
     justify-content: center !important;
     align-items: center !important;
   }
+
+  @media (max-width:700px){
+    .shop_card{
+        grid-template-columns: repeat(3,1fr);
+        height: 35vh;
+    }
+  }

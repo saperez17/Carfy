@@ -51,14 +51,15 @@ class ShopSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request_data = dict(self.get_serializer_context())
         user = User.objects.filter(username=self.context['request'].user.username)
-        # print(user)
+        
         if user.count()!=0:        
             service_provider = user[0].service_provider
-            return validated_data
-            # return Shop.objects.create(owner=service_provider, shop_name=request_data['shop_name'],
-            #                              membership=request_data['membership'], longitude=request_data['longitude'],
-            #                               latitude=request_data['latitude'], slogan=request_data['shop_slogan'], 
-            #                               city=request_data['city'])
+            print(service_provider)
+            # return validated_data
+            return Shop.objects.create(owner=service_provider, shop_name=request_data['shop_name'],
+                                         membership=request_data['membership'], longitude=request_data['longitude'],
+                                          latitude=request_data['latitude'], slogan=request_data['shop_slogan'], 
+                                          city=request_data['city'])
         else:
             raise serializers.ValidationError("The service provider couldn't be found")
             return validated_data
@@ -165,7 +166,7 @@ class ServiceRequestSerializer(serializers.ModelSerializer):
             customer = customer[0]
             shop_service = ShopService.objects.filter(id=request_data['service'])[0]            
             return ServiceRequest.objects.create(requester=customer, service=shop_service,
-                                         status=RequestStatusCodes.PENDING)
+                                         status=RequestStatusCodes.UNPAID)
         else:
             raise serializers.ValidationError("The service provider couldn't be found")
             return validated_data

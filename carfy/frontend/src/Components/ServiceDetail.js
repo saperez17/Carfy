@@ -2,11 +2,13 @@ import React, { Component, useState, useEffect, useRef} from "react";
 import {TopNavBar, TopBanner} from './UI'
 import styles from "./ServiceDetail.module.scss";
 import './ServiceDetail.module.scss'
+import Alert from 'react-bootstrap/Alert'
+import {useHistory } from 'react-router-dom';
 import {saveServiceRequestToDb,getCookie, getUserServiceRequests} from '../Components/utilities/network'
 
 const ServiceMedia = ()=>{
     return(
-        <div className={`${styles.service_gallery} col-6 `}>
+        <div className={`${styles.service_gallery} h-100`}>
             <div className={`${styles.img1} ${styles.left_img}`}>
             </div>
             <div className={`${styles.img2}  ${styles.left_img}`}>
@@ -21,6 +23,7 @@ const ServiceMedia = ()=>{
 
 const ServiceInfoDetails = (props)=>{
     const services = ['Oil Change', 'Wheel alignment']
+    const [success, setSuccess] = useState(false)
     useEffect(()=>{
     },[])
     const servicesIncluded = ()=>{
@@ -35,42 +38,56 @@ const ServiceInfoDetails = (props)=>{
         const data = {
             requester: 0,
             service: props.service.id,
-            status: "PEN",
+            status: "UN",
             review: "",
             rating: 0,
             created_at: new Date(),
             accepted_at: new Date()
         }
-            const shop = getUserServiceRequests()
-                .then(res => {
-                        if (Array.isArray(res)) {
-                            let filtered_service = res.filter((val) => val.service == service.id)
-                            console.log(filtered_service)
-                            if (filtered_service.length == 0) {
-                                const service = saveServiceRequestToDb(data)
-                                    .then(res => {
-                                        console.log(res);
-                                    })
-                                    .catch(error => console.log('error:', error.message));
-                                    return
-                            }
-                            if (filtered_service[0].status == 'PEN') {
-                                console.log('You have an opening request for this service');
-                            } else if (filtered_service[0].status == 'ACC') {
-                                console.log('Your service is under way');
-                            }
-                        } else {
-                            const service = saveServiceRequestToDb(data)
-                                .then(res => {
-                                    console.log(res);
-                                })
-                                .catch(error => console.log('error:', error.message));
-                        }
-                    })
-                    .catch(error => console.log('error:', error.message));
-                 }
+        const shop = getUserServiceRequests()
+            .then(res => {
+                if (Array.isArray(res)) {
+                    let filtered_service = res.filter((val) => val.service == service.id)
+                    console.log(filtered_service)
+                    if (filtered_service.length == 0) {
+                        const service = saveServiceRequestToDb(data)
+                            .then(res => {
+                                // console.log(res);
+                                routeChange();
+                            })
+                            .catch(error => console.log('error:', error.message));
+                        return
+                    }
+                    if (filtered_service[0].status == 'PEN') {
+                        console.log('You have an opening request for this service');
+                    } else if (filtered_service[0].status == 'ACC') {
+                        console.log('Your service is under way');
+                    }
+                } else {
+                    const service = saveServiceRequestToDb(data)
+                        .then(res => {
+                            console.log(res);
+                        })
+                        .catch(error => console.log('error:', error.message));
+                }
+            })
+            .catch(error => console.log('error:', error.message));
+        }
+
+        const history = useHistory();
+        const routeChange = () => {
+            let path = `/carfy/cart`;
+            history.push(path);
+        }
     return(
+        
         <div className={`${styles.service_header}`}>
+            <Alert variant="success" dismissible show={success} onClose={() => setSuccess(false)}>
+                <Alert.Heading>Hooray!</Alert.Heading>
+                <p>
+                   This item was added to the cart.
+                </p>
+            </Alert>
                         <h3 className={`${styles.service_name}`}>{props.serviceName}</h3> 
                         <div className={`${styles.service_categories}`}>{props.category}</div>
                         <div className={`${styles.service_rating}`}>
@@ -103,11 +120,11 @@ const ServiceInfoDetails = (props)=>{
                             </div>
                         </div>
                         <div className={`${styles.action_btn_wrapper}`}>
-                            <button className={`btn btn-primary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`} onClick={()=>saveServiceToDb(props.service)}>
+                            <button className={`btn btn-primary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`} onClick={()=>{saveServiceToDb(props.service)}}>
                             {/* onClick={()=>props.addServiceHandler(props.service)} */}
                                     BUY NOW
                             </button>
-                            <button className={`btn btn-secondary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`}>
+                            <button className={`btn btn-secondary btn-md mr-1 mb-2 waves-effect waves-light ${styles.action_btn}`} onClick={()=>{setSuccess(true); saveServiceToDb(props.service)}}>
                                 ADD TO CART
                             </button>
                         </div>
@@ -193,9 +210,12 @@ const ServiceDetailPage = (props)=>{
     
     return(
         <div className={`mt-4 ${styles.landing_main} container-fluid`}>
-            <div className="row">
-                <ServiceMedia />
-                <div className={`${styles.service_info_container} col-6`}>
+            <div className="row row-cols-sm-1 row-cols-lg-2 ">
+                <div className={`${styles.mediaHeight} col-lg-6 col-sm-12 `} >
+                    <ServiceMedia />
+                </div>
+                
+                <div className={`${styles.service_info_container} col-lg-6 col-sm-12`}>
                     <ServiceInfoDetails serviceName={props.service.service_name}
                                         category={props.service.target_automobile}
                                         price={props.service.price}

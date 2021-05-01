@@ -16,5 +16,23 @@
             color:orange
         }
     }
+}
+.emptyStyle{
+    background: none;
+    border: none;
+    >i{
+        &:hover{
+            color:rgb(90, 90, 90);
+        }
+    }
+}
 
+$cartSize:1.5rem;
+.cartStyle {
+    font-size: 1.5rem;
+    color: #fff;
+}
+.cartStyle2 {
+    font-size: 1.5rem;
+    color: #000  !important;
 }

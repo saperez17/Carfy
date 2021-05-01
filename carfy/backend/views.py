@@ -148,7 +148,7 @@ class ShopListCreate(generics.ListCreateAPIView):
         if(shop_name!=None):
             shop = self.queryset.filter(shop_name=shop_name)
             if (shop.count()!=0):
-                return Response(self.serializer_class(shop[0]).data) 
+                return Response(self.serializer_class(shop[0]).data)         
         return self.list(request, *args, **kwargs)  
     
     def post(self, request, *args, **kwargs):
@@ -225,7 +225,17 @@ class ServiceRequestListCreate(generics.ListCreateAPIView):
         # print(serializer.errors)
         return JSONResponse(serializer.errors, status=400)
         # serializer.is_valid(raise_exception=True)
-        
+
+class ServiceRequestDeleteUpdate(generics.RetrieveDestroyAPIView):
+    queryset = ServiceRequest.objects.all()
+    serializer_class = ServiceRequestSerializer
+    renderer_classes = (JSONRenderer,TemplateHTMLRenderer)
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get('pk',"default value")
+        ServiceRequest.objects.filter(id=pk).delete()
+        return Response({"message":"services deleted successfully"}, status=status.HTTP_200_OK)
+        # return self.destroy(request, *args, **kwargs)
+
 @api_view(['POST'])
 @renderer_classes((JSONRenderer, TemplateHTMLRenderer))
 def updateServiceRequest(request):
@@ -234,7 +244,7 @@ def updateServiceRequest(request):
     if (len(request.data['ids'])!=0):
         for request_id in request.data['ids']:
             s_request = ServiceRequest.objects.get(id=request_id)
-            s_request.status = RequestStatusCodes.PAID
+            s_request.status = RequestStatusCodes[request.data['status']]
             s_request.save()
         return Response({"message":"services updated successfully"}, status=status.HTTP_200_OK)
     return Response({"message":"Ops, something happened"}, status=status.HTTP_200_OK)

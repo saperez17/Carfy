@@ -120,7 +120,7 @@ class RequestStatusCodes(models.TextChoices):
 class ServiceRequest(models.Model):
     requester = models.ForeignKey(Customer, on_delete=models.CASCADE)
     service = models.ForeignKey(ShopService, on_delete=models.CASCADE)
-    status = models.CharField(max_length=30, choices=RequestStatusCodes.choices, default=RequestStatusCodes.PENDING)
+    status = models.CharField(max_length=30, choices=RequestStatusCodes.choices, default=RequestStatusCodes.UNPAID)
     review = models.CharField(max_length=300, default="", blank=True)
     rating = models.IntegerField(verbose_name=_('Rating'), default=0)
     location = models.CharField(max_length=250, default="", blank=True)
